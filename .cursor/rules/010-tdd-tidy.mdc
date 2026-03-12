@@ -1,0 +1,9 @@
+---
+description: SoT & TDD
+globs: ["**/*"]
+alwaysApply: true
+---
+- SoT = plan.md
+- On 'go': pick next unchecked test only
+- RED → GREEN → REFACTOR
+- Test SLA: unit 0.20s / integration 2.00s / e2e 5m

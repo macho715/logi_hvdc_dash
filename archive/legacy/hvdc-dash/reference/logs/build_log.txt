@@ -1,0 +1,48 @@
+
+> hvdc-dashboard@0.1.0 build
+> next build
+
+
+Installing devDependencies (npm):
+- typescript
+
+??Installing TypeScript as it was not found while loading "next.config.ts".
+
+added 332 packages, and audited 368 packages in 6s
+
+141 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+??Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\minky\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\minky\Downloads\HVDC DASH\hvdc-dashboard\package-lock.json
+
+??Next.js 16.1.1 (Turbopack)
+
+  Creating an optimized production build ...
+??Compiled successfully in 3.9s
+  Running TypeScript ...
+Failed to compile.
+
+.next/types/validator.ts:63:31
+Type error: Type 'typeof import("C:/Users/minky/Downloads/HVDC DASH/hvdc-dashboard/src/app/api/shipments/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/shipments/[id]">'.
+  Types of property 'GET' are incompatible.
+    Type '(request: NextRequest, { params }: RouteParams) => Promise<NextResponse<{ shipment: any; containers: any; warehouse: any; transactions: any[]; tracking_log: any[]; documents: any[]; }> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type 'RouteParams'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+
+  61 |   type __IsExpected<Specific extends RouteHandlerConfig<"/api/shipments/[id]">> = Specific
+  62 |   const handler = {} as typeof import("../../src/app/api/shipments/[id]/route.js")
+> 63 |   type __Check = __IsExpected<typeof handler>
+     |                               ^
+  64 |   // @ts-ignore
+  65 |   type __Unused = __Check
+  66 | }
+Next.js build worker exited with code: 1 and signal: null

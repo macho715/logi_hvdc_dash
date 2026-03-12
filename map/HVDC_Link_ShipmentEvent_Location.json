@@ -1,0 +1,32 @@
+[
+  {
+    "link_id": "LINK-EVTLOC-EVT-0001-KPP",
+    "event_id": "EVT-0001",
+    "location_id": "LOC-KPP",
+    "relationship": "OCCURRED_AT"
+  },
+  {
+    "link_id": "LINK-EVTLOC-EVT-0002-KPP",
+    "event_id": "EVT-0002",
+    "location_id": "LOC-KPP",
+    "relationship": "OCCURRED_AT"
+  },
+  {
+    "link_id": "LINK-EVTLOC-EVT-0003-DSV-M44",
+    "event_id": "EVT-0003",
+    "location_id": "LOC-DSV-M44",
+    "relationship": "OCCURRED_AT"
+  },
+  {
+    "link_id": "LINK-EVTLOC-EVT-0004-MOSB-YARD",
+    "event_id": "EVT-0004",
+    "location_id": "LOC-MOSB-SCT-YARD",
+    "relationship": "OCCURRED_AT"
+  },
+  {
+    "link_id": "LINK-EVTLOC-EVT-0005-DAS",
+    "event_id": "EVT-0005",
+    "location_id": "LOC-DAS",
+    "relationship": "OCCURRED_AT"
+  }
+]

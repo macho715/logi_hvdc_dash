@@ -1,0 +1,7 @@
+---
+description: Modern Python 3.13
+globs: ["**/*.py"]
+alwaysApply: true
+---
+- Prefer stdlib; lazy imports
+- pyupgrade --py313-plus

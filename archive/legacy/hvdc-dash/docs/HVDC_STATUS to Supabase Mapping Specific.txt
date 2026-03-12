@@ -1,0 +1,174 @@
+HVDC_STATUS to Supabase Mapping Specification
+Overview
+
+This document outlines the mapping of the normalized HVDC_STATUS workbook relationship tables to the Supabase database schema used in the HVDC_DASH project. It also defines standardized code lists for HS Codes, Incoterms and Ship Modes, and provides guidelines for vendor and shipping line standardization.
+
+Mapping: HVDC_STATUS Relationship Tables to Supabase Schema
+1. Shipment Entities
+
+Relationship tables:
+REL_SHIP_VENDOR, REL_SHIP_PO, REL_SHIP_INVOICE, REL_SHIP_ROUTE, REL_SHIP_FORWARDER, REL_SHIP_CARRIER, REL_SHIP_CONVEYANCE, REL_SHIP_CUSTOMS, REL_SHIP_SITE_REQ, REL_SHIP_SITE_DELIVERY, REL_SHIP_STORAGE, REL_SHIP_EQUIPMENT.
+
+Supabase table: shipments (in hvdc_logistics_schema.sql).
+
+Mapping details:
+
+HVDC_STATUS field / relationship	Supabase shipments column	Notes
+ship_no (primary key)	sct_ship_no	Required; uniquely identifies each shipment
+Vendor (REL_SHIP_VENDOR)	vendor	Normalized name (see vendor standardization)
+Purchase order (REL_SHIP_PO)	po_number	PO number or contract reference
+Invoice number / date / value / currency (REL_SHIP_INVOICE)	commercial_invoice_no, invoice_date, invoice_value, invoice_currency	Multiple invoices per shipment may be stored separately in financial_transactions
+POL, POD, COE (REL_SHIP_ROUTE)	port_of_loading, port_of_discharge, coe	COE = Country of Export
+Forwarder (REL_SHIP_FORWARDER)	forwarder	Freight forwarder / 3PL
+Shipping line (REL_SHIP_CARRIER)	shipping_line	Ocean carrier or airline
+Vessel/Flight details (REL_SHIP_CONVEYANCE)	vessel_name, vessel_imo_no	vessel_name may include flight number; IMO optional
+Transport document number (REL_SHIP_DOC)	bl_awb_no	Bill of Lading or Air Waybill
+Customs process dates / codes / duties (REL_SHIP_CUSTOMS)	customs_start_date, customs_close_date, custom_code, duty_amount_aed, vat_amount_aed	Capture import / export clearance info
+Schedule (ETD, ATD, ETA, ATA)	etd, atd, eta, ata	Dates from the original workbook
+Delivery date (REL_SHIP_SITE_DELIVERY)	delivery_date	Final delivery to site or warehouse
+Site requirements flags (REL_SHIP_SITE_REQ)	project_shu, project_das, project_mir, project_agi	TRUE if shipment is destined for the site
+Remarks / description	main_description, sub_description	Combine or map from workbook text columns
+Mode (ship mode)	ship_mode	Use standardized codes (see Ship Mode list)
+Other amounts	freight_cost, insurance_cost, cif_value	Derived or directly from workbook
+2. Container and Equipment Details
+
+Relationship table: REL_SHIP_EQUIPMENT
+
+Supabase table: container_details
+
+Mapping:
+
+Equipment column	container_details field	Description
+20DC, 40DC, 40HQ, 45HQ	qty_20dc, qty_40dc, qty_40hq, qty_45hq	Standard dry and high-cube containers
+20OT(IN), 20OT(OH), 40OT(IN), 40OT(OH)	qty_20ot_in, qty_20ot_oh, qty_40ot_in, qty_40ot_oh	Open top containers (in gauge / over height)
+20FR(IN), 40FR(IN), 20FR(FV), 40FR(OW), 20FR(OW,OH), 40FR(OW,OH), 40FR(OW,OL)	qty_20fr_in, qty_40fr_in, qty_20fr_fv, qty_40fr_ow, qty_20fr_ow_oh, qty_40fr_ow_oh, qty_40fr_ow_ol	Flat racks (in gauge, over weight, over height, over length)
+LCL	qty_lcl	Less-than-container load (consolidated)
+G Bulk, O Bulk, H Bulk	bulk_general, bulk_open, bulk_heavy	Bulk cargo categories
+
+Link each container_details row to its shipment via the shipment_id foreign key.
+
+3. Warehouse / Site Storage
+
+Relationship table: REL_SHIP_STORAGE
+
+Supabase table: warehouse_inventory
+
+Mapping:
+
+Storage column	warehouse_inventory field	Notes
+MOSB	mosb	Date the shipment arrived at MOSB yard
+DSV Indoor, DSV Outdoor, DSV MZD	dsv_indoor, dsv_outdoor, dsv_mzd	Dates stored in DSV facilities
+JDN MZD, JDN Waterfront	jdn_mzd, jdn_waterfront	Dates at JDN facilities
+AAA Storage, ZENER (WH), Hauler DG Storage, Vijay Tanks	aaa_storage, zener_wh, hauler_dg_storage, vijay_tanks	Dates at additional warehouses
+Site-specific dates (SHU2, MIR3, DAS4, AGI5)	project_shu2, project_mir3, project_das4, project_agi5	Arrival / departure dates at project sites
+
+Each warehouse record references its shipment via shipment_id. Remove or leave null any columns not applicable.
+
+4. Financial Transactions
+
+Use financial_transactions to track invoice and payment information:
+
+HVDC_STATUS field	Use case	Supabase field
+Invoice amount/currency	Create a record with transaction_type = 'invoice', transaction_date = invoice_date, amount, currency	Link via shipment_id
+Freight cost	transaction_type = 'freight'	Amount and currency
+Duty, VAT	Use transaction_type = 'duty' or 'vat'; store AED amount	amount_aed contains the AED value
+Insurance	transaction_type = 'insurance'	(Optional if recorded separately)
+Payment info	transaction_type = 'payment', amount, currency, payment_date	For vendor payments or freight charges
+5. Documents
+
+Map document numbers and scanned files to the documents table:
+
+Relationship	documents field	Notes
+BL/AWB number	document_type = 'bl' or 'awb', document_name = BL/AWB number	Store file in Supabase storage and record file_path / file_url
+Invoice document	document_type = 'invoice'	Upload scanned PDF and link to shipment
+Certificate / Packing List / Customs	document_type = 'certificate', 'packing_list', 'customs'	Additional fields: ocr_processed, ocr_extracted_data for LLM/OCR results
+
+Use triggers and functions in the schema (log_shipment_status_change, calculate_cif_value) to maintain consistency and automatically compute CIF values.
+
+Code Lists
+HS Code List
+
+Create a reference table hs_codes with fields: hs_code (PK), description, regulatory_requirements (e.g. MOIAT, FANR), and risk_level. This allows you to link shipments.custom_code to a known HS category and apply compliance rules.
+
+Sample codes (replace with actual codes from your dataset and UAE regulations):
+
+HS Code	Description	Regulatory Requirements	Risk Level
+850440	Static converters used in HVDC transmission systems	FANR licence required	High
+853710	Electric control panels and switchgear	MOIAT conformity required	Medium
+902710	Gas or smoke analysis apparatus	General import rules	Low
+
+All unique values from the Custom Code column in the workbook should be added to this table and reviewed for regulatory impact.
+
+Incoterms List
+
+Define a table incoterms with fields: incoterm (PK), description, transfer_point, seller_responsibility, buyer_responsibility. Use the ICC Incoterms 2020 standard:
+
+Incoterm	Transfer Point	Seller Responsibility	Buyer Responsibility
+EXW (Ex Works)	Seller’s premises	Minimum	Maximum
+FCA (Free Carrier)	Delivery to carrier at named place	Export clearance	Main carriage
+FAS (Free Alongside Ship)	Alongside vessel at port of loading	Up to delivery alongside ship	Loading, main carriage
+FOB (Free On Board)	On board vessel at port of loading	Loading and export	Main carriage
+CFR (Cost and Freight)	Destination port (delivery aboard ship)	Freight cost	Insurance, import duties
+CIF (Cost, Insurance & Freight)	Destination port	Freight + insurance	Import duties
+CPT (Carriage Paid To)	Place of destination	Main carriage	Insurance & import
+CIP (Carriage & Insurance Paid To)	Place of destination	Main carriage + insurance	Import
+DAP (Delivered At Place)	Named place of destination	All transport & risk to that point	Import duties
+DPU (Delivered at Place Unloaded)	Named place; goods unloaded	All transport & unloading	Import duties
+DDP (Delivered Duty Paid)	Named destination	All transport, insurance & import duties	Minimal
+Ship Mode Code List
+
+Standardize the current codes (A, B, C) by mapping them to explicit modes. Add a reference table ship_modes with fields: code (PK), description, mode.
+
+Code	Mode	Description
+A	AIR	Shipment transported by air
+B	SEA	Shipment transported by sea or ocean freight
+C	ROAD / OTHER	Combined transport (road, multimodal) or other modes
+
+Use this table to validate ship_mode and convert single-letter codes to user-friendly labels.
+
+Vendor and Shipping Line Standardization
+
+Create reference tables to ensure consistent naming and avoid duplicates:
+
+Vendors (vendors table)
+Field	Description
+vendor_id (PK)	Auto-generated UUID or integer
+original_name	Name as found in the workbook
+standardized_name	Normalized version (uppercase, trimmed, no punctuation)
+vendor_type	Category (e.g., supplier, forwarder, freight forwarder, customs broker)
+country	Country of registration
+
+Standardize names by removing prefixes/suffixes (e.g., “LLC”, “FZE”), converting to uppercase and collapsing whitespace. For example:
+
+Original	Standardized
+“DSV”	DSV
+“DSV Logistics LLC”	DSV LOGISTICS
+“ADNOC Onshore”	ADNOC ONSHORE
+Shipping Lines (shipping_lines table)
+Field	Description
+shipping_line_id (PK)	Auto-generated
+original_name	Carrier name as recorded (e.g., “Maersk Line”, “COSCO Shipping Lines”)
+standardized_name	Normalized version (e.g., MAERSK, COSCO)
+scac_code	Standard Carrier Alpha Code if available
+country	Country of registration
+
+Example mappings:
+
+Original	Standardized
+“MAERSK LINE”	MAERSK
+“COSCO SHIPPING LINES CO., LTD.”	COSCO
+“MSC MEDITERRANEAN SHIPPING CO”	MSC
+
+Use these tables to populate shipments.vendor and shipments.shipping_line via foreign keys or lookups. This ensures consistency in reports and facilitates integration with external systems.
+
+Data Quality and Validation
+
+Unique Key: Ensure sct_ship_no is unique across all shipments. Duplicate keys should trigger error logging for manual resolution.
+
+Date Validation: Enforce chronological constraints (etd ≤ atd ≤ ata ≤ delivery_date). Store invalid or missing dates as NULL for further analysis.
+
+Numeric Validation: Validate that amounts (invoice_value, freight_cost, insurance_cost, duty_amount_aed, vat_amount_aed) are non-negative. Use default currency or conversion rates where needed.
+
+String Normalization: Strip whitespace, convert to uppercase, and remove special characters before storing text fields. This aids in matching and prevents duplicate records.
+
+Regulatory Checks: Link custom_code (HS Code) to the hs_codes table. Use triggers or application logic to flag shipments requiring FANR/MOIAT certification.

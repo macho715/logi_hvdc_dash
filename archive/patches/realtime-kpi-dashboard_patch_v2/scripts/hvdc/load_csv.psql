@@ -1,0 +1,124 @@
+\set ON_ERROR_STOP on
+
+\echo '=== HVDC CSV Load Script (psql) ==='
+\echo 'NOTE: Uses \\copy (client-side) for Supabase hosted Postgres.'
+
+\if :{?do_truncate}
+\else
+  \set do_truncate 'off'
+\endif
+
+-- Required CSV path variables
+\if :{?status_shipments_csv}
+\else
+  \echo '[FATAL] Missing -v status_shipments_csv=/abs/path/shipments_status.csv'
+  \quit 2
+\endif
+\if :{?status_events_csv}
+\else
+  \echo '[FATAL] Missing -v status_events_csv=/abs/path/events_status.csv'
+  \quit 2
+\endif
+\if :{?case_locations_csv}
+\else
+  \echo '[FATAL] Missing -v case_locations_csv=/abs/path/locations.csv'
+  \quit 2
+\endif
+\if :{?case_shipments_csv}
+\else
+  \echo '[FATAL] Missing -v case_shipments_csv=/abs/path/shipments_case.csv'
+  \quit 2
+\endif
+\if :{?case_cases_csv}
+\else
+  \echo '[FATAL] Missing -v case_cases_csv=/abs/path/cases.csv'
+  \quit 2
+\endif
+\if :{?case_flows_csv}
+\else
+  \echo '[FATAL] Missing -v case_flows_csv=/abs/path/flows.csv'
+  \quit 2
+\endif
+\if :{?case_events_csv}
+\else
+  \echo '[FATAL] Missing -v case_events_csv=/abs/path/events_case.csv'
+  \quit 2
+\endif
+
+\echo "do_truncate = :do_truncate"
+\echo "status_shipments_csv = :status_shipments_csv"
+\echo "status_events_csv = :status_events_csv"
+\echo "case_locations_csv = :case_locations_csv"
+\echo "case_shipments_csv = :case_shipments_csv"
+\echo "case_cases_csv = :case_cases_csv"
+\echo "case_flows_csv = :case_flows_csv"
+\echo "case_events_csv = :case_events_csv"
+
+-- Optional truncate (re-load)
+\if :do_truncate = 'on'
+  \echo 'Truncating tables (CASCADE) ...'
+  TRUNCATE TABLE
+    status.events_status,
+    status.shipments_status,
+    "case".events_case,
+    "case".flows,
+    "case".cases,
+    "case".shipments_case,
+    "case".locations
+  RESTART IDENTITY CASCADE;
+\endif
+
+\echo '--- Load: status.shipments_status ---'
+\copy status.shipments_status (
+  hvdc_code, status_no, vendor, band, incoterms, currency,
+  pol, pod, bl_awb, vessel, ship_mode, pkg, qty_cntr,
+  cbm, gwt_kg, etd, eta, ata,
+  warehouse_flag, warehouse_last_location, warehouse_last_date, raw
+) FROM :'status_shipments_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Load: status.events_status ---'
+\copy status.events_status (
+  event_id, hvdc_code, event_type, location, event_date, source, raw
+) FROM :'status_events_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Load: case.locations ---'
+\copy "case".locations (
+  location_id, location_code, name, category, hvdc_node,
+  is_mosb, is_site, is_port, active
+) FROM :'case_locations_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Load: case.shipments_case ---'
+\copy "case".shipments_case (
+  hvdc_code, shipment_invoice_no, vendor, coe, pol, pod,
+  vessel, hs_code, currency, price
+) FROM :'case_shipments_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Load: case.cases ---'
+\copy "case".cases (
+  hvdc_code, case_no, site_code, eq_no, pkg, description,
+  final_location, storage, l_cm, w_cm, h_cm, cbm, nw_kg, gw_kg, sqm, vendor
+) FROM :'case_cases_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Load: case.flows ---'
+\copy "case".flows (
+  hvdc_code, case_no, flow_code, flow_code_original, flow_code_derived,
+  override_reason, warehouse_count, has_mosb_leg, has_site_arrival,
+  customs_code, customs_start_iso, customs_end_iso, last_status, requires_review
+) FROM :'case_flows_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Load: case.events_case ---'
+\copy "case".events_case (
+  hvdc_code, case_no, event_type, event_time_iso, location_id,
+  source_field, source_system, raw_epoch_ms
+) FROM :'case_events_csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
+\echo '--- Analyze tables ---'
+ANALYZE status.shipments_status;
+ANALYZE status.events_status;
+ANALYZE "case".locations;
+ANALYZE "case".shipments_case;
+ANALYZE "case".cases;
+ANALYZE "case".flows;
+ANALYZE "case".events_case;
+
+\echo '=== Done ==='

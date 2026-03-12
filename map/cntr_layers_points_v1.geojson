@@ -1,0 +1,69 @@
+{
+  "type": "FeatureCollection",
+  "name": "cntr_layers_points_v1",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          53.658619,
+          24.841096
+        ]
+      },
+      "properties": {
+        "name": "AGI Jetty (mid of Breakwater W/E)",
+        "layer_type": "Jetty",
+        "source": "ADNOC Offshore SIMO Rev.4 (Breakwater W/E table) → midpoint",
+        "source_ref": "SIMO MSMS-06 (Rev.4), Issue 2018-09; accessed 2026-01-25",
+        "notes": "가정: Breakwater-W/E 중간점 대표좌표; 운용 시 PPA/해도/VTS 교차",
+        "confidence": "Medium",
+        "created": "2026-01-24"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          52.9535,
+          25.0914
+        ]
+      },
+      "properties": {
+        "name": "DAS Anchorage",
+        "layer_type": "Anchorage",
+        "source": "Ports Directory (MarineLink)",
+        "source_ref": "DAS ISLAND ANCH page; accessed 2026-01-25",
+        "notes": "정박지 좌표; VTS 공지와 병행",
+        "confidence": "High",
+        "created": "2026-01-24"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.46685,
+          24.32479
+        ]
+      },
+      "properties": {
+        "name": "MOSB Berth (ESNAAD/Mussafah Base)",
+        "layer_type": "Berth",
+        "source": "Mapcarta/OSM Esnaad node",
+        "source_ref": "OSM node 5302911021; accessed 2026-01-25",
+        "notes": "대표점; 개별 berth head/toe는 현장 도면 필요",
+        "confidence": "Medium",
+        "created": "2026-01-24"
+      }
+    }
+  ]
+}

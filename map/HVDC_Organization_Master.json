@@ -1,0 +1,27 @@
+[
+  {
+    "org_id": "ORG-SCT",
+    "org_name": "Samsung C&T",
+    "org_type": "EPC"
+  },
+  {
+    "org_id": "ORG-DSV",
+    "org_name": "DSV Solutions LLC",
+    "org_type": "3PL"
+  },
+  {
+    "org_id": "ORG-ESNAAD",
+    "org_name": "ESNAAD",
+    "org_type": "OPERATOR"
+  },
+  {
+    "org_id": "ORG-ADPORTS",
+    "org_name": "AD Ports Group",
+    "org_type": "PORT_OPERATOR"
+  },
+  {
+    "org_id": "ORG-CICPA",
+    "org_name": "CICPA",
+    "org_type": "SECURITY_AUTHORITY"
+  }
+]

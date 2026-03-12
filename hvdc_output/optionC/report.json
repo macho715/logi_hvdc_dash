@@ -1,0 +1,41 @@
+{
+  "all_rows": 874,
+  "all_invalid_rows": 874,
+  "all_unique_case_keys": 0,
+  "wh_rows": 8804,
+  "wh_unique_case_keys": 6703,
+  "wh_invalid_rows": 1999,
+  "wh_matched": 8804,
+  "wh_unmatched": 0,
+  "merged_rows": 8804,
+  "dedup_rows": 6703,
+  "dedup_duplicates_removed": 102,
+  "shipments": 490,
+  "cases": 6703,
+  "ssot_cases_minus_all_unique": 6703,
+  "flows": 6703,
+  "events": 50680,
+  "events_missing_case_fk": 0,
+  "flows_missing_case_fk": 0,
+  "flow_mismatch_cnt": 3930,
+  "flow_mismatch_pct": 58.63,
+  "flow5_cnt": 158,
+  "agi_das_violation_cnt": 0,
+  "detected_wh_cols": [
+    "MOSB",
+    "Shifting",
+    "DHL Warehouse",
+    "DSV Al Markaz",
+    "DSV Indoor",
+    "DSV MZP",
+    "DSV Outdoor",
+    "Hauler Indoor"
+  ],
+  "detected_site_cols": [
+    "MIR",
+    "SHU",
+    "DAS",
+    "AGI"
+  ],
+  "customs_hvdc_keys": 871
+}

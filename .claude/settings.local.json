@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(python \"C:/Users/jichu/Downloads/LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ/Logi ontol core doc/HVDC STATUS.xlsx\")",
+      "Bash(python3 -c \"import pandas as pd; xl = pd.ExcelFile\\(''C:/Users/jichu/Downloads/LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ/Logi ontol core doc/HVDC STATUS.xlsx''\\); print\\(xl.sheet_names\\)\")",
+      "mcp__Windows-MCP__PowerShell",
+      "Bash(python.exe -c \"import pandas as pd; xl = pd.ExcelFile\\(''C:/Users/jichu/Downloads/LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ/Logi ontol core doc/HVDC STATUS.xlsx''\\); print\\(''Sheets:'', xl.sheet_names\\)\")",
+      "Bash(python.exe -c \":*)",
+      "Bash(find /c/Users/jichu/Downloads/LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ/apps/logistics-dashboard -type f -name *.tsx -o -name *.ts)",
+      "Bash(python.exe -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k: d.get\\(k,{}\\) for k in [''''scripts'''',''''dependencies'''',''''devDependencies'''']}, indent=2\\)\\)\")",
+      "Bash(head -20 \"C:\\\\Users\\\\jichu\\\\Downloads\\\\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ\\\\apps\\\\logistics-dashboard\\\\app\\\\\\(dashboard\\)\\\\layout.tsx\")",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

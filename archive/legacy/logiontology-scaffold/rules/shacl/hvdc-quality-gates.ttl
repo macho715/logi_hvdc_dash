@@ -1,0 +1,71 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix hvdc: <http://samsung.com/project-logistics#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# HVDC minimal quality gates (Site Arrival / Flow / Chronology)
+# Date: 2026-01-23
+#################################################################
+
+# 1) Datatype checks
+hvdc:SiteArrivalDateDatatypeShape a sh:NodeShape ;
+  sh:targetClass hvdc:Case ;
+  sh:property [
+    sh:path hvdc:hasSiteArrivalDate ;
+    sh:datatype xsd:date ;
+    sh:message "hasSiteArrivalDate must be xsd:date (YYYY-MM-DD)." ;
+  ] .
+
+# 2) Boolean-date consistency (derived)
+hvdc:HasSiteArrivalConsistencyShape a sh:NodeShape ;
+  sh:targetClass hvdc:Case ;
+  sh:sparql [
+    sh:message "hasSiteArrival must match presence of any hasSiteArrivalDate (derived boolean mismatch)." ;
+    sh:select """
+      PREFIX hvdc: <http://samsung.com/project-logistics#>
+      SELECT $this
+      WHERE {
+        OPTIONAL { $this hvdc:hasSiteArrivalDate ?d . }
+        OPTIONAL { $this hvdc:hasSiteArrival ?b . }
+        BIND(BOUND(?d) AS ?hasDate)
+        FILTER ( (BOUND(?b) && (?b != ?hasDate)) || (!BOUND(?b) && ?hasDate) )
+      }
+    """ ;
+  ] .
+
+# 3) AGI/DAS require Flow >= 3 (business rule)
+hvdc:AGIDASFlowConstraintShape a sh:NodeShape ;
+  sh:targetClass hvdc:Case ;
+  sh:sparql [
+    sh:message "If final location is AGI/DAS then Flow Code must be >= 3 (MOSB leg required)." ;
+    sh:select """
+      PREFIX hvdc: <http://samsung.com/project-logistics#>
+      SELECT $this
+      WHERE {
+        $this hvdc:hasFinalLocation ?loc ;
+              hvdc:hasFlowCode ?fc .
+        FILTER(STR(?loc) IN ("AGI","DAS"))
+        FILTER(xsd:integer(?fc) < 3)
+      }
+    """ ;
+  ] .
+
+# 4) Chronology check (soft gate): ETD ≤ ATD ≤ ATA (if present)
+hvdc:ScheduleChronologyShape a sh:NodeShape ;
+  sh:targetClass hvdc:Case ;
+  sh:sparql [
+    sh:message "Schedule chronology invalid: expected ETD ≤ ATD ≤ ATA when those dates exist." ;
+    sh:select """
+      PREFIX hvdc: <http://samsung.com/project-logistics#>
+      SELECT $this
+      WHERE {
+        OPTIONAL { $this hvdc:hasETD ?etd . }
+        OPTIONAL { $this hvdc:hasATD ?atd . }
+        OPTIONAL { $this hvdc:hasATA ?ata . }
+        FILTER(
+          (BOUND(?etd) && BOUND(?atd) && (?etd > ?atd)) ||
+          (BOUND(?atd) && BOUND(?ata) && (?atd > ?ata))
+        )
+      }
+    """ ;
+  ] .

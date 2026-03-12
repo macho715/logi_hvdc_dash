@@ -1,0 +1,148 @@
+@prefix hvdc: <https://example.com/hvdc#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# SHACL Shapes for HVDC Ops Ontology
+# Minimal gates to keep dashboards + Flow inference stable.
+#################################################################
+
+############################
+# ShipmentShape
+############################
+hvdc:ShipmentShape a sh:NodeShape ;
+  sh:targetClass hvdc:Shipment ;
+
+  sh:property [
+    sh:path hvdc:hvdcCode ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path hvdc:statusNo ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path hvdc:warehouseFlag ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # warehouseFlag=true → last location/date required
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "warehouseFlag=true 이지만 warehouseLastLocation/warehouseLastDate가 없습니다."@ko ;
+    sh:select """
+      SELECT $this WHERE {
+        $this hvdc:warehouseFlag true .
+        FILTER NOT EXISTS { $this hvdc:warehouseLastLocation ?loc . }
+        UNION
+        FILTER NOT EXISTS { $this hvdc:warehouseLastDate ?dt . }
+      }
+    """ ;
+  ] .
+
+############################
+# CaseShape
+############################
+hvdc:CaseShape a sh:NodeShape ;
+  sh:targetClass hvdc:Case ;
+
+  sh:property [
+    sh:path hvdc:caseNo ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path hvdc:belongsToShipment ;
+    sh:class hvdc:Shipment ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] .
+
+############################
+# FlowShape
+############################
+hvdc:FlowShape a sh:NodeShape ;
+  sh:targetClass hvdc:Flow ;
+
+  sh:property [
+    sh:path hvdc:flowCode ;
+    sh:datatype xsd:integer ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path hvdc:requiresReview ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # flowCode=5 → requiresReview=true
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "flowCode=5 인데 requiresReview=true가 아닙니다."@ko ;
+    sh:select """
+      SELECT $this WHERE {
+        $this hvdc:flowCode 5 .
+        FILTER NOT EXISTS { $this hvdc:requiresReview true . }
+      }
+    """ ;
+  ] .
+
+############################
+# LocationShape
+############################
+hvdc:LocationShape a sh:NodeShape ;
+  sh:targetClass hvdc:Location ;
+
+  sh:property [
+    sh:path hvdc:locationCode ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path hvdc:locationCategory ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in ( "WAREHOUSE" "MOSB" "SITE" "PORT" "CUSTOMS" "TRANSIT" ) ;
+  ] .
+
+############################
+# StatusEventShape (status.events_status)
+############################
+hvdc:StatusEventShape a sh:NodeShape ;
+  sh:targetClass hvdc:StatusEvent ;
+
+  sh:property [ sh:path hvdc:eventType ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:eventDate ; sh:datatype xsd:date ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:sourceSystem ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:forShipment ; sh:class hvdc:Shipment ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+############################
+# CaseEventShape (case.events_case)
+############################
+hvdc:CaseEventShape a sh:NodeShape ;
+  sh:targetClass hvdc:CaseEvent ;
+
+  sh:property [ sh:path hvdc:eventType ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:eventTime ; sh:datatype xsd:dateTime ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:sourceSystem ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:sourceField ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:atLocation ; sh:class hvdc:Location ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:forCase ; sh:class hvdc:Case ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+############################
+# ETLRunShape (ops.etl_runs)
+############################
+hvdc:ETLRunShape a sh:NodeShape ;
+  sh:targetClass hvdc:ETLRun ;
+
+  sh:property [ sh:path hvdc:runId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:pipeline ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "status" "case" ) ] ;
+  sh:property [ sh:path hvdc:startedAt ; sh:datatype xsd:dateTime ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path hvdc:ok ; sh:datatype xsd:boolean ; sh:maxCount 1 ] .

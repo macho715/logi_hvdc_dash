@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-01-24T12:55:41.613871",
+  "flow": {
+    "total": 874,
+    "distribution": {
+      "0": 546,
+      "5": 328
+    },
+    "percentage": {
+      "0": 62.47,
+      "5": 37.53
+    }
+  },
+  "sites": {
+    "SHU": {
+      "count": 0,
+      "pct": 0.0,
+      "flow_distribution": {},
+      "top_vendors": {}
+    },
+    "MIR": {
+      "count": 0,
+      "pct": 0.0,
+      "flow_distribution": {},
+      "top_vendors": {}
+    },
+    "DAS": {
+      "count": 0,
+      "pct": 0.0,
+      "flow_distribution": {},
+      "top_vendors": {}
+    },
+    "AGI": {
+      "count": 0,
+      "pct": 0.0,
+      "flow_distribution": {},
+      "top_vendors": {}
+    }
+  }
+}

@@ -1,0 +1,7 @@
+---
+description: Python baseline
+globs: ["**/*.py"]
+alwaysApply: true
+---
+- Python 3.13
+- ruff --fix → ruff-format → black → isort

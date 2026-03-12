@@ -1,0 +1,20 @@
+{
+  "openOnStart": [
+    "README.md",
+    "AGENTS.md",
+    "docs/constitution.md",
+    "docs/integration/roadmap_system_doc.md"
+  ],
+  "terminals": {
+    "shortcuts": [
+      {
+        "name": "pre-commit",
+        "cmd": "pre-commit run --all-files"
+      },
+      {
+        "name": "pytest",
+        "cmd": "pytest -q"
+      }
+    ]
+  }
+}

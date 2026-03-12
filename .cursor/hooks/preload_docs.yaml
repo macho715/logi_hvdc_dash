@@ -1,0 +1,3 @@
+load:
+  - path: README.md
+  - path: AGENTS.md

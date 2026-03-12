@@ -1,0 +1,153 @@
+import type { PoiLocation } from './poiTypes';
+
+/**
+ * SSOT (v1): curated POIs sourced from /docs/map.md.
+ * - WGS84 decimal degrees (6 dp)
+ * - Some points are explicitly "representative" (assumed center / midpoint)
+ */
+export const POI_LOCATIONS: ReadonlyArray<PoiLocation> = [
+  {
+    id: 'agi-jetty',
+    code: 'AGI',
+    name: 'Al Ghallan Island (Jetty · Representative)',
+    category: 'HVDC_SITE',
+    latitude: 24.841096,
+    longitude: 53.658619,
+    address: 'Al Ghallan Island Jetty, Abu Dhabi, UAE (representative point)',
+    summary: 'HVDC Site · Jetty (rep.)',
+    priority: 950,
+    source: 'map.md',
+    assumptions: ['Breakwater W/E midpoint used as operational representative.'],
+  },
+  {
+    id: 'das-island',
+    code: 'DAS',
+    name: 'Das Island (Center)',
+    category: 'HVDC_SITE',
+    latitude: 25.1477,
+    longitude: 52.875,
+    address: 'Das Island, Al Dhafra Region, Abu Dhabi, UAE',
+    summary: 'HVDC Site · Island',
+    priority: 940,
+    source: 'map.md',
+  },
+  {
+    id: 'mirfa-iwpp',
+    code: 'MIR',
+    name: 'Mirfa IWPP (Plant)',
+    category: 'HVDC_SITE',
+    latitude: 24.11885,
+    longitude: 53.44436,
+    address: 'Mirfa IWPP, Al Marfa, Abu Dhabi, UAE',
+    summary: 'HVDC Site · IWPP',
+    priority: 940,
+    source: 'map.md',
+  },
+  {
+    id: 'shuweihat-complex',
+    code: 'SHU',
+    name: 'Shuweihat Complex (Center)',
+    category: 'HVDC_SITE',
+    latitude: 24.16017,
+    longitude: 52.57292,
+    address: 'Shuweihat Complex, Jabel Al Dhannah, Abu Dhabi, UAE',
+    summary: 'HVDC Site · Complex',
+    priority: 940,
+    source: 'map.md',
+  },
+  {
+    id: 'dsv-mussafah-office-m19',
+    code: 'DSV-M19',
+    name: 'DSV Mussafah Office (M-19)',
+    category: 'OFFICE',
+    latitude: 24.366698,
+    longitude: 54.476102,
+    address: 'M-19, Mussafah Industrial Area, Abu Dhabi, UAE',
+    summary: 'Office · DSV (M-19)',
+    priority: 820,
+    source: 'map.md',
+  },
+  {
+    id: 'dsv-mussafah-warehouse-m44',
+    code: 'DSV-M44',
+    name: 'DSV Inland Warehouse (M-44 · Representative)',
+    category: 'WAREHOUSE',
+    latitude: 24.3447,
+    longitude: 54.58183,
+    address: 'M-44, Mussafah Industrial Area, Abu Dhabi, UAE (representative point)',
+    summary: 'Warehouse · DSV (M-44)',
+    priority: 840,
+    source: 'map.md',
+    assumptions: ['Public source indicates M-44 locality center; replace with gate/block when confirmed.'],
+  },
+  {
+    id: 'mosb-esnaad',
+    code: 'MOSB',
+    name: 'MOSB (Mussafah Offshore Support Base · ESNAAD)',
+    category: 'YARD',
+    latitude: 24.32479,
+    longitude: 54.46685,
+    address: 'MOSB, Mussafah, Abu Dhabi, UAE',
+    summary: 'Yard · MOSB (ESNAAD)',
+    priority: 780,
+    source: 'map.md',
+  },
+  {
+    id: 'mosb-samsung-yard',
+    code: 'MOSB-SAM',
+    name: 'MOSB Samsung Yard (Representative)',
+    category: 'YARD',
+    latitude: 24.32479,
+    longitude: 54.46685,
+    address: 'MOSB Samsung Yard, Abu Dhabi, UAE (representative point)',
+    summary: 'Yard · Samsung (rep.)',
+    priority: 770,
+    source: 'map.md',
+    assumptions: ['Uses MOSB representative coordinate; replace with gate when confirmed.'],
+  },
+  {
+    id: 'zayed-port',
+    code: 'MZP',
+    name: 'Mina Zayed (Zayed) Port (Representative)',
+    category: 'PORT',
+    latitude: 24.52489,
+    longitude: 54.37798,
+    address: 'Zayed Port, Abu Dhabi, UAE',
+    summary: 'Port · Zayed',
+    priority: 900,
+    source: 'map.md',
+  },
+  {
+    id: 'khalifa-port-kpct',
+    code: 'KPP',
+    name: 'Khalifa Port (KPCT · Container Terminal)',
+    category: 'PORT',
+    latitude: 24.8095,
+    longitude: 54.64842,
+    address: 'Khalifa Port, Abu Dhabi, UAE',
+    summary: 'Port · Khalifa (KPCT)',
+    priority: 910,
+    source: 'map.md',
+  },
+  {
+    id: 'auh-airport',
+    code: 'AUH',
+    name: 'Abu Dhabi (Zayed) International Airport (AUH)',
+    category: 'AIRPORT',
+    latitude: 24.441,
+    longitude: 54.6492,
+    address: 'Zayed International Airport (AUH), Abu Dhabi, UAE',
+    summary: 'Airport · AUH',
+    priority: 860,
+    source: 'map.md',
+  },
+];
+
+export function getPoiById(id: string): PoiLocation | undefined {
+  return POI_LOCATIONS.find((p) => p.id === id);
+}
+
+export function getPoiByCode(code: string): PoiLocation | undefined {
+  const key = code.trim().toLowerCase();
+  return POI_LOCATIONS.find((p) => p.code.toLowerCase() === key);
+}

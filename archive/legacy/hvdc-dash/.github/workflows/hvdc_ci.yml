@@ -1,0 +1,60 @@
+# GitHub Actions workflow for HVDC Logistics Dashboard
+# This workflow installs dependencies, builds the Next.js app and runs Python ETL checks.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-nextjs:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hvdc-dashboard
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js project
+        run: npm run build
+
+      # Optionally run Next.js lint or tests
+      # - name: Run tests
+      #   run: npm test
+
+  etl-check:
+    runs-on: ubuntu-latest
+    needs: build-nextjs
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ../requirements.txt || true  # adjust path if requirements file exists
+
+      - name: Lint ETL script
+        run: |
+          python -m py_compile hvdc_migration_script.py

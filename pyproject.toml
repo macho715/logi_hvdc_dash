@@ -1,0 +1,11 @@
+[project]
+requires-python = ">=3.13,<3.14"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = [
+    "integration: integration tests (require DB or external services)",
+    "validation: validation tests (require DB)",
+    "etl: ETL tests (require source files)",
+]

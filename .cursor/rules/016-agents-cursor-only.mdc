@@ -1,0 +1,6 @@
+---
+description: AGENTS binder
+globs: ["**/*"]
+alwaysApply: true
+---
+- Load root AGENTS.md during planning

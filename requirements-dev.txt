@@ -1,0 +1,7 @@
+pytest
+ruff
+black
+isort
+bandit
+pyupgrade
+psycopg[binary]>=3.0.0

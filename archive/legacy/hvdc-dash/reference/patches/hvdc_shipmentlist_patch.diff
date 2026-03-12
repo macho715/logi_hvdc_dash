@@ -1,0 +1,9 @@
+*** Begin Patch
+*** Update File: hvdc-dashboard/src/components/ShipmentList.tsx
+@@
+-                         {shipments.map((shipment) => (
+-                             <tr key={shipment.id} className="hover:bg-gray-50">
++                         {shipments.map((shipment, index) => (
++                             {/* Use composite key to ensure uniqueness even when shipment.id duplicates */}
++                             <tr key={`${shipment.id}-${index}`} className="hover:bg-gray-50">
+*** End Patch

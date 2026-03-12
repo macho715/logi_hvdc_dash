@@ -1,0 +1,189 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-DAS",
+        "category": "HVDC_SITE",
+        "code": "DAS",
+        "name": "Das Island",
+        "logic_function": "Offshore: Barge 접근 필수, 보안 등급 최상 (CICPA)",
+        "access_mode": "OFFSHORE_BARGE",
+        "logistics_role": "OFFSHORE_SITE",
+        "security_level": "VERY_HIGH",
+        "security_authority": "CICPA",
+        "region": NaN,
+        "google_maps_url": "https://www.google.com/maps?q=25.1477,52.875"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          52.875,
+          25.1477
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-AGI",
+        "category": "HVDC_SITE",
+        "code": "AGI",
+        "name": "Al Ghallan Island",
+        "logic_function": "Offshore: Barge 접근 필수, 보안 등급 최상 (CICPA)",
+        "access_mode": "OFFSHORE_BARGE",
+        "logistics_role": "OFFSHORE_SITE",
+        "security_level": "VERY_HIGH",
+        "security_authority": "CICPA",
+        "region": NaN,
+        "google_maps_url": "https://www.google.com/maps?q=24.841096,53.658619"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          53.658619,
+          24.841096
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-MIR",
+        "category": "HVDC_SITE",
+        "code": "MIR",
+        "name": "Mirfa",
+        "logic_function": "Onshore: Western Region, 육상 운송 (Road) 접근 가능",
+        "access_mode": "ONSHORE_ROAD",
+        "logistics_role": "ONSHORE_SITE",
+        "security_level": "HIGH",
+        "security_authority": NaN,
+        "region": "Western Region",
+        "google_maps_url": "https://www.google.com/maps?q=24.11885,53.44436"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          53.44436,
+          24.11885
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-SHU",
+        "category": "HVDC_SITE",
+        "code": "SHU",
+        "name": "Shuweihat",
+        "logic_function": "Onshore: Western Region, 육상 운송 (Road) 접근 가능",
+        "access_mode": "ONSHORE_ROAD",
+        "logistics_role": "ONSHORE_SITE",
+        "security_level": "HIGH",
+        "security_authority": NaN,
+        "region": "Western Region",
+        "google_maps_url": "https://www.google.com/maps?q=24.16017,52.57292"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          52.57292,
+          24.16017
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-MOSB",
+        "category": "HUB_YARD",
+        "code": "MOSB",
+        "name": "ESNAAD MOSB / SCT Yard",
+        "logic_function": "Marshal: 해상 운송 전진 기지, 자재 검수 및 적재",
+        "access_mode": "STORAGE_YARD",
+        "logistics_role": "MARSHAL_FORWARD_BASE",
+        "security_level": "HIGH",
+        "security_authority": NaN,
+        "region": "Mussafah",
+        "google_maps_url": "https://www.google.com/maps?q=24.32479,54.46685"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.46685,
+          24.32479
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-DSV-M44",
+        "category": "WAREHOUSE",
+        "code": "DSV-M44",
+        "name": "DSV Inland WH",
+        "logic_function": "Storage: 일반 화물 보관, 재고 관리 (WMS 연동)",
+        "access_mode": "WAREHOUSE_STORAGE",
+        "logistics_role": "STORAGE",
+        "security_level": "STANDARD",
+        "security_authority": NaN,
+        "region": "Mussafah",
+        "google_maps_url": "https://www.google.com/maps?q=24.3447,54.58183"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.58183,
+          24.3447
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-KPP",
+        "category": "GATEWAY_PORT",
+        "code": "KPP",
+        "name": "Khalifa Port (KPCT)",
+        "logic_function": "Inbound: 해상 수입 화물 통관 및 하역",
+        "access_mode": "PORT_GATEWAY",
+        "logistics_role": "INBOUND_CUSTOMS_DISCHARGE",
+        "security_level": "STANDARD",
+        "security_authority": NaN,
+        "region": "Abu Dhabi",
+        "google_maps_url": "https://www.google.com/maps?q=24.8095,54.64842"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.64842,
+          24.8095
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location_id": "LOC-MZP",
+        "category": "GATEWAY_PORT",
+        "code": "MZP",
+        "name": "Mina Zayed Port",
+        "logic_function": "Inbound: 해상 수입 화물 통관 및 하역",
+        "access_mode": "PORT_GATEWAY",
+        "logistics_role": "INBOUND_CUSTOMS_DISCHARGE",
+        "security_level": "STANDARD",
+        "security_authority": NaN,
+        "region": "Abu Dhabi",
+        "google_maps_url": "https://www.google.com/maps?q=24.52489,54.37798"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.37798,
+          24.52489
+        ]
+      }
+    }
+  ]
+}

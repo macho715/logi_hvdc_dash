@@ -1,0 +1,20 @@
+# Node
+node_modules
+.next
+out
+dist
+
+# Env
+.env
+.env.local
+
+# Logs
+*.log
+
+# Python
+__pycache__
+*.pyc
+
+# Data artifacts
+output/
+data/

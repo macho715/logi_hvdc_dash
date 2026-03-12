@@ -1,0 +1,206 @@
+@prefix hvdc: <https://example.com/hvdc#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+# HVDC Ops Ontology (Supabase: status + case + ops)
+# - status.shipments_status, status.events_status
+# - case.shipments_case, case.cases, case.flows, case.locations, case.events_case, case.events_case_debug
+# - ops.etl_runs
+#################################################################
+
+hvdc:OpsOntology a owl:Ontology ;
+  rdfs:label "HVDC Ops Ontology (SSOT Status + Option-C Case + Ops Audit)"@en ;
+  rdfs:comment "Replace base IRI https://example.com/hvdc# with your production namespace."@en .
+
+############################
+# Classes
+############################
+hvdc:Shipment a owl:Class ; rdfs:label "Shipment (SSOT, hvdc_code)"@en .
+
+hvdc:Case a owl:Class ; rdfs:label "Case (hvdc_code + case_no)"@en .
+
+hvdc:Flow a owl:Class ; rdfs:label "Flow Summary (derived per Case)"@en .
+
+hvdc:Location a owl:Class ; rdfs:label "Location (dimension)"@en .
+
+hvdc:LogisticsEvent a owl:Class ; rdfs:label "Logistics Event (superclass)"@en .
+hvdc:StatusEvent a owl:Class ; rdfs:subClassOf hvdc:LogisticsEvent ; rdfs:label "Status-layer Event"@en .
+hvdc:CaseEvent a owl:Class ; rdfs:subClassOf hvdc:LogisticsEvent ; rdfs:label "Case-layer Event"@en .
+
+hvdc:ETLRun a owl:Class ; rdfs:label "ETL Run (ops.etl_runs)"@en .
+
+############################
+# Location Category (controlled vocabulary)
+############################
+hvdc:LocationCategoryScheme a skos:ConceptScheme ;
+  rdfs:label "Location Category Scheme"@en .
+
+hvdc:WAREHOUSE a skos:Concept ; skos:inScheme hvdc:LocationCategoryScheme ; skos:prefLabel "WAREHOUSE"@en .
+hvdc:MOSB      a skos:Concept ; skos:inScheme hvdc:LocationCategoryScheme ; skos:prefLabel "MOSB"@en .
+hvdc:SITE      a skos:Concept ; skos:inScheme hvdc:LocationCategoryScheme ; skos:prefLabel "SITE"@en .
+hvdc:PORT      a skos:Concept ; skos:inScheme hvdc:LocationCategoryScheme ; skos:prefLabel "PORT"@en .
+hvdc:CUSTOMS   a skos:Concept ; skos:inScheme hvdc:LocationCategoryScheme ; skos:prefLabel "CUSTOMS"@en .
+hvdc:TRANSIT   a skos:Concept ; skos:inScheme hvdc:LocationCategoryScheme ; skos:prefLabel "TRANSIT"@en .
+
+############################
+# Event Type (controlled vocabulary)
+############################
+hvdc:EventTypeScheme a skos:ConceptScheme ;
+  rdfs:label "Event Type Scheme"@en .
+
+# Status-layer event_type (Untitled-4: WH/SITE/PORT/GEN)
+hvdc:STATUS_WH   a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "WH"@en .
+hvdc:STATUS_SITE a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "SITE"@en .
+hvdc:STATUS_PORT a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "PORT"@en .
+hvdc:STATUS_GEN  a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "GEN"@en .
+
+# Case-layer event_type (Untitled-3)
+hvdc:PORT_ETD            a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "PORT_ETD"@en .
+hvdc:PORT_ATD            a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "PORT_ATD"@en .
+hvdc:PORT_ETA            a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "PORT_ETA"@en .
+hvdc:PORT_ATA            a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "PORT_ATA"@en .
+hvdc:WH_IN               a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "WH_IN"@en .
+hvdc:MOSB_IN             a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "MOSB_IN"@en .
+hvdc:YARD_SHIFT          a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "YARD_SHIFT"@en .
+hvdc:SITE_ARRIVAL        a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "SITE_ARRIVAL"@en .
+hvdc:CUSTOMS_START       a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "CUSTOMS_START"@en .
+hvdc:CUSTOMS_FORMAL_START a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "CUSTOMS_FORMAL_START"@en .
+hvdc:CUSTOMS_END         a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "CUSTOMS_END"@en .
+hvdc:DO_COLLECTION       a skos:Concept ; skos:inScheme hvdc:EventTypeScheme ; skos:prefLabel "DO_COLLECTION"@en .
+
+############################
+# Object Properties (관계)
+############################
+hvdc:hasCase a owl:ObjectProperty ;
+  rdfs:domain hvdc:Shipment ; rdfs:range hvdc:Case ;
+  rdfs:label "Shipment has Case"@en .
+
+hvdc:belongsToShipment a owl:ObjectProperty ;
+  rdfs:domain hvdc:Case ; rdfs:range hvdc:Shipment ;
+  owl:inverseOf hvdc:hasCase ;
+  rdfs:label "Case belongs to Shipment"@en .
+
+hvdc:hasFlow a owl:ObjectProperty ;
+  rdfs:domain hvdc:Case ; rdfs:range hvdc:Flow ;
+  rdfs:label "Case has Flow summary"@en .
+
+hvdc:hasStatusEvent a owl:ObjectProperty ;
+  rdfs:domain hvdc:Shipment ; rdfs:range hvdc:StatusEvent ;
+  rdfs:label "Shipment has Status Event"@en .
+
+hvdc:hasEvent a owl:ObjectProperty ;
+  rdfs:domain hvdc:Case ; rdfs:range hvdc:CaseEvent ;
+  rdfs:label "Case has Event"@en .
+
+hvdc:atLocation a owl:ObjectProperty ;
+  rdfs:domain hvdc:LogisticsEvent ; rdfs:range hvdc:Location ;
+  rdfs:label "Event at Location"@en .
+
+hvdc:forCase a owl:ObjectProperty ;
+  rdfs:domain hvdc:CaseEvent ; rdfs:range hvdc:Case ;
+  rdfs:label "Event for Case"@en .
+
+hvdc:forShipment a owl:ObjectProperty ;
+  rdfs:domain hvdc:StatusEvent ; rdfs:range hvdc:Shipment ;
+  rdfs:label "Event for Shipment"@en .
+
+hvdc:produced a owl:ObjectProperty ;
+  rdfs:domain hvdc:ETLRun ; rdfs:range owl:Thing ;
+  rdfs:label "ETL run produced entity"@en .
+
+############################
+# Data Properties (Supabase columns → datatype properties)
+############################
+# Shipment (status.shipments_status)
+hvdc:hvdcCode a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "hvdc_code"@en .
+hvdc:statusNo a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:integer ; rdfs:label "status_no (S No)"@en .
+hvdc:vendor a owl:DatatypeProperty ; rdfs:domain owl:Thing ; rdfs:range xsd:string ; rdfs:label "vendor"@en .
+hvdc:band a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "band"@en .
+hvdc:incoterms a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "Incoterms"@en .
+hvdc:currency a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "currency"@en .
+hvdc:pol a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "POL"@en .
+hvdc:pod a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "POD"@en .
+hvdc:blAwb a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "bl_awb"@en .
+hvdc:vessel a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "vessel"@en .
+hvdc:shipMode a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "ship_mode"@en .
+hvdc:pkg a owl:DatatypeProperty ; rdfs:domain owl:Thing ; rdfs:range xsd:integer ; rdfs:label "pkg"@en .
+hvdc:qtyCntr a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:integer ; rdfs:label "qty_cntr"@en .
+hvdc:cbm a owl:DatatypeProperty ; rdfs:domain owl:Thing ; rdfs:range xsd:decimal ; rdfs:label "cbm"@en .
+hvdc:gwtKg a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:decimal ; rdfs:label "gwt_kg"@en .
+hvdc:etd a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:date ; rdfs:label "etd"@en .
+hvdc:eta a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:date ; rdfs:label "eta"@en .
+hvdc:ata a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:date ; rdfs:label "ata"@en .
+hvdc:warehouseFlag a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:boolean ; rdfs:label "warehouse_flag"@en .
+hvdc:warehouseLastLocation a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:string ; rdfs:label "warehouse_last_location"@en .
+hvdc:warehouseLastDate a owl:DatatypeProperty ; rdfs:domain hvdc:Shipment ; rdfs:range xsd:date ; rdfs:label "warehouse_last_date"@en .
+hvdc:rawJson a owl:DatatypeProperty ; rdfs:domain owl:Thing ; rdfs:range xsd:string ; rdfs:label "raw json (serialized)"@en .
+
+# Case (case.cases)
+hvdc:caseNo a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:string ; rdfs:label "case_no"@en .
+hvdc:siteCode a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:string ; rdfs:label "site_code"@en .
+hvdc:eqNo a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:string ; rdfs:label "eq_no"@en .
+hvdc:description a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:string ; rdfs:label "description"@en .
+hvdc:finalLocation a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:string ; rdfs:label "final_location"@en .
+hvdc:storage a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:string ; rdfs:label "storage"@en .
+hvdc:lCm a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:decimal ; rdfs:label "l_cm"@en .
+hvdc:wCm a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:decimal ; rdfs:label "w_cm"@en .
+hvdc:hCm a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:decimal ; rdfs:label "h_cm"@en .
+hvdc:nwKg a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:decimal ; rdfs:label "nw_kg"@en .
+hvdc:gwKg a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:decimal ; rdfs:label "gw_kg"@en .
+hvdc:sqm a owl:DatatypeProperty ; rdfs:domain hvdc:Case ; rdfs:range xsd:decimal ; rdfs:label "sqm"@en .
+
+# Flow (case.flows)
+hvdc:flowCode a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:integer ; rdfs:label "flow_code"@en .
+hvdc:flowCodeOriginal a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:integer ; rdfs:label "flow_code_original"@en .
+hvdc:flowCodeDerived a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:integer ; rdfs:label "flow_code_derived"@en .
+hvdc:overrideReason a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:string ; rdfs:label "override_reason"@en .
+hvdc:warehouseCount a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:integer ; rdfs:label "warehouse_count"@en .
+hvdc:hasMosbLeg a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:boolean ; rdfs:label "has_mosb_leg"@en .
+hvdc:hasSiteArrival a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:boolean ; rdfs:label "has_site_arrival"@en .
+hvdc:customsCode a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:string ; rdfs:label "customs_code"@en .
+hvdc:customsStart a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:dateTime ; rdfs:label "customs_start_iso"@en .
+hvdc:customsEnd a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:dateTime ; rdfs:label "customs_end_iso"@en .
+hvdc:lastStatus a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:string ; rdfs:label "last_status"@en .
+hvdc:requiresReview a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:boolean ; rdfs:label "requires_review"@en .
+hvdc:flowDescription a owl:DatatypeProperty ; rdfs:domain hvdc:Flow ; rdfs:range xsd:string ; rdfs:label "flow description"@en .
+
+# Location (case.locations)
+hvdc:locationId a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:integer ; rdfs:label "location_id"@en .
+hvdc:locationCode a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:string ; rdfs:label "location_code"@en .
+hvdc:locationName a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:string ; rdfs:label "name"@en .
+hvdc:locationCategory a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:string ; rdfs:label "category"@en .
+hvdc:hvdcNode a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:string ; rdfs:label "hvdc_node"@en .
+hvdc:isMosb a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:boolean ; rdfs:label "is_mosb"@en .
+hvdc:isSite a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:boolean ; rdfs:label "is_site"@en .
+hvdc:isPort a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:boolean ; rdfs:label "is_port"@en .
+hvdc:active a owl:DatatypeProperty ; rdfs:domain hvdc:Location ; rdfs:range xsd:boolean ; rdfs:label "active"@en .
+
+# Events (status.events_status + case.events_case)
+hvdc:eventId a owl:DatatypeProperty ; rdfs:domain hvdc:LogisticsEvent ; rdfs:range xsd:string ; rdfs:label "event_id"@en .
+hvdc:eventType a owl:DatatypeProperty ; rdfs:domain hvdc:LogisticsEvent ; rdfs:range xsd:string ; rdfs:label "event_type"@en .
+hvdc:eventDate a owl:DatatypeProperty ; rdfs:domain hvdc:StatusEvent ; rdfs:range xsd:date ; rdfs:label "event_date"@en .
+hvdc:eventTime a owl:DatatypeProperty ; rdfs:domain hvdc:CaseEvent ; rdfs:range xsd:dateTime ; rdfs:label "event_time_iso"@en .
+hvdc:sourceField a owl:DatatypeProperty ; rdfs:domain hvdc:CaseEvent ; rdfs:range xsd:string ; rdfs:label "source_field"@en .
+hvdc:sourceSystem a owl:DatatypeProperty ; rdfs:domain hvdc:LogisticsEvent ; rdfs:range xsd:string ; rdfs:label "source_system/source"@en .
+hvdc:rawEpochMs a owl:DatatypeProperty ; rdfs:domain hvdc:CaseEvent ; rdfs:range xsd:integer ; rdfs:label "raw_epoch_ms"@en .
+hvdc:locationText a owl:DatatypeProperty ; rdfs:domain hvdc:StatusEvent ; rdfs:range xsd:string ; rdfs:label "location (text)"@en .
+
+# ETL run
+hvdc:runId a owl:DatatypeProperty ; rdfs:domain hvdc:ETLRun ; rdfs:range xsd:string ; rdfs:label "run_id"@en .
+hvdc:pipeline a owl:DatatypeProperty ; rdfs:domain hvdc:ETLRun ; rdfs:range xsd:string ; rdfs:label "pipeline"@en .
+hvdc:startedAt a owl:DatatypeProperty ; rdfs:domain hvdc:ETLRun ; rdfs:range xsd:dateTime ; rdfs:label "started_at"@en .
+hvdc:finishedAt a owl:DatatypeProperty ; rdfs:domain hvdc:ETLRun ; rdfs:range xsd:dateTime ; rdfs:label "finished_at"@en .
+hvdc:ok a owl:DatatypeProperty ; rdfs:domain hvdc:ETLRun ; rdfs:range xsd:boolean ; rdfs:label "ok"@en .
+
+############################
+# OWL Keys (recommended)
+############################
+hvdc:Shipment owl:hasKey ( hvdc:hvdcCode ) .
+hvdc:Location owl:hasKey ( hvdc:locationCode ) .
+# Case key is composite (hvdc_code + case_no): modeled as (belongsToShipment, caseNo)
+hvdc:Case owl:hasKey ( hvdc:belongsToShipment hvdc:caseNo ) .
+hvdc:Flow owl:hasKey ( hvdc:customsCode ) .  # NOTE: optional; keep if you generate stable Flow URIs instead.

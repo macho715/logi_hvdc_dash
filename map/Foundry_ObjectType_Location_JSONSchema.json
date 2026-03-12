@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hvdc.location.schema.json",
+  "title": "HVDC Location (Foundry Object Type)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "location_id",
+    "category",
+    "code",
+    "name",
+    "lat",
+    "lon",
+    "google_maps_url"
+  ],
+  "properties": {
+    "location_id": {
+      "type": "string",
+      "pattern": "^LOC-[A-Z0-9\\-]+$"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "HVDC_SITE",
+        "HUB_YARD",
+        "WAREHOUSE",
+        "GATEWAY_PORT",
+        "OFFICE",
+        "PORT",
+        "AIRPORT",
+        "YARD"
+      ]
+    },
+    "code": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 15
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2
+    },
+    "logic_function": {
+      "type": "string"
+    },
+    "access_mode": {
+      "type": "string"
+    },
+    "logistics_role": {
+      "type": "string"
+    },
+    "security_level": {
+      "type": "string",
+      "enum": [
+        "STANDARD",
+        "HIGH",
+        "VERY_HIGH"
+      ]
+    },
+    "security_authority": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "lat": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "lon": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "geojson_point_lonlat": {
+      "type": "string",
+      "pattern": "^-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?$"
+    },
+    "google_maps_url": {
+      "type": "string",
+      "format": "uri"
+    }
+  }
+}

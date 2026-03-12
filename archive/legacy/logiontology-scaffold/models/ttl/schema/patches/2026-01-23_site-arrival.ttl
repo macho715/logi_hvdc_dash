@@ -1,0 +1,78 @@
+@prefix hvdc: <http://samsung.com/project-logistics#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Site Arrival Date (SHU2 / MIR3 / DAS4 / AGI5) — schema patch
+# Date: 2026-01-23
+#################################################################
+
+### Generic (query-friendly, ETL should materialize regardless of reasoner)
+hvdc:hasSiteArrivalDate a owl:DatatypeProperty ;
+  rdfs:label "Site Arrival Date"@en ;
+  rdfs:comment "Date when cargo arrived at final destination site (SHU/MIR/DAS/AGI)"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:date .
+
+### Specific (source-column aligned)
+hvdc:hasSHUArrivalDate a owl:DatatypeProperty ;
+  rdfs:subPropertyOf hvdc:hasSiteArrivalDate ;
+  rdfs:label "SHU Site Arrival Date"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:date .
+
+hvdc:hasMIRArrivalDate a owl:DatatypeProperty ;
+  rdfs:subPropertyOf hvdc:hasSiteArrivalDate ;
+  rdfs:label "MIR Site Arrival Date"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:date .
+
+hvdc:hasDASArrivalDate a owl:DatatypeProperty ;
+  rdfs:subPropertyOf hvdc:hasSiteArrivalDate ;
+  rdfs:label "DAS Site Arrival Date"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:date .
+
+hvdc:hasAGIArrivalDate a owl:DatatypeProperty ;
+  rdfs:subPropertyOf hvdc:hasSiteArrivalDate ;
+  rdfs:label "AGI Site Arrival Date"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:date .
+
+### Convenience (derived)
+hvdc:hasSiteArrival a owl:DatatypeProperty ;
+  rdfs:label "Has Site Arrival"@en ;
+  rdfs:comment "Derived boolean: true iff any Site Arrival Date exists"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:boolean .
+
+### Optional: location label for generic Site Arrival Date (for dashboards w/o reasoning)
+hvdc:hasSiteArrivalLocation a owl:DatatypeProperty ;
+  rdfs:label "Site Arrival Location"@en ;
+  rdfs:comment "SHU/MIR/DAS/AGI label corresponding to hasSiteArrivalDate"@en ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  xsd:string .
+
+#################################################################
+# Minimal event vocabulary used by dashboard payload builders
+#################################################################
+
+hvdc:StockEvent a owl:Class ;
+  rdfs:label "Stock Event"@en .
+
+hvdc:hasInboundEvent a owl:ObjectProperty ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  hvdc:StockEvent .
+
+hvdc:hasOutboundEvent a owl:ObjectProperty ;
+  rdfs:domain hvdc:Case ;
+  rdfs:range  hvdc:StockEvent .
+
+hvdc:hasEventDate a owl:DatatypeProperty ;
+  rdfs:domain hvdc:StockEvent ;
+  rdfs:range  xsd:date .
+
+hvdc:hasLocationAtEvent a owl:DatatypeProperty ;
+  rdfs:domain hvdc:StockEvent ;
+  rdfs:range  xsd:string .

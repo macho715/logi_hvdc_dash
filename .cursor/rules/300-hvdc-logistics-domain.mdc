@@ -1,0 +1,9 @@
+---
+description: HVDC + Logistics domain rules
+globs: ["**/*"]
+alwaysApply: true
+---
+- Layout invariant: MapView | RightPanel | HVDC Panel
+- Triggers: ΔRate 10.00% / ETA 24.00h / Pressure ≤4.00 t/m² / Cert 30d
+- Human Gate: FANR, MOIAT
+- Accessibility: WCAG 2.2 AA

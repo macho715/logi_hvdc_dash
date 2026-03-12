@@ -1,0 +1,44 @@
+[
+  {
+    "link_id": "LINK-LOCORG-DAS-ORG-CICPA-SECURITY_AUTHORITY",
+    "location_id": "LOC-DAS",
+    "org_id": "ORG-CICPA",
+    "relationship": "SECURITY_AUTHORITY"
+  },
+  {
+    "link_id": "LINK-LOCORG-AGI-ORG-CICPA-SECURITY_AUTHORITY",
+    "location_id": "LOC-AGI",
+    "org_id": "ORG-CICPA",
+    "relationship": "SECURITY_AUTHORITY"
+  },
+  {
+    "link_id": "LINK-LOCORG-MOSB-SCT-OFFICE-ORG-SCT-USES_AS_HUB",
+    "location_id": "LOC-MOSB-SCT-OFFICE",
+    "org_id": "ORG-SCT",
+    "relationship": "USES_AS_HUB"
+  },
+  {
+    "link_id": "LINK-LOCORG-MOSB-SCT-YARD-ORG-SCT-USES_AS_HUB",
+    "location_id": "LOC-MOSB-SCT-YARD",
+    "org_id": "ORG-SCT",
+    "relationship": "USES_AS_HUB"
+  },
+  {
+    "link_id": "LINK-LOCORG-DSV-M44-ORG-DSV-OPERATED_BY",
+    "location_id": "LOC-DSV-M44",
+    "org_id": "ORG-DSV",
+    "relationship": "OPERATED_BY"
+  },
+  {
+    "link_id": "LINK-LOCORG-KPP-ORG-ADPORTS-OPERATED_BY",
+    "location_id": "LOC-KPP",
+    "org_id": "ORG-ADPORTS",
+    "relationship": "OPERATED_BY"
+  },
+  {
+    "link_id": "LINK-LOCORG-MZP-ORG-ADPORTS-OPERATED_BY",
+    "location_id": "LOC-MZP",
+    "org_id": "ORG-ADPORTS",
+    "relationship": "OPERATED_BY"
+  }
+]

@@ -1,0 +1,18 @@
+node_modules/
+.next/
+.env
+.env.local
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+dist/
+build/
+*.log
+
+# temporary development files
+Untitled-*.md
+Untitled-*.txt
+Untitled-*.ts
+Untitled-*.tsx
+plan_fix.md

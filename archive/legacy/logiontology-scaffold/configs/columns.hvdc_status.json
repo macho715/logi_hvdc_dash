@@ -1,0 +1,77 @@
+{
+  "timezone": "Asia/Dubai",
+  "final_location_col": "Final_Location",
+  "vendor_cols_priority": [
+    "VENDOR",
+    "Vendor",
+    "vendor",
+    "SUPPLIER",
+    "Supplier",
+    "supplier"
+  ],
+  "id_cols_priority": [
+    "SCT SHIP NO.",
+    "HVDC CODE",
+    "HVDC_CODE",
+    "Ship_No"
+  ],
+  "site_cols": [
+    "SHU",
+    "MIR",
+    "DAS",
+    "AGI"
+  ],
+  "site_arrival_aliases": {
+    "SHU2": "SHU",
+    "MIR3": "MIR",
+    "DAS4": "DAS",
+    "AGI5": "AGI"
+  },
+  "site_arrival_cols_raw": [
+    "SHU2",
+    "MIR3",
+    "DAS4",
+    "AGI5"
+  ],
+  "warehouse_cols": [
+    "DSV Indoor Indoor",
+    "DSV Outdoor",
+    "DSV MZD",
+    "DSV Kizad",
+    "JDN MZD",
+    "JDN Waterfront",
+    "MOSB",
+    "AAA Storage",
+    "ZENER (WH)",
+    "Hauler DG Storage",
+    "Vijay Tanks"
+  ],
+  "date_cols_vectorize": [
+    "ETD",
+    "ATD",
+    "ETA",
+    "ATA",
+    "Attestation Date",
+    "DO Collection",
+    "Customs Start",
+    "Customs Close",
+    "DELIVERY DATE",
+    "Delivery date",
+    "delivery_date"
+  ],
+  "null_strings": [
+    "",
+    " ",
+    "0",
+    "0.0",
+    "O",
+    "o",
+    "nan",
+    "NaN",
+    "NaT",
+    "None",
+    "-",
+    "N/A",
+    "n/a"
+  ]
+}

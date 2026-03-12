@@ -1,0 +1,27 @@
+location_id,location_code,name,category,hvdc_node,is_mosb,is_site,is_port,active
+1,AGI_SITE,AGI,SITE,AGI,False,True,False,True
+2,CUSTOMS_UAE,Customs (UAE),CUSTOMS,CUSTOMS,False,False,False,True
+3,DAS_SITE,DAS,SITE,DAS,False,True,False,True
+4,DHL_WAREHOUSE,DHL Warehouse,WAREHOUSE,,False,False,False,True
+5,DSV_AL_MARKAZ,DSV Al Markaz,WAREHOUSE,,False,False,False,True
+6,DSV_INDOOR,DSV Indoor,WAREHOUSE,,False,False,False,True
+7,DSV_MZP,DSV MZP,WAREHOUSE,,False,False,False,True
+8,DSV_OUTDOOR,DSV Outdoor,WAREHOUSE,,False,False,False,True
+9,EDAS,eDAS / Attestation,CUSTOMS,CUSTOMS,False,False,False,True
+10,HAULER_INDOOR,Hauler Indoor,WAREHOUSE,,False,False,False,True
+11,MIR_SITE,MIR,SITE,MIR,False,True,False,True
+12,MOSB,MOSB,MOSB,MOSB,True,False,False,True
+13,PORT_AGENT,Port Agent / DO Collection,PORT,PORT,False,False,True,True
+14,PORT_POD_ABU_DHABI_AIRPORT,Abu Dhabi Airport,PORT,PORT,False,False,True,True
+15,PORT_POD_KHALIFA_PORT,Khalifa port,PORT,PORT,False,False,True,True
+16,PORT_POD_MINA_ZAYED,Mina Zayed,PORT,PORT,False,False,True,True
+17,PORT_POD_MUGHARRAQ,Mugharraq,PORT,PORT,False,False,True,True
+18,PORT_POL_AMSTERDAM,Amsterdam,PORT,PORT,False,False,True,True
+19,PORT_POL_ANTWERP,Antwerp,PORT,PORT,False,False,True,True
+20,PORT_POL_ANTWERPEN,Antwerpen,PORT,PORT,False,False,True,True
+21,PORT_POL_COPENHAGEN,Copenhagen,PORT,PORT,False,False,True,True
+22,PORT_POL_GOTHENBURG,Gothenburg,PORT,PORT,False,False,True,True
+23,PORT_POL_ITAGUAI,Itaguai,PORT,PORT,False,False,True,True
+24,PORT_POL_UDDEVALLA,Uddevalla,PORT,PORT,False,False,True,True
+25,SHIFTING,Shifting,TRANSIT,,False,False,False,True
+26,SHU_SITE,SHU,SITE,SHU,False,True,False,True

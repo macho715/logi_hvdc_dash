@@ -1,0 +1,6 @@
+---
+description: Constitution binder
+globs: ["**/*"]
+alwaysApply: true
+---
+- docs/constitution.md is non-negotiable

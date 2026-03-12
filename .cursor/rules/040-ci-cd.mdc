@@ -1,0 +1,9 @@
+---
+description: CI / Quality / Security
+globs: ["**/*"]
+alwaysApply: true
+---
+- Coverage ≥85.00
+- Lint/Format: ruff/black/isort (0 warn)
+- Security: bandit High=0; pip-audit --strict
+- Pipeline time ≤5m

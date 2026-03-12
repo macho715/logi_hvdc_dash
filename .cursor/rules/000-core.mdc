@@ -1,0 +1,9 @@
+---
+description: Core operating rules
+globs: ["**/*"]
+alwaysApply: true
+---
+- Output order: ExecSummary → Visual → Options → Roadmap → Automation → QA
+- Language: KR concise + EN-inline; numerics 2-dec
+- Hallucination ban; uncertain info prefixed with '가정:'
+- Scope guard: src/** only (ask before touching others)

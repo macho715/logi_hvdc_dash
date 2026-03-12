@@ -1,0 +1,9 @@
+---
+description: Git & PR gates
+globs: ["**/*"]
+alwaysApply: true
+---
+- Conventional Commits
+- Trunk-based (main) + short-lived feature/*
+- Structural vs behavioral commits separated
+- CODEOWNERS ≥2 approvals

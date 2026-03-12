@@ -1,0 +1,29 @@
+{
+  "table": "hvdc_status",
+  "columns": {
+    "id": {
+      "rdf_property": "logi:hasId",
+      "required": true,
+      "type": "uuid"
+    },
+    "status": {
+      "rdf_property": "logi:hasStatus",
+      "required": true,
+      "type": "text",
+      "enum": ["ok", "warning", "critical"]
+    },
+    "pressure": {
+      "rdf_property": "logi:hasPressure",
+      "required": false,
+      "type": "double",
+      "unit": "t/m²",
+      "constraint": "≤4.0"
+    },
+    "eta": {
+      "rdf_property": "logi:hasETA",
+      "required": false,
+      "type": "timestamptz"
+    }
+  },
+  "mapping_notes": "HVDC 상태 데이터를 RDF로 변환할 때 사용하는 컬럼 스펙"
+}

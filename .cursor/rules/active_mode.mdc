@@ -1,0 +1,6 @@
+---
+description: Active tabs & modes
+globs: ["**/*"]
+alwaysApply: true
+---
+- Tabs: Docs / Code / Git / Rules / Terminals
