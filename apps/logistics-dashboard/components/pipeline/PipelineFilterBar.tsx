@@ -1,0 +1,77 @@
+'use client'
+
+import { useCasesStore } from '@/store/casesStore'
+import type { CasesFilter } from '@/types/cases'
+
+type SelectProps = {
+  label: string
+  value: string
+  onChange: (v: string) => void
+  options: { value: string; label: string }[]
+}
+
+function FilterSelect({ label, value, onChange, options }: SelectProps) {
+  return (
+    <div className="flex items-center gap-2">
+      <label className="text-xs text-gray-400 whitespace-nowrap">{label}</label>
+      <select
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className="bg-gray-800 text-gray-200 text-xs rounded px-2 py-1 border border-gray-700 focus:outline-none focus:border-blue-500"
+      >
+        {options.map(o => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+    </div>
+  )
+}
+
+export function PipelineFilterBar() {
+  const { filters, setFilter, resetFilters } = useCasesStore()
+
+  return (
+    <div className="flex items-center gap-4 flex-wrap bg-gray-900 px-4 py-2 border-b border-gray-800">
+      <FilterSelect
+        label="사이트"
+        value={String(filters.site)}
+        onChange={v => setFilter('site', v as CasesFilter['site'])}
+        options={[
+          { value: 'all', label: '전체' },
+          { value: 'SHU', label: 'SHU' },
+          { value: 'MIR', label: 'MIR' },
+          { value: 'DAS', label: 'DAS' },
+          { value: 'AGI', label: 'AGI' },
+        ]}
+      />
+      <FilterSelect
+        label="벤더"
+        value={String(filters.vendor)}
+        onChange={v => setFilter('vendor', v as CasesFilter['vendor'])}
+        options={[
+          { value: 'all', label: '전체' },
+          { value: 'Hitachi', label: 'Hitachi' },
+          { value: 'Siemens', label: 'Siemens' },
+          { value: 'Other', label: 'Other' },
+        ]}
+      />
+      <FilterSelect
+        label="카테고리"
+        value={String(filters.category)}
+        onChange={v => setFilter('category', v as CasesFilter['category'])}
+        options={[
+          { value: 'all', label: '전체' },
+          { value: 'Elec', label: 'Elec' },
+          { value: 'Mech', label: 'Mech' },
+          { value: 'Inst.', label: 'Inst.' },
+        ]}
+      />
+      <button
+        onClick={resetFilters}
+        className="text-xs text-gray-500 hover:text-gray-300 ml-auto"
+      >
+        초기화
+      </button>
+    </div>
+  )
+}
