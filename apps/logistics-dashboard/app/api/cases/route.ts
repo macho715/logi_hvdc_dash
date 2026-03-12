@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      data: (data ?? []) as CaseRow[],
+      data: data ?? [],
       total: count ?? 0,
       page,
       pageSize,
