@@ -5,6 +5,7 @@ import { useOpsStore } from '@repo/shared'
 
 const PAGE_TITLES: Record<string, string> = {
   '/overview': 'Overview',
+  '/chain':    '물류 체인',
   '/pipeline': 'Pipeline',
   '/sites':    'Sites',
   '/cargo':    'Cargo',

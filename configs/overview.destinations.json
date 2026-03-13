@@ -1,0 +1,136 @@
+{
+  "version": "2026-03-13",
+  "destinations": [
+    {
+      "id": "hero-total",
+      "page": "pipeline",
+      "allowedParams": ["stage", "site", "vendor", "category", "route_type"],
+      "defaults": {}
+    },
+    {
+      "id": "hero-site-arrived",
+      "page": "pipeline",
+      "allowedParams": ["stage", "site", "vendor", "category", "route_type"],
+      "defaults": {
+        "stage": "site"
+      }
+    },
+    {
+      "id": "hero-warehouse-pressure",
+      "page": "pipeline",
+      "allowedParams": ["stage", "site", "vendor", "category", "route_type"],
+      "defaults": {
+        "stage": "warehouse"
+      }
+    },
+    {
+      "id": "hero-mandatory-mosb-missing",
+      "page": "sites",
+      "allowedParams": ["site", "tab"],
+      "defaults": {
+        "site": "AGI",
+        "tab": "route"
+      }
+    },
+    {
+      "id": "hero-freshness",
+      "page": "cargo",
+      "allowedParams": ["tab"],
+      "defaults": {
+        "tab": "shipments"
+      }
+    },
+    {
+      "id": "pipeline-stage",
+      "page": "pipeline",
+      "allowedParams": ["stage", "site", "vendor", "category", "route_type"],
+      "defaults": {}
+    },
+    {
+      "id": "route-summary",
+      "page": "chain",
+      "allowedParams": ["focus", "site", "route_type"],
+      "defaults": {
+        "focus": "port"
+      }
+    },
+    {
+      "id": "site-readiness",
+      "page": "sites",
+      "allowedParams": ["site", "tab"],
+      "defaults": {
+        "tab": "summary"
+      }
+    },
+    {
+      "id": "alert-default",
+      "page": "cargo",
+      "allowedParams": ["tab", "caseId", "site", "vendor", "voyage_stage", "route_type"],
+      "defaults": {
+        "tab": "shipments"
+      }
+    },
+    {
+      "id": "alert-site",
+      "page": "sites",
+      "allowedParams": ["site", "tab"],
+      "defaults": {
+        "tab": "summary"
+      }
+    },
+    {
+      "id": "alert-pipeline",
+      "page": "pipeline",
+      "allowedParams": ["stage", "site", "vendor", "category", "route_type"],
+      "defaults": {}
+    },
+    {
+      "id": "worklist-item",
+      "page": "cargo",
+      "allowedParams": ["tab", "caseId", "site", "vendor", "voyage_stage", "route_type"],
+      "defaults": {
+        "tab": "wh"
+      }
+    },
+    {
+      "id": "live-feed-item",
+      "page": "cargo",
+      "allowedParams": ["tab", "caseId", "site", "vendor", "voyage_stage", "route_type"],
+      "defaults": {
+        "tab": "shipments"
+      }
+    },
+    {
+      "id": "map-site",
+      "page": "sites",
+      "allowedParams": ["site", "tab"],
+      "defaults": {
+        "tab": "summary"
+      }
+    },
+    {
+      "id": "map-port",
+      "page": "chain",
+      "allowedParams": ["focus", "site", "route_type"],
+      "defaults": {
+        "focus": "port"
+      }
+    },
+    {
+      "id": "map-warehouse",
+      "page": "chain",
+      "allowedParams": ["focus", "site", "route_type"],
+      "defaults": {
+        "focus": "warehouse"
+      }
+    },
+    {
+      "id": "map-mosb",
+      "page": "chain",
+      "allowedParams": ["focus", "site", "route_type"],
+      "defaults": {
+        "focus": "mosb"
+      }
+    }
+  ]
+}

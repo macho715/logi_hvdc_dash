@@ -40,6 +40,68 @@ timeline
 
 ---
 
+## [1.1.1] — 2026-03-13
+
+### 🧭 Overview Cockpit Deep-Link Rework
+
+#### Added
+- `app/api/overview/route.ts` — cockpit BFF payload with `schemaVersion`, hero metrics, alerts, route summary, site readiness, warehouse pressure, live feed, and map snapshot
+- `components/overview/OverviewPageClient.tsx` — map-first overview shell with right panel and bottom HVDC panel
+- `components/overview/OverviewBottomPanel.tsx` — pipeline strip + prioritized shared worklist
+- `components/navigation/PageContextBanner.tsx` — plain-language URL context chips for Pipeline / Sites / Cargo / Chain
+- `hooks/useOverviewData.ts` — page-local overview fetch with visible-only polling and focus refetch
+- `configs/overview.route-types.json` — SSOT route taxonomy
+- `configs/overview.destinations.json` — SSOT overview destination registry
+- `lib/navigation/contracts.ts` — typed query parsing/serialization and `buildDashboardLink`
+- `lib/overview/routeTypes.ts` — config-backed route mapping helpers
+- tests for route type config and navigation contracts under `lib/overview/__tests__` and `lib/navigation/__tests__`
+
+#### Changed
+- Overview page now uses plain-language route labels instead of user-facing `Flow Code`
+- `/api/cases`, `/api/cases/summary`, `/api/shipments`, `/api/chain/summary` now understand `route_type` while keeping `flow_code` compatibility
+- Pipeline, Sites, Cargo, and Chain now restore overview-originated state from URL and expose context banners
+- `SiteDetail`, `PipelineCasesTable`, `WhStatusTable`, `ShipmentsTable`, `CargoDrawer`, and `FlowChain` now render route labels instead of `FC0~FC5`
+- `useInitialDataLoad` now supports an `enabled` flag so overview primes the shared worklist only when the store is empty
+
+#### Fixed
+- Direct overview drilldowns now survive refresh/back/forward instead of depending on local component state
+- Overview map clicks now open the relevant dashboard page using the shared navigation contract
+
+## [1.1.0] — 2026-03-13
+
+### 🔄 Logistics Chain + Excel Import Alignment
+
+#### Added
+- `app/(dashboard)/chain/page.tsx` — new end-to-end logistics chain page
+- `components/chain/FlowChain.tsx` — origin → port → warehouse → MOSB → site chain visualization
+- `components/chain/OriginCountrySummary.tsx` — POL-based origin country summary
+- `components/pipeline/PipelineCasesTable.tsx` — stage-specific case table with independent fetch state
+- `components/pipeline/PipelineTableWrapper.tsx` — local pipeline filters decoupled from cargo store filters
+- `components/sites/SiteTypeTag.tsx` — land / island site badges
+- `app/api/chain/summary/route.ts` — chain aggregation API
+- `app/api/shipments/origin-summary/route.ts` — origin country aggregation API
+- `lib/cases/pipelineStage.ts` — 5-stage classification helper (`pre-arrival`, `port`, `warehouse`, `mosb`, `site`)
+- `lib/cases/storageType.ts` — storage bucket normalization helper
+- `lib/map/flowLines.ts` — POI-based ArcLayer definitions
+- `scripts/import-excel.mjs` — Excel ETL for `wh status` and `hvdc all status`
+
+#### Changed
+- `/api/cases` now supports `stage` and `id` query parameters
+- `/api/cases/summary` now uses `storage_type` normalization and 5-stage aggregation
+- `/api/shipments` now returns normalized ship modes and passes through `ATD` / `ATA`
+- Pipeline page now shows the 5-stage flow and a stage-specific drilldown table
+- Overview map now renders UAE internal flow arcs from `POI_LOCATIONS` without the duplicate HVDC POI overlay
+- Sites page now shows 3-bucket storage breakdown and cargo drilldown links
+- Cargo page now restores `tab` / `caseId` from the URL and supports drawer fallback fetch by case ID
+- Sidebar navigation now includes `물류 체인`
+
+#### Fixed
+- Removed invalid `wh_storage_type` assumptions in favor of `storage_type`
+- Removed pipeline table reliance on global cargo filter state
+- Corrected MOSB / port / warehouse stage classification by `status_location`
+- Rebuilt schema/view setup scripts to support case-level flows and `DOC_SHU/DOC_DAS/DOC_MIR/DOC_AGI`
+- Fixed Cargo tab hydration so direct links like `/cargo?tab=shipments` no longer get rewritten back to `wh` on first load
+
 ## [1.0.0] — 2026-03-13
 
 ### 🚀 Production Release — HVDC Logistics Dashboard

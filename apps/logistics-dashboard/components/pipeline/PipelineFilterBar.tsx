@@ -1,7 +1,7 @@
 'use client'
 
-import { useCasesStore } from '@/store/casesStore'
 import type { CasesFilter } from '@/types/cases'
+import type { PipelineTableFilters } from '@/components/pipeline/PipelineCasesTable'
 
 type SelectProps = {
   label: string
@@ -27,9 +27,13 @@ function FilterSelect({ label, value, onChange, options }: SelectProps) {
   )
 }
 
-export function PipelineFilterBar() {
-  const { filters, setFilter, resetFilters } = useCasesStore()
+interface Props {
+  filters: PipelineTableFilters
+  setFilter: <K extends keyof PipelineTableFilters>(key: K, value: PipelineTableFilters[K]) => void
+  resetFilters: () => void
+}
 
+export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
   return (
     <div className="flex items-center gap-4 flex-wrap bg-gray-900 px-4 py-2 border-b border-gray-800">
       <FilterSelect

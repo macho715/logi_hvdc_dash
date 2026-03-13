@@ -1,14 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { X } from 'lucide-react'
+import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
+import { buildDashboardLink, parseCargoQuery } from '@/lib/navigation/contracts'
 import { useCasesStore } from '@/store/casesStore'
-import type { ShipmentRow } from '@/types/cases'
-
-const FLOW_LABELS: Record<number, string> = {
-  0: 'Pre-Arrival', 1: 'Port→Site', 2: 'Port→WH→Site',
-  3: 'Port→MOSB→Site', 4: 'Port→WH→MOSB→Site', 5: 'Mixed',
-}
+import type { CaseRow, ShipmentRow } from '@/types/cases'
 
 function TimelineItem({ label, date }: { label: string; date: string | null }) {
   return (
@@ -23,10 +21,31 @@ function TimelineItem({ label, date }: { label: string; date: string | null }) {
 }
 
 export function CargoDrawer() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const { isDrawerOpen, selectedCaseId, cases, closeDrawer } = useCasesStore()
+  const [fetchedCase, setFetchedCase] = useState<CaseRow | null>(null)
   const [shipment, setShipment] = useState<ShipmentRow | null>(null)
 
-  const caseRow = cases.find(c => c.id === selectedCaseId) ?? null
+  const caseRow = cases.find(c => c.id === selectedCaseId) ?? fetchedCase ?? null
+
+  useEffect(() => {
+    if (!selectedCaseId) {
+      setFetchedCase(null)
+      return
+    }
+
+    const existing = cases.find((row) => row.id === selectedCaseId)
+    if (existing) {
+      setFetchedCase(null)
+      return
+    }
+
+    fetch(`/api/cases?id=${encodeURIComponent(selectedCaseId)}&pageSize=1`)
+      .then((res) => res.json())
+      .then((json) => setFetchedCase((json.data as CaseRow[])?.[0] ?? null))
+      .catch(() => setFetchedCase(null))
+  }, [cases, selectedCaseId])
 
   useEffect(() => {
     if (!caseRow?.sct_ship_no) { setShipment(null); return }
@@ -38,12 +57,23 @@ export function CargoDrawer() {
 
   if (!isDrawerOpen || !caseRow) return null
 
+  const routeTypeId = caseRow.route_type ?? getRouteTypeIdFromFlowCode(caseRow.flow_code)
+
+  const handleClose = () => {
+    const current = parseCargoQuery(searchParams)
+    router.replace(
+      buildDashboardLink({ page: 'cargo', params: { ...current, tab: current.tab ?? 'wh' } }),
+      { scroll: false },
+    )
+    closeDrawer()
+  }
+
   return (
     <div className="fixed inset-y-0 right-0 w-80 bg-gray-900 border-l border-gray-700 shadow-xl z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
         <h2 className="text-sm font-semibold text-white">{caseRow.case_no}</h2>
-        <button onClick={closeDrawer} className="text-gray-500 hover:text-white">
+        <button onClick={handleClose} className="text-gray-500 hover:text-white">
           <X size={18} />
         </button>
       </div>
@@ -56,7 +86,7 @@ export function CargoDrawer() {
             {([
               ['현장', caseRow.site],
               ['벤더', caseRow.source_vendor],
-              ['Flow Code', `FC${caseRow.flow_code} — ${FLOW_LABELS[caseRow.flow_code] ?? ''}`],
+              ['운송 경로', getRouteTypeLabel(routeTypeId)],
               ['현재위치', caseRow.status_location || caseRow.status_current],
               ['보관유형', caseRow.storage_type],
               ['SQM', caseRow.sqm ? `${caseRow.sqm} ㎡` : '–'],

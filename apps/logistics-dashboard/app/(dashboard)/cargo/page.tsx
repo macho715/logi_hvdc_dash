@@ -1,9 +1,10 @@
-import { CargoTabs } from '@/components/cargo/CargoTabs'
+import { Suspense } from 'react'
+import { CargoPageClient } from './CargoPageClient'
 
 export default function CargoPage() {
   return (
-    <div className="h-full">
-      <CargoTabs />
-    </div>
+    <Suspense>
+      <CargoPageClient />
+    </Suspense>
   )
 }

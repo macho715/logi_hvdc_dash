@@ -128,6 +128,18 @@ export const POI_LOCATIONS: ReadonlyArray<PoiLocation> = [
     displayLabel: "KPP",
   },
   {
+    id: "jebel-ali-port",
+    code: "JAFZ",
+    name: "Jebel Ali Port",
+    category: "PORT",
+    latitude: 25.0136,
+    longitude: 55.0614,
+    summary: "Port - Jebel Ali",
+    priority: 845,
+    tags: ["port", "jebel-ali"],
+    displayLabel: "JAFZ",
+  },
+  {
     id: "auh-airport",
     code: "AUH",
     name: "Abu Dhabi(Zayed) International Airport – AUH",

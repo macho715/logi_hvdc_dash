@@ -1,7 +1,7 @@
 # Component Documentation — HVDC Logistics Dashboard
 
-> **Version:** 1.0.0 | **Last Updated:** 2026-03-13
-> **Component Count:** 37 custom components + Shadcn UI base
+> **Version:** 1.2.0 | **Last Updated:** 2026-03-13
+> **Component Count:** 43 custom components + Shadcn UI base
 
 ---
 
@@ -14,11 +14,35 @@
 5. [Cargo Components](#5-cargo-components)
 6. [Pipeline Components](#6-pipeline-components)
 7. [Sites Components](#7-sites-components)
-8. [UI Base Components (Shadcn)](#8-ui-base-components-shadcn)
-9. [Custom Hooks](#9-custom-hooks)
-10. [Component Communication Patterns](#10-component-communication-patterns)
+8. [Chain Components](#8-chain-components)
+9. [UI Base Components (Shadcn)](#9-ui-base-components-shadcn)
+10. [Custom Hooks](#10-custom-hooks)
+11. [Component Communication Patterns](#11-component-communication-patterns)
 
 ---
+
+## 0. Overview Cockpit Update
+
+New or materially changed overview-linked components:
+
+- `components/overview/OverviewPageClient.tsx`
+  - Map-first overview shell powered by `useOverviewData`
+- `components/overview/OverviewBottomPanel.tsx`
+  - Bottom HVDC worklist + pipeline strip
+- `components/navigation/PageContextBanner.tsx`
+  - URL-restored context chips for Pipeline / Sites / Cargo / Chain
+- `components/overview/KpiStripCards.tsx`
+  - Config-driven KPI rail using `NavigationIntent`
+- `components/overview/OverviewRightPanel.tsx`
+  - Exception board, route summary, site readiness, recent activity
+
+Supporting contracts:
+
+- `app/api/overview/route.ts`
+- `lib/navigation/contracts.ts`
+- `lib/overview/routeTypes.ts`
+- `configs/overview.route-types.json`
+- `configs/overview.destinations.json`
 
 ## 1. Component Tree
 
@@ -36,6 +60,8 @@ graph TD
         KpiStripCards["KpiStripCards"]
         OverviewMap["OverviewMap"]
         OverviewRightPanel["OverviewRightPanel"]
+        OverviewBottomPanel["OverviewBottomPanel"]
+        OverviewPageClient["OverviewPageClient"]
     end
 
     subgraph MapComponents["🗺️ Map"]
@@ -56,12 +82,20 @@ graph TD
         FlowPipeline["FlowPipeline"]
         FlowCodeDonut["FlowCodeDonut"]
         CustomsStatusCard["CustomsStatusCard"]
+        PipelineTableWrapper["PipelineTableWrapper"]
+        PipelineCasesTable["PipelineCasesTable"]
     end
 
     subgraph Sites["📍 Sites"]
         SiteCards["SiteCards"]
         SiteDetail["SiteDetail"]
         AgiAlertBanner["AgiAlertBanner"]
+        SiteTypeTag["SiteTypeTag"]
+    end
+
+    subgraph Chain["⛓️ Chain"]
+        FlowChain["FlowChain"]
+        OriginCountrySummary["OriginCountrySummary"]
     end
 
     subgraph UI["🎨 UI (Shadcn)"]
@@ -80,6 +114,7 @@ graph TD
     App --> Cargo
     App --> Pipeline
     App --> Sites
+    App --> Chain
     Overview --> MapComponents
     App --> UI
 ```
@@ -95,16 +130,15 @@ graph TD
 ```mermaid
 graph TD
     subgraph Sidebar["Sidebar Component"]
-        Logo["Logo Section<br/>HVDC brand + version"]
-        NavList["Navigation List<br/>ul > NavItem × 4"]
-        Separator["Separator"]
-        Footer["Footer<br/>version badge, settings icon"]
+        Logo["Logo Section<br/>HVDC brand label"]
+        NavList["Navigation List<br/>ul > NavItem × 5"]
+        CollapseBtn["Collapse/Expand Button<br/>(ChevronLeft / ChevronRight)"]
     end
 
     subgraph NavItem["NavItem (internal)"]
         Icon["Lucide icon"]
         Label["Text label (hidden when collapsed)"]
-        ActiveIndicator["Active dot / background"]
+        ActiveIndicator["Active: bg-blue-600 text-white"]
     end
 
     NavList --> NavItem
@@ -114,22 +148,24 @@ graph TD
 
 ```typescript
 // No external props — reads route from usePathname()
-// Internal state: isCollapsed (useState)
+// Internal state: collapsed (useState)
 ```
 
 **Navigation Items:**
 
 | Route | Icon | Label |
 |-------|------|-------|
-| `/overview` | `LayoutDashboard` | Overview |
+| `/overview` | `Map` | Overview |
+| `/chain` | `Network` | 물류 체인 |
+| `/pipeline` | `ArrowRightLeft` | Pipeline |
+| `/sites` | `Building2` | Sites |
 | `/cargo` | `Package` | Cargo |
-| `/pipeline` | `GitBranch` | Pipeline |
-| `/sites` | `MapPin` | Sites |
 
 **Behavior:**
-- Toggle collapse: `Cmd+B` keyboard shortcut
-- Active state: `pathname.startsWith(item.href)`
-- Tooltip on collapsed: Shows full label on hover
+- Toggle collapse: button click (ChevronLeft / ChevronRight)
+- Active state: `pathname === item.href || pathname.startsWith(item.href + '/')`
+- Collapsed width: `w-14` (56px); Expanded width: `w-48` (192px)
+- Icon-only when collapsed; full label visible when expanded
 
 ---
 
@@ -170,16 +206,19 @@ interface DashboardHeaderProps {
 ```mermaid
 sequenceDiagram
     participant Mount as Component Mount
-    participant Fetch as fetch('/api/cases/summary')
+    participant Realtime as useKpiRealtime
+    participant Supabase as Supabase Realtime
     participant Context as KpiContext
     participant Children as Child Components
 
-    Mount->>Fetch: useEffect on mount
-    Fetch-->>Context: setKpiData(response)
+    Mount->>Realtime: subscribe on mount
+    Realtime->>Supabase: Postgres Changes (public.shipments)
+    Supabase-->>Realtime: INSERT / UPDATE events
+    Realtime-->>Context: setKpiData(transformed)
     Context-->>Children: value = { kpiData, loading, error, refresh }
     Children->>Children: useKpiContext() → render KPIs
 
-    Note over Fetch,Context: Re-fetches every 30s<br/>(fallback when WS unavailable)
+    Note over Realtime,Context: Polling fallback every 30s<br/>when WebSocket unavailable
 ```
 
 **Context Shape:**
@@ -193,6 +232,8 @@ interface KpiContextValue {
   lastUpdated: Date | null
 }
 ```
+
+**Realtime subscription:** Uses `useKpiRealtime` hook which subscribes to Supabase Realtime Postgres Changes on the `public.shipments` view. Falls back to polling (`/api/cases/summary`) every 30 seconds when the WebSocket connection is unavailable.
 
 ---
 
@@ -390,33 +431,68 @@ graph TD
 ```mermaid
 graph TD
     subgraph Table["ShipmentsTable"]
-        Toolbar["Toolbar<br/>(search, filter, export)"]
-        Header["Table Header<br/>(sortable columns)"]
-        Body["Table Body<br/>(paginated rows)"]
-        Footer["Pagination Controls<br/>(prev/next, page size)"]
+        FR1["FilterRow1: 항차단계<br/>전체|출항전|항해중|통관중|내륙창고|납품완료"]
+        FR2["FilterRow2: 노미현장<br/>전체|SHU|MIR|DAS|AGI"]
+        FR3["FilterRow3: 벤더 (NEW)<br/>전체 + 42개 pill (overflow-x-auto)"]
+        FR4["FilterRow4: 통관상태<br/>통관완료|진행중|대기"]
+        Header["Table Header (9컬럼)"]
+        Body["Table Body (paginated rows)"]
+        Footer["Pagination Controls (prev/next)"]
     end
 
-    subgraph Columns["Table Columns"]
-        C1["Shipment # (sortable)"]
-        C2["Vendor (filterable)"]
-        C3["Origin Port"]
-        C4["ETA (sortable)"]
-        C5["Status (badge)"]
-        C6["B/L Number"]
+    subgraph Columns["Table Columns (9개)"]
+        C1["SCT SHIP NO"]
+        C2["벤더"]
+        C3["POL→POD"]
+        C4["ETD"]
+        C5["ATA"]
+        C6["항차단계 (badge)"]
+        C7["FC (FlowCodeBadge)"]
+        C8["노미현장 (tags)"]
+        C9["통관"]
     end
 
-    Header --> Columns
+    FR1 --> FR2 --> FR3 --> FR4
+    FR4 --> Header --> Columns
+    Columns --> Body --> Footer
 ```
 
-**Props:**
+**State:**
 
 ```typescript
-interface ShipmentsTableProps {
-  onRowClick?: (shipment: ShipmentRow) => void
-}
+// 데이터
+const [data, setData]   = useState<ShipmentRow[]>([])
+const [total, setTotal] = useState(0)
+const [page, setPage]   = useState(1)
+const [loading, setLoading] = useState(false)
+
+// 벤더 목록 (mount 시 /api/shipments/vendors 에서 fetch)
+const [vendors, setVendors] = useState<{ vendor: string; count: number }[]>([])
+
+// 필터
+const [filter, setFilter] = useState({
+  vendor: 'all',         // /api/shipments?vendor= 파라미터
+  pod: 'all',
+  customs_status: 'all',
+  ship_mode: 'all',
+})
+const [voyageStage,   setVoyageStage]   = useState<string>('all')
+const [nominatedSite, setNominatedSite] = useState<string>('all')
 ```
 
-**Data Source:** `/api/shipments` (paginated)
+**Data Sources:**
+
+| 엔드포인트 | 용도 | 호출 시점 |
+|-----------|------|----------|
+| `/api/shipments` | 페이지네이션 목록 | 필터/페이지 변경 시 |
+| `/api/shipments/vendors` | 벤더 목록 + 건수 (42개) | mount 1회 |
+
+**벤더 필터 동작:**
+
+벤더 pill은 `Hitachi (570)`, `Siemens (66)` 형태로 표시.
+선택 시 `filter.vendor`를 업데이트하여 `/api/shipments?vendor=Hitachi` 쿼리 발행.
+재클릭 시 `'all'`로 초기화(토글).
+42개 벤더가 많으므로 `overflow-x-auto` 가로 스크롤 적용.
 
 ---
 
@@ -513,6 +589,82 @@ Shows UAE customs clearance status: MOIAT permits, FANR approvals, DOT transport
 
 ---
 
+### 6.4 PipelineCasesTable
+
+**File:** `components/pipeline/PipelineCasesTable.tsx`
+
+Bottom table on the Pipeline page (and embedded in the Chain page). Fetches case rows for a given pipeline stage independently — does **not** depend on `casesStore` for its data.
+
+```mermaid
+graph TD
+    subgraph Table["PipelineCasesTable"]
+        Props["Props: stage, filters?, title?"]
+        Query["Build /api/cases?stage=...&pageSize=200"]
+        Fetch["useEffect → fetch on query change"]
+        TableUI["Scrollable table max-h-360px"]
+        RowClick["Row click → router.push('/cargo?tab=wh&caseId=...')"]
+    end
+
+    Props --> Query
+    Query --> Fetch
+    Fetch --> TableUI
+    TableUI --> RowClick
+```
+
+**Props:**
+
+```typescript
+interface Props {
+  stage: PipelineStage | null   // null = show empty prompt
+  filters?: PipelineTableFilters // site / vendor / category
+  title?: string
+}
+```
+
+**Table Columns:**
+
+| # | Column | Source field |
+|---|--------|-------------|
+| 1 | Case No | `row.case_no` |
+| 2 | Site | `row.site` |
+| 3 | 현재 위치 | `row.status_location ?? row.status_current` |
+| 4 | FC | `row.flow_code` (color badge FC0–FC5) |
+| 5 | Storage | `normalizeStorageType(row.storage_type)` |
+| 6 | Vendor | `row.source_vendor` |
+
+**Behavior:**
+- Fetches `/api/cases?stage=<stage>&pageSize=200` (plus optional filters) independently
+- No `casesStore` dependency for data — self-contained fetch
+- Row click navigates to `/cargo?tab=wh&caseId=<id>`
+- Shows "파이프라인 단계를 선택하면 해당 케이스가 여기에 표시됩니다." when `stage` is null
+
+---
+
+### 6.5 PipelineTableWrapper
+
+**File:** `components/pipeline/PipelineTableWrapper.tsx`
+
+Client wrapper that bridges the Zustand store to `PipelineCasesTable`. Reads `casesStore.activePipelineStage` and manages local filter state.
+
+```mermaid
+graph TD
+    Store["casesStore<br/>activePipelineStage"]
+    FilterBar["PipelineFilterBar<br/>(site / vendor / category)"]
+    Table["PipelineCasesTable<br/>(stage + filters)"]
+
+    Store -->|"useStore selector"| PipelineTableWrapper
+    PipelineTableWrapper --> FilterBar
+    PipelineTableWrapper --> Table
+```
+
+**Behavior:**
+- Reads `activePipelineStage` from Zustand `casesStore`
+- Owns local `filters` state (`site`, `vendor`, `category`)
+- Renders `PipelineFilterBar` + `PipelineCasesTable` in a `space-y-4` stack
+- Resets all filters to `'all'` on resetFilters()
+
+---
+
 ## 7. Sites Components
 
 ### 7.1 SiteCards
@@ -562,20 +714,182 @@ Expandable detail panel showing full case list for a selected site.
 ```mermaid
 graph TD
     subgraph Banner["AgiAlertBanner"]
-        Condition{"AGI or DAS<br/>has critical alerts?"}
-        Alert["Alert banner<br/>(amber/red background)<br/>dismissible"]
+        Store["useCasesStore → summary"]
+        FetchCases["fetch /api/cases?site=AGI&pageSize=5000"]
+        Condition{"AGI arrival rate < 50%<br/>AND not dismissed?"}
+        Alert["Alert banner<br/>(red background)<br/>dismissible via sessionStorage"]
         Hidden["(hidden)"]
     end
 
+    Store --> Condition
+    FetchCases --> StageBreakdown["classifyStage() per row<br/>→ warehouse / mosb / pre-arrival counts"]
+    StageBreakdown --> Alert
     Condition -->|"yes"| Alert
     Condition -->|"no"| Hidden
 ```
 
-Displays when AGI or DAS sites have Flow Code ≥ 3 items overdue (FANR/MOIAT regulation compliance).
+**Trigger condition:** AGI arrival rate (`arrived / total`) is **< 50%** and the user has not dismissed the banner this session.
+
+**Alert message format:**
+
+```
+AGI 납품 경보  달성률 XX.X% — 미납 N건 (창고 N건 · MOSB N건 · 선적 전 N건)
+```
+
+**Implementation notes:**
+- `useEffect` for `sessionStorage` read runs client-side without `typeof window` guard (component is always client-side due to `'use client'`)
+- Separately fetches all AGI cases (`/api/cases?site=AGI&pageSize=5000`) to compute stage breakdown using `classifyStage(status_current, status_location)`
+- Stage counts: `warehouse`, `mosb`, `pre-arrival` — displayed inline in the alert text
+- Dismiss button writes `'true'` to `sessionStorage` key `agi_alert_dismissed` and sets local `dismissed` state
 
 ---
 
-## 8. UI Base Components (Shadcn)
+### 7.4 SiteTypeTag
+
+**File:** `components/sites/SiteTypeTag.tsx`
+
+Small badge component that visually classifies a site as land-based or island/offshore.
+
+```mermaid
+graph LR
+    Input["site: string | null | undefined"]
+    getSiteKind["getSiteKind(site)<br/>(lib/logistics/normalizers)"]
+    Land["kind === 'land'<br/>→ 🏗 육상<br/>(emerald, Building2 icon)"]
+    Island["kind === 'island'<br/>→ 🌊 해상 · MOSB<br/>(sky blue, Waves icon)"]
+    Unknown["else<br/>→ 미지정<br/>(gray)"]
+
+    Input --> getSiteKind
+    getSiteKind --> Land
+    getSiteKind --> Island
+    getSiteKind --> Unknown
+```
+
+**Site classification:**
+
+| Sites | Kind | Badge | Color |
+|-------|------|-------|-------|
+| SHU, MIR | `land` | 육상 | Emerald green |
+| DAS, AGI | `island` | 해상 · MOSB | Sky blue |
+| Other / null | — | 미지정 | Gray |
+
+**Props:**
+
+```typescript
+interface SiteTypeTagProps {
+  site: string | null | undefined
+}
+```
+
+---
+
+## 8. Chain Components
+
+### 8.1 FlowChain
+
+**File:** `components/chain/FlowChain.tsx`
+
+Full-page supply chain visualization for the `/chain` route. Shows a horizontal 5-node pipeline (원산지 → 항구 → 창고 → MOSB → 현장) with clickable stage nodes that drive the bottom case table.
+
+```mermaid
+graph TD
+    subgraph FlowChain["FlowChain"]
+        Fetch["fetch /api/chain/summary on mount"]
+        OriginSummary["OriginCountrySummary<br/>(hidden in compact mode)"]
+        subgraph ChainSection["전체 물류 체인 section"]
+            NodeGrid["5-node ChainNode grid<br/>(pre-arrival / port / warehouse / mosb / site)"]
+            DetailsGrid["Details grid (3 cols)<br/>원산지·항구 현황 / 육상 현장 / 해상 현장"]
+        end
+        MosbBadge["MOSB 경유 건수 badge<br/>(Flow 3·4)"]
+        CasesTable["PipelineCasesTable<br/>stage = selectedStage<br/>(hidden in compact mode)"]
+    end
+
+    Fetch --> OriginSummary
+    Fetch --> ChainSection
+    NodeGrid -->|"click"| CasesTable
+```
+
+**Props:**
+
+```typescript
+interface FlowChainProps {
+  compact?: boolean  // default false
+}
+```
+
+**When `compact={true}`:** hides `OriginCountrySummary` and `PipelineCasesTable` — shows only the stage node grid and details grid (used when embedding in smaller contexts).
+
+**Data source:** `GET /api/chain/summary` → `ChainSummary` type:
+
+```typescript
+interface ChainSummary {
+  origins: OriginSummaryRow[]   // origin countries by POL
+  ports: { name: string; count: number }[]
+  stages: Record<PipelineStage, number>
+  sites: {
+    land: { SHU: number; MIR: number }
+    island: { DAS: number; AGI: number }
+  }
+  mosbTransit: number           // Flow Code 3 + 4 cases
+}
+```
+
+**ChainNode (internal component):**
+
+```typescript
+interface ChainNodeProps {
+  title: string
+  subtitle: string
+  count: number
+  active?: boolean
+  onClick?: () => void
+}
+```
+
+Active node: `border-blue-500 bg-blue-500/10`. Inactive: `border-gray-800 bg-gray-900/80`.
+
+---
+
+### 8.2 OriginCountrySummary
+
+**File:** `components/chain/OriginCountrySummary.tsx`
+
+Horizontal bar chart showing top origin countries by POL (Port of Loading), displayed above the FlowChain pipeline nodes.
+
+```mermaid
+graph LR
+    Input["origins: OriginSummaryRow[]"]
+    Slice["slice(0, 8) — top 8 countries"]
+    Bars["Proportional bar chart<br/>max = origins[0].count<br/>cyan fill (bg-cyan-500)"]
+
+    Input --> Slice --> Bars
+```
+
+**Props:**
+
+```typescript
+interface OriginCountrySummaryProps {
+  origins: OriginSummaryRow[]  // from ChainSummary.origins
+}
+```
+
+**Data shape:**
+
+```typescript
+interface OriginSummaryRow {
+  country: string
+  count: number
+}
+```
+
+**Behavior:**
+- Renders up to 8 origin countries
+- Bar width is proportional: `(origin.count / max) * 100%`
+- Shows "원산지 데이터가 없습니다." when `origins` is empty
+- Label: country name (left), count in 건 (right)
+
+---
+
+## 9. UI Base Components (Shadcn)
 
 **Directory:** `components/ui/`
 
@@ -630,13 +944,13 @@ graph TD
 
 ---
 
-## 9. Custom Hooks
+## 10. Custom Hooks
 
 ```mermaid
 graph TD
     subgraph Hooks["Custom Hooks — hooks/"]
         H1["useSupabaseRealtime<br/>WebSocket subscription<br/>with auto-reconnect"]
-        H2["useKpiRealtime<br/>KPI-specific realtime<br/>= useSupabaseRealtime + KPI transform"]
+        H2["useKpiRealtime<br/>KPI-specific realtime<br/>= useSupabaseRealtime + KPI transform<br/>subscribes to public.shipments"]
         H3["useKpiRealtimeWithFallback<br/>= useKpiRealtime + polling fallback"]
         H4["useLiveFeed<br/>Activity event stream<br/>(last 50 events)"]
         H5["useInitialDataLoad<br/>Parallel Promise.all() fetch<br/>on component mount"]
@@ -673,6 +987,10 @@ Attempt 5: 16s delay
 Attempt 6+: 30s delay (max)
 ```
 
+### useKpiRealtime
+
+Subscribes to Supabase Realtime Postgres Changes on the `public.shipments` view. Transforms row-level change events into KPI summary updates and updates `KpiContext`. Used by `KpiProvider`.
+
 ### useInitialDataLoad
 
 ```typescript
@@ -706,7 +1024,7 @@ function useBatchUpdates<T>(
 
 ---
 
-## 10. Component Communication Patterns
+## 11. Component Communication Patterns
 
 ### Pattern 1: Context Provider (KPI data)
 
@@ -781,6 +1099,21 @@ sequenceDiagram
     Store-->>Pipeline: 'AGI'
     Pipeline->>Pipeline: filter pipeline by site
 ```
+
+### Pattern 6: Self-contained Fetch (PipelineCasesTable)
+
+```mermaid
+graph LR
+    Wrapper["PipelineTableWrapper<br/>(reads casesStore.activePipelineStage)"]
+    Table["PipelineCasesTable<br/>(stage prop)"]
+    API["GET /api/cases?stage=..."]
+
+    Wrapper -->|"stage prop"| Table
+    Table -->|"independent fetch"| API
+    API -->|"rows"| Table
+```
+
+`PipelineCasesTable` fetches its own data directly via `/api/cases` and does not rely on `casesStore` for case row data. This makes it reusable across both the Pipeline page and the Chain page.
 
 ---
 

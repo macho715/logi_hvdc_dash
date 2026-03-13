@@ -1,14 +1,9 @@
 'use client'
 
 import { useCasesStore } from '@/store/casesStore'
+import { SiteTypeTag } from '@/components/sites/SiteTypeTag'
+import { SITE_META } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
-
-const SITE_META = {
-  SHU: { label: 'SHU', type: '육상' },
-  MIR: { label: 'MIR', type: '육상' },
-  DAS: { label: 'DAS', type: '해상 섬' },
-  AGI: { label: 'AGI', type: '해상 섬' },
-} as const
 
 type SiteKey = keyof typeof SITE_META
 
@@ -42,9 +37,7 @@ export function SiteCards({ selectedSite, onSelect }: Props) {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="font-semibold text-white text-lg">{site}</span>
-              <span className="text-xs text-gray-500 bg-gray-700 px-2 py-0.5 rounded">
-                {SITE_META[site].type}
-              </span>
+              <SiteTypeTag site={site} />
             </div>
             <div className="text-2xl font-bold text-white mb-1">
               {rate.toFixed(1)}%

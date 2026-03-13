@@ -7,6 +7,10 @@ import { getDubaiTimestamp } from "@/lib/worklist-utils"
 
 export interface UseInitialDataLoadOptions {
   /**
+   * Whether the hook should perform the initial load.
+   */
+  enabled?: boolean
+  /**
    * Whether to load Option-C segment KPIs (requires /api/kpi/case-segments or /api/kpi/voyage-segments)
    */
   loadOptionCKpis?: boolean
@@ -35,7 +39,7 @@ export interface UseInitialDataLoadOptions {
  * ```
  */
 export function useInitialDataLoad(opts: UseInitialDataLoadOptions = {}) {
-  const { loadOptionCKpis = false, onLoadComplete, onLoadError } = opts
+  const { enabled = true, loadOptionCKpis = false, onLoadComplete, onLoadError } = opts
 
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -43,6 +47,11 @@ export function useInitialDataLoad(opts: UseInitialDataLoadOptions = {}) {
   const { actions } = useOpsStore.getState()
 
   useEffect(() => {
+    if (!enabled) {
+      setIsLoading(false)
+      return
+    }
+
     // Prevent duplicate loads
     if (hasLoadedRef.current) return
 
@@ -134,7 +143,7 @@ export function useInitialDataLoad(opts: UseInitialDataLoadOptions = {}) {
     }
 
     loadInitialData()
-  }, [loadOptionCKpis, onLoadComplete, onLoadError, actions])
+  }, [enabled, loadOptionCKpis, onLoadComplete, onLoadError, actions])
 
   return {
     isLoading,

@@ -1,76 +1,167 @@
 'use client'
 
-import { useCasesStore } from '@/store/casesStore'
+import { formatDistanceToNowStrict } from 'date-fns'
+import { ko } from 'date-fns/locale'
+import { getRouteTypeLabel } from '@/lib/overview/routeTypes'
+import { SITE_META, getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { cn } from '@/lib/utils'
+import type { NavigationIntent, OverviewCockpitResponse } from '@/types/overview'
 
-const FLOW_COLORS: Record<string, string> = {
-  '0': '#6366f1', '1': '#3b82f6', '2': '#10b981',
-  '3': '#f59e0b', '4': '#ef4444', '5': '#8b5cf6',
+interface OverviewRightPanelProps {
+  data: OverviewCockpitResponse | null
+  loading?: boolean
+  onNavigate: (intent: NavigationIntent) => void
 }
 
-export function OverviewRightPanel() {
-  const { summary } = useCasesStore()
-  if (!summary) return <div className="h-full bg-gray-900 animate-pulse rounded-lg" />
+function severityClass(severity: 'critical' | 'warning' | 'info'): string {
+  if (severity === 'critical') return 'border-red-500/30 bg-red-500/10'
+  if (severity === 'warning') return 'border-amber-500/30 bg-amber-500/10'
+  return 'border-blue-500/30 bg-blue-500/10'
+}
 
-  const total = summary.total || 1
-  const sites = ['SHU', 'MIR', 'DAS', 'AGI'] as const
+export function OverviewRightPanel({
+  data,
+  loading = false,
+  onNavigate,
+}: OverviewRightPanelProps) {
+  if (loading && !data) {
+    return <div className="w-full border-l border-gray-800 bg-gray-950/60 xl:w-[360px]" />
+  }
+
+  if (!data) {
+    return (
+      <aside className="w-full border-l border-gray-800 bg-gray-950/60 p-4 xl:w-[360px]">
+        <div className="rounded-2xl border border-dashed border-gray-800 bg-gray-900/60 p-4 text-sm text-gray-500">
+          Overview 데이터를 불러오지 못했습니다.
+        </div>
+      </aside>
+    )
+  }
 
   return (
-    <div className="flex flex-col gap-4 p-4 bg-gray-900 h-full overflow-auto">
-      {/* Flow Code Distribution */}
-      <div>
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
-          Flow Code 분포
-        </h3>
-        <div className="space-y-2">
-          {Object.entries(summary.byFlowCode)
-            .sort(([a], [b]) => Number(a) - Number(b))
-            .map(([fc, count]) => (
-              <div key={fc} className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-8">FC{fc}</span>
-                <div className="flex-1 bg-gray-800 rounded-full h-2">
-                  <div
-                    className="h-2 rounded-full"
-                    style={{
-                      width: `${(count / total) * 100}%`,
-                      backgroundColor: FLOW_COLORS[fc] ?? '#6b7280',
-                    }}
-                  />
+    <aside className="w-full border-l border-gray-800 bg-gray-950/60 p-4 xl:w-[360px]">
+      <div className="flex h-full flex-col gap-4 overflow-auto">
+        <section className="space-y-3">
+          <div>
+            <h2 className="text-sm font-semibold text-white">예외 보드</h2>
+            <p className="text-xs text-gray-500">운영 우선순위가 높은 항목만 위쪽에 고정합니다.</p>
+          </div>
+          <div className="space-y-2">
+            {data.alerts.map((alert) => (
+              <button
+                key={alert.id}
+                type="button"
+                onClick={() => onNavigate(alert.navigationIntent)}
+                className={cn(
+                  'w-full rounded-2xl border p-3 text-left transition-colors hover:border-white/10',
+                  severityClass(alert.severity),
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold text-white">{alert.title}</div>
+                    <div className="mt-1 text-xs text-gray-300">{alert.description}</div>
+                  </div>
+                  <div className="text-lg font-semibold text-white">{alert.count.toLocaleString()}</div>
                 </div>
-                <span className="text-xs text-gray-400 w-12 text-right">
-                  {count.toLocaleString()}
-                </span>
-              </div>
+              </button>
             ))}
-        </div>
-      </div>
+          </div>
+        </section>
 
-      {/* Site Delivery Rates */}
-      <div>
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
-          현장별 납품률
-        </h3>
-        <div className="space-y-2">
-          {sites.map(site => {
-            const total_site = summary.bySite[site] || 0
-            const arrived = summary.bySiteArrived[site] || 0
-            const rate = total_site > 0 ? (arrived / total_site) * 100 : 0
-            return (
-              <div key={site} className="flex items-center gap-2">
-                <span className="text-xs text-gray-400 w-8">{site}</span>
-                <div className="flex-1 bg-gray-800 rounded-full h-2">
+        <section className="space-y-3">
+          <div>
+            <h2 className="text-sm font-semibold text-white">운송 경로 요약</h2>
+            <p className="text-xs text-gray-500">숫자 코드를 숨기고 경로 의미만 남겼습니다.</p>
+          </div>
+          <div className="space-y-2">
+            {data.routeSummary.map((item) => (
+              <button
+                key={item.routeTypeId}
+                type="button"
+                onClick={() => onNavigate(item.navigationIntent)}
+                className="w-full rounded-2xl border border-gray-800 bg-gray-900/70 p-3 text-left transition-colors hover:border-gray-700"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className={cn('rounded-full border px-2 py-1 text-xs', getRouteTypeBadgeClass(item.routeTypeId))}>
+                    {getRouteTypeLabel(item.routeTypeId)}
+                  </span>
+                  <span className="text-sm font-semibold text-white">{item.count.toLocaleString()}</span>
+                </div>
+                <div className="mt-2 h-2 rounded-full bg-gray-800">
                   <div
                     className="h-2 rounded-full bg-blue-500"
-                    style={{ width: `${rate}%` }}
+                    style={{ width: `${Math.max(item.percent, 2)}%` }}
                   />
                 </div>
-                <span className="text-xs text-gray-500 w-12 text-right">
-                  {rate.toFixed(0)}%
-                </span>
-              </div>
-            )
-          })}
-        </div>
+                <div className="mt-1 text-[11px] text-gray-500">{item.percent.toFixed(1)}%</div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <div>
+            <h2 className="text-sm font-semibold text-white">현장 준비도</h2>
+            <p className="text-xs text-gray-500">현장 단위 도착률과 대기 잔량을 같이 보여줍니다.</p>
+          </div>
+          <div className="space-y-2">
+            {data.siteReadiness.map((item) => (
+              <button
+                key={item.site}
+                type="button"
+                onClick={() => onNavigate(item.navigationIntent)}
+                className="w-full rounded-2xl border border-gray-800 bg-gray-900/70 p-3 text-left transition-colors hover:border-gray-700"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className={cn('rounded-full border px-2 py-1 text-xs', SITE_META[item.site].accentClass)}>
+                    {item.site}
+                  </span>
+                  <span className="text-sm font-semibold text-white">{item.readinessPercent.toFixed(1)}%</span>
+                </div>
+                <div className="mt-2 grid grid-cols-4 gap-2 text-[11px] text-gray-400">
+                  <span>도착 {item.arrived}</span>
+                  <span>창고 {item.warehouse}</span>
+                  <span>MOSB {item.mosb}</span>
+                  <span>대기 {item.preArrival}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <div>
+            <h2 className="text-sm font-semibold text-white">최근 활동</h2>
+            <p className="text-xs text-gray-500">이벤트 기반 최근 변화를 Cargo로 바로 넘깁니다.</p>
+          </div>
+          <div className="space-y-2">
+            {data.liveFeed.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onNavigate(item.navigationIntent)}
+                className="w-full rounded-2xl border border-gray-800 bg-gray-900/70 p-3 text-left transition-colors hover:border-gray-700"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold text-white">{item.title}</div>
+                    <div className="mt-1 text-xs text-gray-400">{item.subtitle}</div>
+                  </div>
+                  {item.routeTypeId ? (
+                    <span className={cn('rounded-full border px-2 py-1 text-[11px]', getRouteTypeBadgeClass(item.routeTypeId))}>
+                      {getRouteTypeLabel(item.routeTypeId)}
+                    </span>
+                  ) : null}
+                </div>
+                <div className="mt-2 text-[11px] text-gray-500">
+                  {formatDistanceToNowStrict(new Date(item.timestamp), { addSuffix: true, locale: ko })}
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
       </div>
-    </div>
+    </aside>
   )
 }

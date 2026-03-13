@@ -26,7 +26,7 @@ function buildCasesUrl(filters: CasesFilter, page = 1, pageSize = 50): string {
   params.set('page', String(page))
   params.set('pageSize', String(pageSize))
   if (filters.site !== 'all') params.set('site', filters.site)
-  if (filters.flow_code !== 'all') params.set('flow_code', String(filters.flow_code))
+  if (filters.route_type && filters.route_type !== 'all') params.set('route_type', filters.route_type)
   if (filters.vendor !== 'all') params.set('vendor', filters.vendor)
   if (filters.category !== 'all') params.set('category', filters.category)
   if (filters.location !== 'all') params.set('location', filters.location)

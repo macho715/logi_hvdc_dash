@@ -1,7 +1,7 @@
 # GitHub + Vercel 배포 가이드
 
 > **HVDC Logistics Dashboard — 신규 GitHub 레포지터리 → Vercel 배포 완전 가이드**
-> Version: 1.0.0 | Updated: 2026-03-13
+> Version: 1.1.0 | Updated: 2026-03-13
 
 ---
 
@@ -15,9 +15,11 @@
 6. [Vercel 배포 절차](#6-vercel-배포-절차)
 7. [환경 변수 설정](#7-환경-변수-설정)
 8. [⭐ Supabase 완전 설정 가이드](#8-supabase-완전-설정-가이드)
-9. [배포 후 검증](#9-배포-후-검증)
-10. [트러블슈팅](#10-트러블슈팅)
-11. [Supabase 로컬 실행 파일 & 폴더 완전 가이드](#11-supabase-로컬-실행-파일--폴더-완전-가이드)
+9. [데이터 임포트 (Excel → Supabase)](#9-데이터-임포트-excel--supabase)
+10. [배포 후 검증](#10-배포-후-검증)
+11. [트러블슈팅](#11-트러블슈팅)
+12. [알려진 이슈 및 해결 현황](#12-알려진-이슈-및-해결-현황)
+13. [Supabase 로컬 실행 파일 & 폴더 완전 가이드](#13-supabase-로컬-실행-파일--폴더-완전-가이드)
 
 ---
 
@@ -101,6 +103,7 @@ hvdc-logistics-dashboard/  ← GitHub 신규 레포 루트
 │       ├── ✅ types/            # TypeScript 타입
 │       ├── ✅ public/           # 정적 파일 (있으면)
 │       ├── ✅ docs/             # 문서 (이 파일 포함)
+│       ├── ✅ scripts/          # ETL 스크립트 (import-excel.mjs)
 │       ├── ✅ README.md
 │       ├── ✅ CHANGELOG.md
 │       ├── ❌ node_modules/     # 절대 제외
@@ -127,13 +130,13 @@ hvdc-logistics-dashboard/  ← GitHub 신규 레포 루트
 ├── ✅ supabase/                 # Supabase DB 스크립트
 │   ├── ✅ migrations/           # 마이그레이션 SQL (날짜순 실행)
 │   │   ├── ✅ 20260101_initial_schema.sql
-│   │   ├── ✅ 20260120_add_cases_flows.sql
 │   │   ├── ✅ 20260124_create_dashboard_views.sql
 │   │   ├── ✅ 20260124_enable_realtime.sql
 │   │   ├── ✅ 20260124_enable_realtime_layers.sql
 │   │   ├── ✅ 20260125_public_shipments_view.sql
 │   │   ├── ✅ 20260126_public_locations_seed_ontology.sql
-│   │   └── ✅ 20260127_api_views.sql  ← ⭐ v_cases + v_stock_onhand (API 필수!)
+│   │   ├── ✅ 20260127_api_views.sql  ← ⭐ v_cases + v_stock_onhand (API 필수!)
+│   │   └── ✅ 20260313_add_shipment_columns.sql  ← ⭐ import-excel.mjs 전제조건
 │   ├── ✅ scripts/              # ⭐ 핵심 DDL (migrations 전에 실행!)
 │   │   ├── ✅ 20260124_hvdc_layers_status_case_ops.sql
 │   │   └── ✅ hvdc_copy_templates.sql
@@ -360,6 +363,17 @@ graph TD
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `<YOUR_SUPABASE_ANON_KEY>` | All | 공개 가능 |
 | `SUPABASE_SERVICE_ROLE_KEY` | `<YOUR_SUPABASE_SERVICE_ROLE_KEY>` | All | **민감 — Sensitive 체크** |
 
+### 환경 변수 상세 설명
+
+| 변수명 | 용도 | 보안 |
+|--------|------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 프로젝트 URL (예: `https://rkfffveonaskewwzghex.supabase.co`) | 브라우저 번들에 포함됨 — 클라이언트 노출 허용 |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 익명 키 (RLS 정책 적용) | 브라우저 번들에 포함됨 — 공개 안전 |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase 서비스 역할 키 (RLS 우회) | **서버 전용 (API routes only)** — 절대 `NEXT_PUBLIC_` 접두사 사용 금지 |
+
+> `SUPABASE_SERVICE_ROLE_KEY`는 API routes(`app/api/`)에서만 사용합니다.
+> 클라이언트 컴포넌트에서 직접 사용하면 RLS가 무력화되므로 절대 금지입니다.
+
 ### Vercel CLI로 설정하는 방법
 
 ```bash
@@ -571,6 +585,18 @@ CREATE OR REPLACE VIEW public.v_stock_onhand AS
 -- [선택] public.v_shipments_master  (운영 집계용 — 20260124 파일로 생성)
 -- → 20260124_create_dashboard_views.sql 참조
 ```
+
+### 20260127_api_views.sql이 생성하는 뷰 목록
+
+`supabase/migrations/20260127_api_views.sql` 실행 시 아래 뷰들이 생성됩니다:
+
+| 뷰 이름 | 소스 테이블 | API 엔드포인트 |
+|---------|-----------|--------------|
+| `public.v_cases` | `"case".cases` | `/api/cases`, `/api/cases/summary` |
+| `public.v_flows` | `"case".flows` | `/api/cases` (조인) |
+| `public.v_shipments_status` | `status.shipments_status` | `/api/shipments` |
+| `public.v_stock_onhand` | `wh.stock_onhand` | `/api/stock` |
+| `public.shipments` | `status.shipments_status` + `"case".flows` + `"case".cases` | `/api/shipments` |
 
 ---
 
@@ -795,7 +821,7 @@ SELECT
      FROM public.v_cases)                            AS warehouse,
     (SELECT COUNT(*) FROM public.shipments)          AS shipments,
     (SELECT COUNT(*) FROM public.v_stock_onhand)     AS stock_items;
--- 예상(시드 데이터 삽입 후): total_cases=300, shipments=300, stock_items=150
+-- import-excel.mjs 실행 후: total_cases=10,694 / shipments=890
 
 -- 4. Realtime publication 확인
 SELECT tablename FROM pg_publication_tables
@@ -815,18 +841,107 @@ ORDER BY schemaname, tablename;
 ### Supabase 설정 체크리스트
 
 - [ ] STEP 1: 스키마 생성 (`case`, `status`, `wh`, `ops`) + 핵심 테이블 생성 → `20260124_hvdc_layers_status_case_ops.sql`
+- [ ] STEP 1b: `supabase/migrations/20260313_add_shipment_columns.sql` 실행 (import-excel.mjs 전제조건)
 - [ ] STEP 2: public 뷰 생성 (`v_cases`, `v_stock_onhand`) → `20260127_api_views.sql`; (`shipments`, `v_shipments_master`) → `20260124–20260125` 파일
 - [ ] STEP 3: GRANT 권한 부여 (`anon`, `authenticated`) — 각 뷰 파일에 포함
 - [ ] STEP 4: RLS 활성화 + SELECT 정책
 - [ ] STEP 5: Realtime Publication (`supabase_realtime`) — `v_cases`, `v_stock_onhand` 포함
-- [ ] STEP 6-A: `node recreate-tables.mjs` — DROP & 재생성 (개발/초기화용)
-- [ ] STEP 6-B: `node seed-data.mjs` — 1,050행 삽입 (300 cases + 300 flows + 300 shipments + 150 stock)
+- [ ] STEP 6: Excel 임포트 또는 시드 데이터 삽입 (아래 섹션 9 참조)
 - [ ] STEP 7: CORS 허용 도메인 (Vercel URL + localhost)
-- [ ] STEP 8: 검증 SQL 실행 → 모든 건수 정상 확인 (`v_cases ≈ 300`, `v_stock_onhand ≈ 150`)
+- [ ] STEP 8: 검증 SQL 실행 → 모든 건수 정상 확인
 
 ---
 
-## 9. 배포 후 검증
+## 9. 데이터 임포트 (Excel → Supabase)
+
+> **실제 HVDC 운영 데이터를 Excel 파일에서 Supabase로 직접 임포트합니다.**
+> 개발용 시드 데이터(1,050행) 대신 실제 데이터(cases 10,694 / flows 7,564 / shipments 890)를 사용할 때 실행합니다.
+
+### 전제 조건
+
+```bash
+# 1. 마이그레이션 파일 먼저 실행 (Supabase SQL Editor)
+#    supabase/migrations/20260313_add_shipment_columns.sql
+#    → case.cases, case.flows 테이블에 Excel 컬럼 추가
+
+# 2. 환경 변수 설정 (.env.local 또는 shell export)
+#    NEXT_PUBLIC_SUPABASE_URL
+#    SUPABASE_SERVICE_ROLE_KEY  ← service role 키 필수 (anon 키 불가)
+
+# 3. Excel 파일 위치 확인
+#    기본 경로: <프로젝트루트>/../Logi ontol core doc/HVDC STATUS1.xlsx
+#    또는 인자로 경로 직접 지정 가능
+```
+
+### 실행 방법
+
+```bash
+# Excel 파일에서 Supabase로 초기 데이터 임포트
+# 필수: 환경변수 설정 후 실행
+
+# dry-run (데이터 미전송, 검증만)
+node apps/logistics-dashboard/scripts/import-excel.mjs --dry-run
+
+# dry-run + 커스텀 Excel 경로 지정
+node apps/logistics-dashboard/scripts/import-excel.mjs --dry-run /path/to/HVDC\ STATUS1.xlsx
+
+# 실제 임포트 (환경변수를 shell에서 직접 지정하는 경우)
+NEXT_PUBLIC_SUPABASE_URL=https://rkfffveonaskewwzghex.supabase.co \
+SUPABASE_SERVICE_ROLE_KEY=eyJ... \
+node apps/logistics-dashboard/scripts/import-excel.mjs
+
+# .env.local이 설정된 경우 (apps/logistics-dashboard/.env.local)
+node apps/logistics-dashboard/scripts/import-excel.mjs
+```
+
+> **주의**: `import-excel.mjs`는 `SUPABASE_SERVICE_ROLE_KEY`만 사용합니다.
+> `NEXT_PUBLIC_SUPABASE_ANON_KEY`로는 쓰기 권한이 없어 실행되지 않습니다.
+
+### 예상 결과
+
+```
+──────────────────────────────────────────────────
+  HVDC Excel Import
+──────────────────────────────────────────────────
+  Mode  : DRY-RUN (no data sent)
+  Excel : /path/to/HVDC STATUS1.xlsx
+
+Parsing Excel...
+  Sheets found: [HVDC STATUS, Flows, Shipments, ...]
+
+Dry-run summary:
+  cases     : 10,694 rows
+  flows     :  7,564 rows
+  shipments :    890 rows
+
+──────────────────────────────────────────────────
+```
+
+실제 임포트 완료 후 Supabase에서 확인:
+
+```sql
+SELECT
+  (SELECT COUNT(*) FROM "case".cases)            AS cases,
+  (SELECT COUNT(*) FROM "case".flows)            AS flows,
+  (SELECT COUNT(*) FROM status.shipments_status) AS shipments;
+-- 예상: 10694 / 7564 / 890
+```
+
+### import-excel.mjs 동작 상세
+
+| 항목 | 내용 |
+|------|------|
+| 배치 크기 | 200행씩 upsert |
+| 날짜 정규화 | Excel serial 날짜 → ISO 8601, 1900-01-00 및 1970 이전 값 → null |
+| 사이트 검증 | AGI / DAS / MIR / SHU 만 허용 (그 외 → null) |
+| 보관 타입 | Indoor / Outdoor / Outdoor Cov 정규화 |
+| 벤더 정규화 | HITACHI → Hitachi, SIEMENS → Siemens |
+| Flow Code | 0~5 정수, FLOW_LABELS 매핑 |
+| 오류 처리 | 배치 단위 실패 시 계속 진행 (partial import 허용) |
+
+---
+
+## 10. 배포 후 검증
 
 ### 체크리스트
 
@@ -861,13 +976,15 @@ https://hvdc-xxx.vercel.app/overview   → KPI + 지도 표시
 https://hvdc-xxx.vercel.app/cargo      → 화물 테이블 표시
 https://hvdc-xxx.vercel.app/pipeline   → 플로우 파이프라인 표시
 https://hvdc-xxx.vercel.app/sites      → 사이트 카드 표시
+https://hvdc-xxx.vercel.app/chain      → 전체 물류 체인 시각화
 https://hvdc-xxx.vercel.app/api/cases/summary → JSON KPI 데이터
 https://hvdc-xxx.vercel.app/api/cases         → JSON 케이스 목록
+https://hvdc-xxx.vercel.app/api/chain/summary → JSON 공급망 요약
 ```
 
 ---
 
-## 10. 트러블슈팅
+## 11. 트러블슈팅
 
 ### 빌드 에러: `Cannot find module '@repo/shared'`
 
@@ -903,6 +1020,19 @@ SELECT viewname FROM pg_views WHERE schemaname = 'public';
 -- 또는 recreate-tables.mjs 재실행 후 seed-data.mjs 실행
 ```
 
+### KPI가 1,000만 표시되고 실제 값이 안 나오는 경우
+
+```
+원인: Supabase PostgREST 기본 페이지 크기 = 1,000행
+      SELECT COUNT(*) 대신 API로 전체 데이터를 가져올 때 1,000 이후가 잘림
+
+해결: fetchAllCases() 함수의 pagination loop 확인
+     → range(0, 999) → range(1000, 1999) → ... 반복으로 전체 로드
+     → 실제 데이터 10,694건이 정상 표시되어야 함
+
+관련 파일: apps/logistics-dashboard/store/casesStore.ts
+```
+
 ### Vercel 빌드 타임아웃
 
 ```json
@@ -930,6 +1060,43 @@ pnpm --filter @repo/logistics-dashboard typecheck
 # 또는
 cd apps/logistics-dashboard && pnpm typecheck
 ```
+
+### ESLint workspace binary 오류
+
+```
+원인: workspace 루트에 eslint binary가 설정되지 않음
+      pnpm lint 실행 시 "eslint: command not found" 오류
+
+상태: Non-blocking — Vercel 빌드에는 영향 없음
+      TypeScript 타입 체크(pnpm typecheck)는 정상 동작
+
+해결 (선택): apps/logistics-dashboard에서 직접 실행
+      cd apps/logistics-dashboard && npx eslint .
+```
+
+---
+
+## 12. 알려진 이슈 및 해결 현황
+
+| 이슈 | 증상 | 해결 방법 | 상태 |
+|------|------|----------|------|
+| React Hydration Mismatch | 브라우저 콘솔에 "Extra attributes from the server" 경고 | Kapture 브라우저 확장이 DOM에 속성 추가 → `suppressHydrationWarning` 적용 | ✅ 해결됨 |
+| KPI 1,000 표시 | cases KPI가 실제 10,694 대신 1,000으로 표시 | PostgREST db-max-rows=1000 한계 → `fetchAllCases()` pagination loop 구현 | ✅ 해결됨 |
+| `ignoreBuildErrors: true` | TS 에러 무시됨 | `tsc --noEmit`은 별도 lint 단계에서 실행 | ⚠️ 유지 |
+| `images: { unoptimized: true }` | 이미지 최적화 비활성 | 필요시 제거하고 next/image 설정 | ⚠️ 유지 |
+| `@deck.gl/core: "latest"` | 버전 미고정 | 안정된 버전(^9.0.x)으로 고정 권장 | ⚠️ 유지 |
+| `SUPABASE_SERVICE_ROLE_KEY` 하드코딩 | 구 .mjs 스크립트에 있었음 | 새 리포에는 해당 .mjs 미포함, 환경변수로 처리 | ✅ 해결됨 |
+| ESLint workspace binary | `pnpm lint` 실패 | Non-blocking, `pnpm typecheck` 정상 통과 | ⚠️ 비차단 |
+
+### 현재 구현 상태 요약
+
+| 항목 | 상태 | 비고 |
+|------|------|------|
+| TypeScript 타입 체크 | ✅ 통과 | `pnpm typecheck` 오류 없음 |
+| 실제 데이터 임포트 | ✅ 검증 완료 | cases 10,694 / flows 7,564 / shipments 890 (dry-run 확인) |
+| Hydration warning | ✅ 해결됨 | `suppressHydrationWarning` 적용 |
+| KPI pagination | ✅ 해결됨 | `fetchAllCases()` loop 구현 |
+| ESLint | ⚠️ 비차단 | workspace eslint binary 미설정 (빌드 영향 없음) |
 
 ---
 
@@ -971,19 +1138,21 @@ graph TB
 - [ ] `.gitignore` — node_modules, .next, .env.local 제외
 - [ ] `.env.example` — 환경변수 템플릿 (실제값 없이)
 - [ ] `apps/logistics-dashboard/` — 전체 소스코드
+- [ ] `apps/logistics-dashboard/scripts/import-excel.mjs` — Excel ETL 스크립트
 - [ ] `packages/shared/` — `@repo/shared` 워크스페이스 패키지
+- [ ] `supabase/migrations/20260313_add_shipment_columns.sql` — import-excel.mjs 전제조건
 - [ ] ❌ `node_modules/` 없음
 - [ ] ❌ `.next/` 없음
 - [ ] ❌ `.env.local` 없음
 
 ---
 
-## 11. Supabase 로컬 실행 파일 & 폴더 완전 가이드
+## 13. Supabase 로컬 실행 파일 & 폴더 완전 가이드
 
-> 이 섹션은 프로젝트 루트의 `supabase/` 폴더와 `apps/logistics-dashboard/*.mjs` 스크립트 전체를 문서화합니다.
+> 이 섹션은 프로젝트 루트의 `supabase/` 폴더와 `apps/logistics-dashboard/` 스크립트 전체를 문서화합니다.
 > 새 Supabase 프로젝트를 처음 셋업하거나 데이터를 재적재할 때 이 섹션을 따르세요.
 
-### 11-A. 전체 폴더 구조
+### 13-A. 전체 폴더 구조
 
 ```
 [프로젝트 루트]
@@ -994,7 +1163,9 @@ graph TB
 │   │   ├── 20260124_enable_realtime.sql         ( 6.4 KB) ← Realtime Publication 설정
 │   │   ├── 20260124_enable_realtime_layers.sql  ( 1.4 KB) ← 레이어별 Realtime 추가 설정
 │   │   ├── 20260125_public_shipments_view.sql   ( 1.3 KB) ← public.shipments 뷰 (worklist API용)
-│   │   └── 20260126_public_locations_seed_ontology.sql (2.5 KB) ← locations 시드 + 온톨로지
+│   │   ├── 20260126_public_locations_seed_ontology.sql (2.5 KB) ← locations 시드 + 온톨로지
+│   │   ├── 20260127_api_views.sql               (─── KB) ← ⭐ v_cases + v_flows + v_shipments_status + v_stock_onhand
+│   │   └── 20260313_add_shipment_columns.sql    (─── KB) ← ⭐ import-excel.mjs 전제조건 컬럼 추가
 │   │
 │   ├── scripts/                   ← 고급 HVDC 전용 SQL
 │   │   ├── 20260124_hvdc_layers_status_case_ops.sql (12.9 KB) ← ⭐ 핵심: status/case/ops 3-레이어 풀 스키마
@@ -1020,6 +1191,8 @@ graph TB
 │       └── hvdc_ops_shapes.ttl    ( 4.6 KB) ← SHACL 유효성 검사 Shape
 │
 └── apps/logistics-dashboard/
+    ├── scripts/
+    │   └── import-excel.mjs        (─── KB) ← ⭐ Excel → Supabase ETL (Node.js)
     ├── recreate-tables.mjs         ( 5.7 KB) ← 테이블 DROP & 재생성 스크립트
     ├── seed-data.mjs               (15.0 KB) ← 시드 데이터 삽입 스크립트 (300행 × 4테이블)
     └── test-insert.mjs             ( 0.5 KB) ← 연결 & insert 단위 테스트
@@ -1027,7 +1200,7 @@ graph TB
 
 ---
 
-### 11-B. 마이그레이션 실행 순서
+### 13-B. 마이그레이션 실행 순서
 
 > **⚠️ 중요**: SQL 파일은 파일명 날짜 순서대로 실행해야 합니다.
 > Supabase SQL Editor: `https://app.supabase.com/project/<PROJECT_REF>/editor`
@@ -1046,6 +1219,8 @@ graph TB
 ④ supabase/migrations/20260124_enable_realtime_layers.sql    ← 레이어별 Realtime 추가
 ⑤ supabase/migrations/20260125_public_shipments_view.sql     ← public.shipments 뷰 (Worklist용)
 ⑥ supabase/migrations/20260126_public_locations_seed_ontology.sql ← locations 시드
+⑦ supabase/migrations/20260127_api_views.sql                 ← ⭐ API 뷰 (v_cases + v_flows + v_shipments_status + v_stock_onhand)
+⑧ supabase/migrations/20260313_add_shipment_columns.sql      ← ⭐ import-excel.mjs 전제조건 (마지막 실행)
 ```
 
 ```mermaid
@@ -1054,14 +1229,16 @@ flowchart TD
     B --> C["④ 20260124_enable_realtime_layers.sql\n레이어별 Realtime 추가"]
     C --> D["⑤ 20260125_public_shipments_view.sql\npublic.shipments 뷰"]
     D --> E["⑥ 20260126_public_locations_seed_ontology.sql\nlocations 기본 데이터 시드"]
-    E --> F["✅ 스키마 준비 완료"]
+    E --> F["⑦ 20260127_api_views.sql\nAPI 뷰 생성 (v_cases 등)"]
+    F --> G["⑧ 20260313_add_shipment_columns.sql\nimport-excel.mjs 전제조건"]
+    G --> H["✅ 스키마 준비 완료\n→ import-excel.mjs 실행 가능"]
 
-    G["② 20260101_initial_schema.sql\npublic 레거시 테이블\n(선택적 실행)"] -.->|"선택 사항\n충돌 주의"| A
+    X["② 20260101_initial_schema.sql\npublic 레거시 테이블\n(선택적 실행)"] -.->|"선택 사항\n충돌 주의"| A
 ```
 
 ---
 
-### 11-C. 스키마별 테이블 맵
+### 13-C. 스키마별 테이블 맵
 
 #### `status` 스키마 — SSOT(Source of Truth) 레이어
 
@@ -1091,6 +1268,10 @@ flowchart TD
 
 | 뷰 | 소스 | 용도 |
 |----|------|------|
+| `public.v_cases` | `"case".cases` | `/api/cases`, `/api/cases/summary` |
+| `public.v_flows` | `"case".flows` | 흐름 이력 조회 |
+| `public.v_shipments_status` | `status.shipments_status` | `/api/shipments` |
+| `public.v_stock_onhand` | `wh.stock_onhand` | `/api/stock` |
 | `public.v_shipments_master` | `status.shipments_status` + `"case".shipments_case` | 선적 마스터 조회 |
 | `public.v_shipments_timeline` | `status.events_status` + `"case".events_case` | 이벤트 타임라인 |
 | `public.v_cases_kpi` | `"case".cases` + `"case".flows` | KPI 케이스 집계 |
@@ -1105,7 +1286,39 @@ flowchart TD
 
 ---
 
-### 11-D. `recreate-tables.mjs` — 테이블 DROP & 재생성
+### 13-D. `scripts/import-excel.mjs` — Excel → Supabase ETL
+
+> **경로**: `apps/logistics-dashboard/scripts/import-excel.mjs`
+> **용도**: Excel 파일(HVDC STATUS1.xlsx)에서 실제 운영 데이터를 Supabase로 임포트
+
+#### 실행 방법
+
+```bash
+# dry-run 먼저 실행하여 검증
+node apps/logistics-dashboard/scripts/import-excel.mjs --dry-run
+
+# 실제 임포트
+node apps/logistics-dashboard/scripts/import-excel.mjs
+```
+
+#### 필수 환경 변수
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://rkfffveonaskewwzghex.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJ...  ← service role 키 (anon 키로는 쓰기 불가)
+```
+
+#### 예상 결과
+
+| 테이블 | 행 수 |
+|--------|-------|
+| `"case".cases` | **10,694행** |
+| `"case".flows` | **7,564행** |
+| `status.shipments_status` | **890행** |
+
+---
+
+### 13-E. `recreate-tables.mjs` — 테이블 DROP & 재생성
 
 > **경로**: `apps/logistics-dashboard/recreate-tables.mjs`
 > **용도**: 개발/테스트 중 4개 핵심 테이블을 드롭하고 재생성할 때 사용
@@ -1143,7 +1356,7 @@ wh.stock_onhand       -- 창고 현재고 (10컬럼)
 
 ---
 
-### 11-E. `seed-data.mjs` — 시드 데이터 삽입
+### 13-F. `seed-data.mjs` — 시드 데이터 삽입
 
 > **경로**: `apps/logistics-dashboard/seed-data.mjs`
 > **용도**: 개발/데모용 가상 데이터 생성 및 삽입
@@ -1169,71 +1382,12 @@ node apps/logistics-dashboard/seed-data.mjs
 | `wh.stock_onhand` | **150행** | 15가지 HVDC 자재, 7개 창고 위치 |
 | **합계** | **1,050행** | |
 
-#### 시드 데이터 설정값
-
-```js
-// 사이트 분포
-AGI: 120건 (40%) — 오프쇼어 (Flow Code ≥ 3 강제)
-SHU: 60건 (20%)
-MIR: 60건 (20%)
-DAS: 60건 (20%) — 오프쇼어 (Flow Code ≥ 3 강제)
-
-// Flow Code 분포 (오프쇼어)
-AGI/DAS: rand([3, 3, 4, 4, 5])
-
-// Flow Code 분포 (온쇼어)
-SHU/MIR: rand([0, 1, 1, 2, 2, 3, 4, 5])
-
-// status_current 값
-'Pre Arrival' (FC=0)
-'site'        (현장 도착)
-'warehouse'   (창고 재고)
-
-// 배치 크기
-한 번에 50행씩 upsert (충돌 시 id 기준 업데이트)
-```
-
-#### 실행 흐름
-
-```
-Step 1 – Schema/Table setup
-  → Supabase Management API로 DDL 실행 시도
-  → 실패 시: SQL Editor에서 setup-schemas.sql 수동 실행 안내
-
-Step 2 – Inserting data
-  → case.cases         300행 삽입
-  → case.flows         300행 삽입
-  → status.shipments_status 300행 삽입
-  → wh.stock_onhand    150행 삽입
-```
-
-#### 완료 출력 예시
-
-```
-══════════════════════════════════════════════
-  HVDC Dashboard – Supabase Seed
-══════════════════════════════════════════════
-  URL : https://rkfffveonaskewwzghex.supabase.co
-  Data: 300 cases · 300 shipments · 300 flows · 150 stock
-
-Step 1 – Schema / table setup
-  ✅ Management API DDL succeeded
-
-Step 2 – Inserting data
-  ↳ case.cases: 300/300
-  ✅ case.cases: 300 rows
-  ↳ case.flows: 300/300
-  ✅ case.flows: 300 rows
-  ...
-
-══════════════════════════════════════════════
-  ✅ Seed complete!  Refresh localhost:3001
-══════════════════════════════════════════════
-```
+> **실제 데이터가 필요한 경우**: `seed-data.mjs` 대신 `scripts/import-excel.mjs`를 사용하세요.
+> Excel import 결과: cases 10,694 / flows 7,564 / shipments 890
 
 ---
 
-### 11-F. `test-insert.mjs` — 연결 테스트
+### 13-G. `test-insert.mjs` — 연결 테스트
 
 > **경로**: `apps/logistics-dashboard/test-insert.mjs`
 > **용도**: Supabase 연결 및 `"case".cases` 테이블 insert 단위 테스트
@@ -1243,18 +1397,6 @@ Step 2 – Inserting data
 ```bash
 cd apps/logistics-dashboard
 node test-insert.mjs
-```
-
-#### 동작
-
-```js
-// case.cases 테이블에 테스트 레코드 1개 upsert
-{
-  case_no:   'TEST-001',
-  hvdc_code: 'TEST-001',
-  site:      'AGI',
-  flow_code: 3
-}
 ```
 
 #### 성공 / 실패 판단
@@ -1270,7 +1412,7 @@ ERROR: { "code": "42P01", "details": null, "hint": null,
 
 ---
 
-### 11-G. `supabase/scripts/` — 고급 SQL 스크립트
+### 13-H. `supabase/scripts/` — 고급 SQL 스크립트
 
 #### `20260124_hvdc_layers_status_case_ops.sql` (12.9 KB)
 
@@ -1299,7 +1441,7 @@ ERROR: { "code": "42P01", "details": null, "hint": null,
 
 ---
 
-### 11-H. `supabase/data/raw/` — 원본 데이터 파일
+### 13-I. `supabase/data/raw/` — 원본 데이터 파일
 
 > **⚠️ GitHub 업로드 제외 권장** — 파일 크기 합계 약 35 MB
 
@@ -1318,7 +1460,7 @@ supabase/data/raw/
 
 ---
 
-### 11-I. `supabase/ontology/` — RDF 온톨로지
+### 13-J. `supabase/ontology/` — RDF 온톨로지
 
 | 파일 | 크기 | 용도 |
 |------|------|------|
@@ -1329,7 +1471,7 @@ supabase/data/raw/
 
 ---
 
-### 11-J. 신규 Supabase 프로젝트 완전 셋업 순서
+### 13-K. 신규 Supabase 프로젝트 완전 셋업 순서
 
 ```mermaid
 flowchart TD
@@ -1337,13 +1479,15 @@ flowchart TD
     B["2️⃣ SQL Editor에서 핵심 스키마 실행\nsupabase/scripts/20260124_hvdc_layers_status_case_ops.sql"] --> C
     C["3️⃣ Realtime 활성화\nsupabase/migrations/20260124_enable_realtime.sql\nsupabase/migrations/20260124_enable_realtime_layers.sql"] --> D
     D["4️⃣ Worklist 뷰 추가\nsupabase/migrations/20260125_public_shipments_view.sql"] --> E
-    E["5️⃣ API 키 복사\nSettings → API → URL + anon key + service_role key"] --> F
-    F["6️⃣ .env.local 파일 생성\nNEXT_PUBLIC_SUPABASE_URL=...\nNEXT_PUBLIC_SUPABASE_ANON_KEY=..."] --> G
-    G["7️⃣ 연결 테스트\nnode test-insert.mjs"] --> H{성공?}
-    H -->|"OK"| I["8️⃣ 시드 데이터 삽입\nnode seed-data.mjs"]
-    H -->|"ERROR"| J["테이블 재생성\nnode recreate-tables.mjs\n→ 다시 7️⃣"]
-    I --> K["9️⃣ 대시보드 실행\npnpm dev\nlocalhost:3001 확인"]
-    J --> G
+    E["5️⃣ API 뷰 추가\nsupabase/migrations/20260127_api_views.sql"] --> F
+    F["6️⃣ 컬럼 추가\nsupabase/migrations/20260313_add_shipment_columns.sql"] --> G
+    G["7️⃣ API 키 복사\nSettings → API → URL + anon key + service_role key"] --> H
+    H["8️⃣ .env.local 파일 생성\nNEXT_PUBLIC_SUPABASE_URL=...\nNEXT_PUBLIC_SUPABASE_ANON_KEY=...\nSUPABASE_SERVICE_ROLE_KEY=..."] --> I
+    I["9️⃣ 연결 테스트\nnode test-insert.mjs"] --> J{성공?}
+    J -->|"OK"| K["🔟 데이터 임포트\nnode scripts/import-excel.mjs --dry-run\n→ node scripts/import-excel.mjs"]
+    J -->|"ERROR"| L["테이블 재생성\nnode recreate-tables.mjs\n→ 다시 9️⃣"]
+    K --> M["1️⃣1️⃣ 대시보드 실행\npnpm dev\nlocalhost:3001 확인"]
+    L --> I
 ```
 
 #### 빠른 실행 명령어 모음
@@ -1361,7 +1505,11 @@ node apps/logistics-dashboard/test-insert.mjs
 # 4. 테이블 재생성 (필요 시)
 node apps/logistics-dashboard/recreate-tables.mjs
 
-# 5. 시드 데이터 삽입
+# 5-a. Excel 데이터 임포트 (실제 운영 데이터)
+node apps/logistics-dashboard/scripts/import-excel.mjs --dry-run  # 검증
+node apps/logistics-dashboard/scripts/import-excel.mjs             # 실제 임포트
+
+# 5-b. 또는 개발용 시드 데이터 (1,050행)
 node apps/logistics-dashboard/seed-data.mjs
 
 # 6. 대시보드 개발 서버 실행
@@ -1371,7 +1519,7 @@ pnpm dev
 
 ---
 
-### 11-K. `.env.local` 설정 (로컬 개발용)
+### 13-L. `.env.local` 설정 (로컬 개발용)
 
 > **경로**: `apps/logistics-dashboard/.env.local` (gitignore 대상)
 
@@ -1381,6 +1529,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://rkfffveonaskewwzghex.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<Supabase 대시보드 → Settings → API → anon key>
 
 # 서버/Edge Function 전용 (클라이언트 노출 금지)
+# import-excel.mjs 실행에도 이 키가 필요합니다
 SUPABASE_SERVICE_ROLE_KEY=<Supabase 대시보드 → Settings → API → service_role key>
 
 NODE_ENV=development
@@ -1390,7 +1539,7 @@ NODE_ENV=development
 
 ---
 
-### 11-L. Gate 1 QA — 데이터 품질 검증 SQL
+### 13-M. Gate 1 QA — 데이터 품질 검증 SQL
 
 Supabase SQL Editor에서 실행:
 
@@ -1401,7 +1550,8 @@ SELECT
   (SELECT count(*) FROM "case".flows)            AS flows,
   (SELECT count(*) FROM status.shipments_status) AS shipments,
   (SELECT count(*) FROM wh.stock_onhand)         AS stock;
--- 정상: 300 / 300 / 300 / 150
+-- import-excel.mjs 실행 후: 10694 / 7564 / 890 / (기존 시드)
+-- seed-data.mjs 실행 후: 300 / 300 / 300 / 150
 
 -- 2. Flow Code 분포 확인
 SELECT flow_code, count(*) FROM "case".cases GROUP BY flow_code ORDER BY 1;
@@ -1411,8 +1561,8 @@ SELECT count(*) AS violations
 FROM "case".cases
 WHERE site IN ('AGI', 'DAS') AND flow_code < 3;
 
--- 4. public.v_cases_kpi 뷰 조회 확인
-SELECT count(*) FROM public.v_cases_kpi;
+-- 4. public.v_cases 뷰 조회 확인
+SELECT count(*) FROM public.v_cases;
 
 -- 5. Realtime Publication 확인
 SELECT * FROM pg_publication_tables
@@ -1424,3 +1574,8 @@ FROM pg_policies
 ORDER BY schemaname, tablename;
 ```
 
+---
+
+*문서 작성: 2026-03-13*
+*버전: 1.1.0 — import-excel.mjs, chain 페이지, 알려진 이슈 해결 현황 추가*
+*기준 프로젝트: LOGI-MASTER-DASH-claude-improve-dashboard-layout*

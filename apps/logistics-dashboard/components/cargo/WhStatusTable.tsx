@@ -1,18 +1,35 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
+import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { parseCargoQuery } from '@/lib/navigation/contracts'
 import { useCasesStore } from '@/store/casesStore'
 import { cn } from '@/lib/utils'
 
-const FLOW_BADGE_COLORS: Record<number, string> = {
-  0: 'bg-gray-600', 1: 'bg-blue-600', 2: 'bg-green-600',
-  3: 'bg-orange-600', 4: 'bg-red-600', 5: 'bg-purple-600',
-}
-
 export function WhStatusTable() {
-  const { cases, fetchCases, isLoading, openDrawer } = useCasesStore()
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const { cases, fetchCases, setFilter, isLoading, openDrawer } = useCasesStore()
 
-  useEffect(() => { fetchCases() }, [fetchCases])
+  useEffect(() => {
+    const query = parseCargoQuery(searchParams)
+    setFilter('site', query.site ?? 'all')
+    setFilter('vendor', (query.vendor ?? 'all') as 'Hitachi' | 'Siemens' | 'Other' | 'all')
+    setFilter('route_type', query.route_type ?? 'all')
+  }, [searchParams, setFilter])
+
+  useEffect(() => { void fetchCases() }, [fetchCases, searchParams])
+
+  const openCase = (caseId: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('tab', 'wh')
+    params.set('caseId', caseId)
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    openDrawer(caseId)
+  }
 
   return (
     <div className="overflow-auto h-full">
@@ -23,7 +40,7 @@ export function WhStatusTable() {
             <th className="py-2 px-3 text-left">Case No</th>
             <th className="py-2 px-3 text-left w-14">Site</th>
             <th className="py-2 px-3 text-left">현재위치</th>
-            <th className="py-2 px-3 text-left w-16">FC</th>
+            <th className="py-2 px-3 text-left w-40">운송 경로</th>
             <th className="py-2 px-3 text-left w-16">SQM</th>
             <th className="py-2 px-3 text-left w-20">Status</th>
             <th className="py-2 px-3 text-left">벤더</th>
@@ -40,15 +57,15 @@ export function WhStatusTable() {
             <tr
               key={c.id}
               className="border-b border-gray-800 hover:bg-gray-800 cursor-pointer"
-              onClick={() => openDrawer(c.id)}
+              onClick={() => openCase(c.id)}
             >
               <td className="py-1.5 px-3 text-gray-600">{i + 1}</td>
               <td className="py-1.5 px-3 font-mono">{c.case_no}</td>
               <td className="py-1.5 px-3">{c.site}</td>
               <td className="py-1.5 px-3 truncate max-w-32">{c.status_location}</td>
               <td className="py-1.5 px-3">
-                <span className={cn('px-1.5 py-0.5 rounded text-white text-[10px]', FLOW_BADGE_COLORS[c.flow_code])}>
-                  FC{c.flow_code}
+                <span className={cn('rounded-full border px-2 py-1 text-[10px]', getRouteTypeBadgeClass(c.route_type ?? getRouteTypeIdFromFlowCode(c.flow_code)))}>
+                  {getRouteTypeLabel(c.route_type ?? getRouteTypeIdFromFlowCode(c.flow_code))}
                 </span>
               </td>
               <td className="py-1.5 px-3">{c.sqm}</td>

@@ -26,17 +26,17 @@ const EMPHASIZED_POI_IDS = new Set(["mosb-yard"])
 function categoryColor(category: PoiCategory): [number, number, number, number] {
   switch (category) {
     case "HVDC_SITE":
-      return [56, 189, 248, 220]
-    case "PORT":
-      return [251, 146, 60, 220]
-    case "WAREHOUSE":
       return [34, 197, 94, 220]
+    case "PORT":
+      return [59, 130, 246, 220]
+    case "WAREHOUSE":
+      return [234, 179, 8, 220]
     case "OFFICE":
-      return [129, 140, 248, 220]
+      return [148, 163, 184, 220]
     case "YARD":
-      return [250, 204, 21, 220]
+      return [249, 115, 22, 220]
     case "AIRPORT":
-      return [248, 113, 113, 220]
+      return [59, 130, 246, 220]
     default:
       return [148, 163, 184, 220]
   }

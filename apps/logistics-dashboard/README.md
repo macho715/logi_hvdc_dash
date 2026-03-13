@@ -12,14 +12,34 @@
 
 ## Overview
 
+### 2026-03-13 Overview Cockpit Update
+
+- `/overview` is now a map-first cockpit backed by `GET /api/overview`.
+- Public UI terminology no longer exposes `Flow Code`; overview-linked surfaces use plain-language route labels instead.
+- Route taxonomy is SSOT-driven from `configs/overview.route-types.json`.
+- Overview click targets are SSOT-driven from `configs/overview.destinations.json`.
+- Cross-page deep links are URL-first and restorable on refresh for:
+  - `/pipeline?stage=&site=&vendor=&category=&route_type=`
+  - `/sites?site=&tab=`
+  - `/cargo?tab=&caseId=&site=&vendor=&voyage_stage=&route_type=`
+  - `/chain?focus=&site=&route_type=`
+
+Plain-language route labels:
+- `출발 준비 중`
+- `항만 → 현장 직송`
+- `항만 → 창고 → 현장`
+- `항만 → MOSB → 현장`
+- `항만 → 창고 → MOSB → 현장`
+- `경로 확인 필요`
+
 ```mermaid
 graph LR
     subgraph Dashboard["HVDC Logistics Dashboard"]
-        KPI["📊 KPI Cards\n총 케이스 · 현장 도착\n창고 재고 · Flow Code"]
-        Map["🗺️ Live Map\nDeck.gl + Maplibre\nUAE POI Sites"]
+        KPI["📊 KPI Rail\n총 케이스 · 현장 도착률\n창고 압력 · 예외 수"]
+        Map["🗺️ Map-first Cockpit\nDeck.gl + Maplibre\nUAE POI Sites"]
         Cargo["📦 Cargo Tracking\n선적 · 창고 · DSV 재고"]
-        Pipeline["🔄 Flow Pipeline\nFC0 → FC5 진행"]
-        Sites["📍 Site Status\nAGI · DAS · MIR · SHU · MOSB"]
+        Pipeline["🔄 Pipeline Drilldown\n단계/현장/경로 URL 복원"]
+        Sites["📍 Site Status\nAGI · DAS · MIR · SHU"]
     end
 
     Supabase["🗄️ Supabase\n(PostgreSQL + Realtime)"] --> Dashboard
@@ -28,7 +48,7 @@ graph LR
 This dashboard provides real-time visibility into:
 - **Cargo tracking** — shipments from origin ports to UAE project sites
 - **Warehouse stock** — MOSB/DAS hub inventory levels
-- **Flow code progression** — FC0 (Pre-Arrival) through FC5 (Site Delivery)
+- **Route-aware progression** — internal `flow_code` is preserved, but user-facing UI shows plain-language transport routes
 - **KPI monitoring** — live metrics with Supabase Realtime WebSocket updates
 - **Geospatial map** — UAE HVDC site locations with cargo density heatmap
 

@@ -14,10 +14,13 @@ import { createEtaWedgeLayer } from "@/components/map/layers/createEtaWedgeLayer
 import { createGeofenceGeojson, isPointInGeofence } from "@/components/map/layers/geofenceUtils"
 import { HeatmapLegend } from "@/components/map/HeatmapLegend"
 import { createPoiLayers, getPoiTooltip } from "@/components/map/PoiLocationsLayer"
-import { createHvdcPoiLayers } from "@/components/map/HvdcPoiLayers"
+import { createFlowArcLayer } from "@/lib/map/flowLines"
 import { POI_LOCATIONS } from "@/lib/map/poiLocations"
+import { buildDashboardLink } from "@/lib/navigation/contracts"
 import { formatInDubaiTimezone } from "@/lib/time"
 import type { Event, Location, LocationStatus } from "@repo/shared"
+import type { NavigationIntent } from "@/types/overview"
+import type { PoiLocation } from "@/lib/map/poiTypes"
 
 type TooltipInfo =
   | { kind: "location"; x: number; y: number; object: Location & { status?: LocationStatus } }
@@ -35,7 +38,7 @@ const INITIAL_VIEW = {
 
 const POI_BOUNDS: maplibregl.LngLatBoundsLike = [
   [52.57, 24.12],
-  [54.65, 25.15],
+  [55.25, 25.25],
 ]
 
 const MAP_LAYER_ZOOM_THRESHOLDS = {
@@ -46,7 +49,91 @@ const MAP_LAYER_ZOOM_THRESHOLDS = {
   poiDetailMin: 10.5,
 }
 
-export function OverviewMap() {
+interface OverviewMapProps {
+  onNavigateIntent?: (intent: NavigationIntent) => void
+}
+
+export function OverviewMap(props: OverviewMapProps) {
+  return <OverviewMapInner {...props} />
+}
+
+function inferSiteCode(value: string): 'SHU' | 'MIR' | 'DAS' | 'AGI' | undefined {
+  if (value.includes('SHU')) return 'SHU'
+  if (value.includes('MIR')) return 'MIR'
+  if (value.includes('DAS')) return 'DAS'
+  if (value.includes('AGI')) return 'AGI'
+  return undefined
+}
+
+function buildLocationIntent(location: Location): NavigationIntent {
+  const siteCode = inferSiteCode(`${location.location_id} ${location.name}`.toUpperCase())
+
+  if (location.siteType === 'SITE' && siteCode) {
+    return {
+      destinationId: 'map-site',
+      page: 'sites',
+      params: { site: siteCode, tab: 'summary' },
+    }
+  }
+
+  if (location.siteType === 'PORT' || location.siteType === 'BERTH') {
+    return {
+      destinationId: 'map-port',
+      page: 'chain',
+      params: { focus: 'port' },
+    }
+  }
+
+  if (location.siteType === 'MOSB_WH' && location.name.toUpperCase().includes('MOSB')) {
+    return {
+      destinationId: 'map-mosb',
+      page: 'chain',
+      params: { focus: 'mosb' },
+    }
+  }
+
+  return {
+    destinationId: 'map-warehouse',
+    page: 'chain',
+    params: { focus: 'warehouse' },
+  }
+}
+
+function buildPoiIntent(poi: PoiLocation): NavigationIntent {
+  const siteCode = inferSiteCode(`${poi.code} ${poi.name}`.toUpperCase())
+
+  if (poi.category === 'HVDC_SITE' && siteCode) {
+    return {
+      destinationId: 'map-site',
+      page: 'sites',
+      params: { site: siteCode, tab: 'summary' },
+    }
+  }
+
+  if (poi.category === 'PORT' || poi.category === 'AIRPORT') {
+    return {
+      destinationId: 'map-port',
+      page: 'chain',
+      params: { focus: 'port' },
+    }
+  }
+
+  if (poi.category === 'WAREHOUSE') {
+    return {
+      destinationId: 'map-warehouse',
+      page: 'chain',
+      params: { focus: 'warehouse' },
+    }
+  }
+
+  return {
+    destinationId: 'map-mosb',
+    page: 'chain',
+    params: { focus: 'mosb' },
+  }
+}
+
+function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
   const overlayRef = useRef<MapboxOverlay | null>(null)
@@ -96,6 +183,17 @@ export function OverviewMap() {
   const showStatusLayer = zoom >= MAP_LAYER_ZOOM_THRESHOLDS.statusMin
   const showPoiLayer = zoom >= MAP_LAYER_ZOOM_THRESHOLDS.poiMin
 
+  const navigate = useCallback(
+    (intent: NavigationIntent) => {
+      onNavigateIntent?.(intent)
+      if (!onNavigateIntent) {
+        console.warn('[OverviewMap] onNavigateIntent not provided, navigation skipped', intent)
+        return
+      }
+    },
+    [onNavigateIntent],
+  )
+
   const handleHover = useCallback((info: PickingInfo) => {
     if (!info?.object) {
       setTooltip(null)
@@ -119,6 +217,12 @@ export function OverviewMap() {
       object: info.object as Location & { status?: LocationStatus },
     })
   }, [])
+
+  const handleLocationClick = useCallback((info: PickingInfo) => {
+    const location = info.object as Location | undefined
+    if (!location) return
+    navigate(buildLocationIntent(location))
+  }, [navigate])
 
   // Initialize map
   useEffect(() => {
@@ -189,7 +293,10 @@ export function OverviewMap() {
       visible: showPoiLayer,
       labelZoomThreshold: MAP_LAYER_ZOOM_THRESHOLDS.poiLabelMin,
       labelDetailZoomThreshold: MAP_LAYER_ZOOM_THRESHOLDS.poiDetailMin,
-      onSelectPoi: (poi) => setSelectedPoiId(poi.id),
+      onSelectPoi: (poi) => {
+        setSelectedPoiId(poi.id)
+        navigate(buildPoiIntent(poi))
+      },
       onHover: handleHover,
     })
 
@@ -201,12 +308,13 @@ export function OverviewMap() {
         visible: showHeatmapLayer,
       }),
       createEtaWedgeLayer(locations, showEtaWedge),
-      createLocationLayer(locations, statusByLocationId, handleHover, {
+      createLocationLayer(locations, statusByLocationId, handleHover, handleLocationClick, {
         visible: showStatusLayer,
       }),
+      createFlowArcLayer(showPoiLayer),
       ...poiLayers,
-      ...createHvdcPoiLayers(),
     ]
+      .filter((layer): layer is NonNullable<typeof layer> => layer != null)
 
     overlayRef.current.setProps({ layers })
   }, [
@@ -218,6 +326,7 @@ export function OverviewMap() {
     showEtaWedge,
     heatFilter,
     handleHover,
+    handleLocationClick,
     geofenceWeight,
     heatmapRadiusPixels,
     selectedPoiId,
@@ -229,7 +338,12 @@ export function OverviewMap() {
 
   return (
     <div className="relative w-full h-full">
-      <div ref={mapContainerRef} className="w-full h-full" />
+      <div
+        ref={mapContainerRef}
+        className="w-full h-full"
+        aria-label="Overview map"
+        tabIndex={-1}
+      />
 
       {showHeatmapLayer ? <HeatmapLegend /> : null}
 

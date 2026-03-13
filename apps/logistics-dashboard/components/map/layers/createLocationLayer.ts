@@ -17,6 +17,7 @@ export function createLocationLayer(
   locations: Location[],
   statusByLocationId: Record<string, LocationStatus>,
   onHover?: (info: PickingInfo<LocationWithStatus>) => void,
+  onClick?: (info: PickingInfo<LocationWithStatus>) => void,
   { visible = true }: { visible?: boolean } = {},
 ) {
   const data: LocationWithStatus[] = locations.map((loc) => ({
@@ -47,6 +48,7 @@ export function createLocationLayer(
     },
     getLineColor: [255, 255, 255, 150],
     onHover,
+    onClick,
     updateTriggers: {
       getRadius: [statusByLocationId],
       getFillColor: [statusByLocationId],

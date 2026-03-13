@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Map, ArrowRightLeft, Building2, Package, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Map, ArrowRightLeft, Building2, Package, Network, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   { href: '/overview',  icon: Map,            label: 'Overview' },
+  { href: '/chain',     icon: Network,        label: '물류 체인' },
   { href: '/pipeline',  icon: ArrowRightLeft,  label: 'Pipeline' },
   { href: '/sites',     icon: Building2,       label: 'Sites' },
   { href: '/cargo',     icon: Package,         label: 'Cargo' },
