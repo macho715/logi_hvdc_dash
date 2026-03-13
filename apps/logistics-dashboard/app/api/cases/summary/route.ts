@@ -17,8 +17,7 @@ export async function GET() {
   try {
     // Fetch all cases (only needed columns for aggregation)
     const { data, error } = await supabase
-      .schema('case')
-      .from('cases')
+      .from('v_cases')
       .select('site, flow_code, status_current, status_location, sqm, source_vendor')
 
     if (error || !data) {

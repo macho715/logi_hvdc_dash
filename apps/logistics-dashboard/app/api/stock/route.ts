@@ -11,8 +11,7 @@ export async function GET(request: NextRequest) {
     const pageSize = parseInt(searchParams.get('pageSize') ?? '50', 10)
 
     let query = supabase
-      .schema('wh')
-      .from('stock_onhand')
+      .from('v_stock_onhand')
       .select(
         'id, no, sku, description, location, pallet_id, qty, shipping_ref, date_received',
         { count: 'exact' }

@@ -1,0 +1,28 @@
+
+> logi-master-dash@0.1.0 typecheck C:\Users\jichu\Downloads\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ
+> turbo typecheck
+
+• turbo 2.7.5
+• Packages in scope: @repo/doc-intelligence, @repo/hvdc-dashboard, @repo/logistics-dashboard, @repo/shared
+• Running typecheck in 4 packages
+• Remote caching disabled
+@repo/hvdc-dashboard:typecheck: cache miss, executing c911b7499c536bfb
+@repo/shared:typecheck: cache miss, executing b12ebd0af51b1f54
+@repo/hvdc-dashboard:typecheck: 
+@repo/hvdc-dashboard:typecheck: > @repo/hvdc-dashboard@0.1.0 typecheck C:\Users\jichu\Downloads\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ\apps\hvdc-dashboard
+@repo/hvdc-dashboard:typecheck: > tsc --noEmit
+@repo/hvdc-dashboard:typecheck: 
+@repo/shared:typecheck: 
+@repo/shared:typecheck: > @repo/shared@0.1.0 typecheck C:\Users\jichu\Downloads\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ\packages\shared
+@repo/shared:typecheck: > tsc --noEmit
+@repo/shared:typecheck: 
+@repo/logistics-dashboard:typecheck: cache miss, executing 34640c2573be16b1
+@repo/logistics-dashboard:typecheck: 
+@repo/logistics-dashboard:typecheck: > @repo/logistics-dashboard@0.1.0 typecheck C:\Users\jichu\Downloads\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ\apps\logistics-dashboard
+@repo/logistics-dashboard:typecheck: > tsc --noEmit
+@repo/logistics-dashboard:typecheck: 
+
+ Tasks:    3 successful, 3 total
+Cached:    0 cached, 3 total
+  Time:    8.385s 
+

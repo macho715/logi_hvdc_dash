@@ -16,8 +16,7 @@ export async function GET(request: NextRequest) {
     const status_current_values = searchParams.getAll('status_current')
 
     let query = supabase
-      .schema('case')
-      .from('cases')
+      .from('v_cases')
       .select(
         `id, case_no, site, flow_code, flow_description,
          status_current, status_location, final_location,
