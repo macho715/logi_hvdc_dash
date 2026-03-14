@@ -19,7 +19,7 @@ interface OpsSnapshotProps {
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl bg-[var(--ops-surface)] border border-[var(--ops-border)] p-3">
+    <div className="rounded-xl bg-[var(--ops-surface)] border border-[var(--ops-border)] p-4">
       <h3 className="text-[13px] font-semibold text-[var(--ops-text-strong)] mb-2">{title}</h3>
       {children}
     </div>
@@ -31,7 +31,7 @@ export function OpsSnapshot({ data, worklist, loading, onNavigate }: OpsSnapshot
 
   if (loading && !data) {
     return (
-      <div className="bg-[var(--ops-surface-warm)] border-t border-[var(--ops-border)] px-4 py-4">
+      <div className="bg-[#F8FAFC] border-t border-[var(--ops-border)] px-4 py-4">
         <div className="h-5 w-40 animate-pulse rounded bg-gray-200 mb-4" />
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -48,7 +48,7 @@ export function OpsSnapshot({ data, worklist, loading, onNavigate }: OpsSnapshot
   // ── WH Pressure ────────────────────────────────────────────────────────────
   const whItems = data?.warehousePressure ?? []
   const topWhItems = whItems.slice(0, 3)
-  const maxSqm = topWhItems.reduce((acc, item) => Math.max(acc, item.sqm), 1)
+  const maxSqm = Math.max(...whItems.map(item => item.sqm), 1)
 
   // ── Worklist ────────────────────────────────────────────────────────────────
   const highlightedIds = data?.worklist.highlightedIds ?? []
@@ -65,7 +65,7 @@ export function OpsSnapshot({ data, worklist, loading, onNavigate }: OpsSnapshot
   const recentFeed = (data?.liveFeed ?? []).slice(-4).reverse()
 
   return (
-    <div className="bg-[var(--ops-surface-warm)] border-t border-[var(--ops-border)] px-4 py-4">
+    <div className="bg-[#F8FAFC] border-t border-[var(--ops-border)] px-4 py-4">
       <h2 className="text-[16px] font-semibold text-[var(--ops-text-strong)] mb-4">
         {t.opsSnapshot.title}
       </h2>
@@ -92,11 +92,17 @@ export function OpsSnapshot({ data, worklist, loading, onNavigate }: OpsSnapshot
                       {item.sqm.toLocaleString()} sqm
                     </span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-[var(--ops-border)]">
-                    <div
-                      className="h-1.5 rounded-full bg-[var(--ops-warn)]"
-                      style={{ width: `${Math.min(100, (item.sqm / maxSqm) * 100)}%` }}
-                    />
+                  <div className="h-2.5 overflow-hidden rounded-full bg-slate-200">
+                    {(() => {
+                      const ratio = item.sqm / maxSqm
+                      const pressureClass = ratio > 0.8 ? 'bg-red-500' : ratio > 0.5 ? 'bg-amber-500' : 'bg-emerald-500'
+                      return (
+                        <div
+                          className={`h-full rounded-full ${pressureClass}`}
+                          style={{ width: `${Math.min(100, (item.sqm / maxSqm) * 100)}%` }}
+                        />
+                      )
+                    })()}
                   </div>
                 </button>
               ))}
@@ -121,13 +127,13 @@ export function OpsSnapshot({ data, worklist, loading, onNavigate }: OpsSnapshot
                       params: { tab: 'wh', caseId: row.id },
                     })
                   }
-                  className="w-full flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 hover:bg-[var(--ops-canvas)] transition-colors text-left"
+                  className="w-full flex items-center justify-between gap-2 rounded-lg border border-[var(--ops-border)] px-3 py-2.5 hover:bg-slate-50 transition-colors duration-150 text-left"
                 >
                   <span className="text-[12px] text-[var(--ops-text-strong)] truncate flex-1">
                     {row.title}
                   </span>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <span className={cn('text-[11px]', gateClassLight(row.gate))}>
+                    <span className={gateClassLight(row.gate)}>
                       {row.gate}
                     </span>
                     {row.dueAt ? (

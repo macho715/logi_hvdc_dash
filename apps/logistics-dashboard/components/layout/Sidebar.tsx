@@ -23,13 +23,13 @@ export function Sidebar() {
 
   return (
     <aside className={cn(
-      'flex flex-col bg-gray-900 border-r border-gray-800 transition-all duration-200',
+      'flex flex-col bg-[#071225] border-r border-white/5 transition-all duration-200',
       collapsed ? 'w-14' : 'w-48'
     )}>
       {/* Logo area */}
-      <div className="flex items-center justify-between px-3 py-4 border-b border-gray-800">
+      <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5">
         {!collapsed && (
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">HVDC</span>
+          <span className="text-[18px] font-bold tracking-[-0.02em] text-white">HVDC</span>
         )}
         <button
           onClick={() => setCollapsed(c => !c)}
@@ -49,10 +49,10 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 mx-1 rounded-lg transition-colors text-sm',
+                'flex items-center gap-3 rounded-xl px-4 py-3 mx-1 text-[15px] transition-colors duration-150',
                 active
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                  ? 'bg-[#2563EB] text-white font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_6px_18px_rgba(37,99,235,.28)]'
+                  : 'text-slate-300 font-medium hover:bg-white/5 hover:text-white'
               )}
             >
               <Icon size={18} className="shrink-0" />

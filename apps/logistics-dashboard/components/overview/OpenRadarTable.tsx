@@ -84,10 +84,10 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
             type="button"
             onClick={() => setActiveFilter(key)}
             className={cn(
-              'px-3 py-1 rounded-full text-[11px] font-semibold border transition-colors duration-100',
+              'px-3 py-1 rounded-full text-[12px] font-semibold transition-colors duration-100',
               activeFilter === key
-                ? 'bg-[var(--ops-info)] text-white border-[var(--ops-info)]'
-                : 'text-[var(--ops-text-muted)] border-[var(--ops-border)] hover:border-[var(--ops-info)]',
+                ? 'bg-blue-600 text-white shadow-sm border border-blue-600'
+                : 'border border-[var(--ops-border)] bg-[var(--ops-surface)] text-[var(--ops-text-muted)] hover:border-[var(--ops-info)]',
             )}
           >
             {label}
@@ -96,7 +96,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
       </div>
 
       {/* List */}
-      <div className="overflow-y-auto max-h-[380px] space-y-1">
+      <div className="overflow-y-auto max-h-[540px] space-y-2">
         {filtered.length === 0 ? (
           <div className="rounded-lg border border-dashed border-[var(--ops-border)] bg-[var(--ops-canvas)] py-6 text-center text-sm text-[var(--ops-text-muted)]">
             {t.openRadar.noItems}
@@ -124,7 +124,12 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                     params: { tab: 'wh', caseId: row.id },
                   })
                 }
-                className="w-full flex items-start gap-3 rounded-lg border border-[var(--ops-border)] bg-[var(--ops-surface)] px-3 py-2 cursor-pointer hover:shadow-sm transition-shadow duration-[140ms] text-left"
+                className={cn(
+                  'w-full flex items-start gap-3 rounded-xl px-4 py-3.5 cursor-pointer transition-colors duration-150 text-left',
+                  highlightedIdSet.has(row.id)
+                    ? 'border border-blue-200 bg-blue-50/40 ring-1 ring-blue-100'
+                    : 'border border-[var(--ops-border)] bg-[var(--ops-surface)] hover:bg-slate-50'
+                )}
               >
                 {/* Left: title + subtitle */}
                 <div className="min-w-0 flex-1">
@@ -160,7 +165,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                     </span>
                   ) : null}
 
-                  <span className={cn('text-[11px]', gateClassLight(row.gate))}>
+                  <span className={gateClassLight(row.gate)}>
                     {row.gate}
                   </span>
 

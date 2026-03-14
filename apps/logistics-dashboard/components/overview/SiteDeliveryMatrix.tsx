@@ -13,12 +13,12 @@ interface SiteDeliveryMatrixProps {
 
 function riskBadgeClass(readinessPercent: number): string {
   if (readinessPercent < 50) {
-    return 'rounded-full px-2 py-0.5 text-[10px] font-semibold bg-red-100 text-red-700'
+    return 'rounded-full px-2 py-0.5 text-[10px] font-semibold bg-red-100 text-red-700 ring-1 ring-red-200'
   }
   if (readinessPercent < 80) {
-    return 'rounded-full px-2 py-0.5 text-[10px] font-semibold bg-amber-100 text-amber-700'
+    return 'rounded-full px-2 py-0.5 text-[10px] font-semibold bg-amber-100 text-amber-700 ring-1 ring-amber-200'
   }
-  return 'rounded-full px-2 py-0.5 text-[10px] font-semibold bg-green-100 text-green-700'
+  return 'rounded-full px-2 py-0.5 text-[10px] font-semibold bg-green-100 text-green-700 ring-1 ring-emerald-200'
 }
 
 export function SiteDeliveryMatrix({ siteReadiness, loading, onNavigate }: SiteDeliveryMatrixProps) {
@@ -58,7 +58,7 @@ export function SiteDeliveryMatrix({ siteReadiness, loading, onNavigate }: SiteD
                 key={item.site}
                 type="button"
                 onClick={() => onNavigate(item.navigationIntent)}
-                className="rounded-xl border border-[var(--ops-border)] bg-[var(--ops-surface)] p-4 text-left transition-shadow duration-[140ms] hover:shadow-md cursor-pointer"
+                className="rounded-xl border border-[var(--ops-border)] bg-[var(--ops-surface)] p-6 text-left cursor-pointer shadow-[0_1px_2px_rgba(15,23,42,.03),0_8px_24px_rgba(15,23,42,.05)] transition-all duration-150 hover:-translate-y-[1px] hover:shadow-[0_4px_16px_rgba(15,23,42,.06)]"
               >
                 {/* Site chip */}
                 <span
@@ -70,53 +70,63 @@ export function SiteDeliveryMatrix({ siteReadiness, loading, onNavigate }: SiteD
                   {item.site}
                 </span>
 
-                {/* Data grid */}
-                <div className="mt-3 grid grid-cols-2 gap-y-2">
-                  {/* Assigned */}
-                  <span className="text-[11px] text-[var(--ops-text-muted)]">
+                {/* Hero metric: Assigned */}
+                <div className="mt-4">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--ops-text-muted)]">
                     {t.siteMatrix.assigned}
-                  </span>
-                  <span className="text-sm font-semibold text-[var(--ops-text-strong)] text-right">
+                  </div>
+                  <div className="mt-1 text-[34px] leading-none font-bold tracking-[-0.02em] text-[var(--ops-text-strong)]">
                     {item.total.toLocaleString()}
-                  </span>
+                  </div>
+                </div>
 
+                {/* Data grid */}
+                <div className="mt-4 space-y-2.5">
                   {/* Delivered */}
-                  <span className="text-[11px] text-[var(--ops-text-muted)]">
-                    {t.siteMatrix.delivered}
-                  </span>
-                  <span className="text-sm font-semibold text-[var(--ops-text-strong)] text-right">
-                    {item.arrived.toLocaleString()}
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-[var(--ops-text-muted)]">
+                      {t.siteMatrix.delivered}
+                    </span>
+                    <span className="text-sm font-semibold text-[var(--ops-text-strong)]">
+                      {item.arrived.toLocaleString()}
+                    </span>
+                  </div>
 
                   {/* Pending */}
-                  <span className="text-[11px] text-[var(--ops-text-muted)]">
-                    {t.siteMatrix.pending}
-                  </span>
-                  <span className="text-sm font-semibold text-[var(--ops-text-strong)] text-right">
-                    {item.preArrival.toLocaleString()}
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-[var(--ops-text-muted)]">
+                      {t.siteMatrix.pending}
+                    </span>
+                    <span className="text-sm font-semibold text-[var(--ops-text-strong)]">
+                      {item.preArrival.toLocaleString()}
+                    </span>
+                  </div>
 
                   {/* MOSB Pending */}
-                  <span className="text-[11px] text-[var(--ops-text-muted)]">
-                    {t.siteMatrix.mosbPending}
-                  </span>
-                  <span className="text-sm font-semibold text-[var(--ops-text-strong)] text-right">
-                    {item.mosb.toLocaleString()}
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-[var(--ops-text-muted)]">
+                      {t.siteMatrix.mosbPending}
+                    </span>
+                    <span className="text-sm font-semibold text-[var(--ops-text-strong)]">
+                      {item.mosb.toLocaleString()}
+                    </span>
+                  </div>
 
                   {/* Overdue (v1 placeholder) */}
-                  <span className="text-[11px] text-[var(--ops-text-muted)]">
-                    {t.siteMatrix.overdue}
-                  </span>
-                  <span className="text-sm font-semibold text-[var(--ops-text-strong)] text-right">
-                    —
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-[var(--ops-text-muted)]">
+                      {t.siteMatrix.overdue}
+                    </span>
+                    <span className="text-sm font-semibold text-[var(--ops-text-strong)]">
+                      —
+                    </span>
+                  </div>
 
                   {/* Risk */}
-                  <span className="text-[11px] text-[var(--ops-text-muted)]">
-                    {t.siteMatrix.risk}
-                  </span>
-                  <div className="flex justify-end">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-[var(--ops-text-muted)]">
+                      {t.siteMatrix.risk}
+                    </span>
                     <span className={riskBadgeClass(item.readinessPercent)}>
                       {item.readinessPercent.toFixed(1)}%
                     </span>
