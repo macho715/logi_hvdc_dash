@@ -166,7 +166,9 @@ Captured from the local dashboard runtime on `http://localhost:3001`.
 
 ### Overview
 
-![Overview cockpit](apps/logistics-dashboard/public/readme/overview.png)
+![Overview cockpit top](apps/logistics-dashboard/public/readme/overview-top.png)
+
+![Overview cockpit bottom](apps/logistics-dashboard/public/readme/overview-bottom.png)
 
 ### Pipeline
 

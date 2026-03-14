@@ -81,7 +81,9 @@ Captured from the local dashboard runtime on `http://localhost:3001`.
 
 ### Overview
 
-![Overview cockpit](public/readme/overview.png)
+![Overview cockpit top](public/readme/overview-top.png)
+
+![Overview cockpit bottom](public/readme/overview-bottom.png)
 
 ### Pipeline
 
