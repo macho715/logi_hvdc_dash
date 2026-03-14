@@ -1,7 +1,7 @@
 # GitHub + Vercel 배포 가이드
 
 > **HVDC Logistics Dashboard — 신규 GitHub 레포지터리 → Vercel 배포 완전 가이드**
-> Version: 1.1.0 | Updated: 2026-03-13
+> Version: 1.3.0 | Updated: 2026-03-14
 
 ---
 
@@ -20,6 +20,7 @@
 11. [트러블슈팅](#11-트러블슈팅)
 12. [알려진 이슈 및 해결 현황](#12-알려진-이슈-및-해결-현황)
 13. [Supabase 로컬 실행 파일 & 폴더 완전 가이드](#13-supabase-로컬-실행-파일--폴더-완전-가이드)
+14. [v1.3.0 변경사항 (2026-03-14)](#v130-변경사항-2026-03-14)
 
 ---
 
@@ -373,6 +374,16 @@ graph TD
 
 > `SUPABASE_SERVICE_ROLE_KEY`는 API routes(`app/api/`)에서만 사용합니다.
 > 클라이언트 컴포넌트에서 직접 사용하면 RLS가 무력화되므로 절대 금지입니다.
+>
+> **v1.3.0 중요**: `SUPABASE_SERVICE_ROLE_KEY`는 이제 **런타임에도 필수**입니다.
+> `POST /api/shipments/new`가 `supabaseAdmin`을 사용하여 비공개 `status` 스키마에 직접 INSERT하기 때문입니다.
+> ETL 전용이 아닌 **실시간 신규 항차 등록** 기능에도 사용됩니다.
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...   ← Required for POST /api/shipments/new (writes to status schema)
+```
 
 ### Vercel CLI로 설정하는 방법
 
@@ -1576,6 +1587,33 @@ ORDER BY schemaname, tablename;
 
 ---
 
-*문서 작성: 2026-03-13*
-*버전: 1.1.0 — import-excel.mjs, chain 페이지, 알려진 이슈 해결 현황 추가*
+---
+
+## v1.3.0 변경사항 (2026-03-14)
+
+### 신규 기능
+- Overview 툴바: 화물 검색 + 지도 레이어 토글 + 신규 항차 등록
+- `POST /api/shipments/new` — `status.shipments_status` 직접 INSERT (SERVICE_ROLE_KEY 필요)
+- `GET /api/shipments?q=` — ilike 부분 검색 추가
+
+### 배포 시 확인사항
+- Vercel 환경변수에 `SUPABASE_SERVICE_ROLE_KEY` 설정 필수 (신규 항차 등록 기능 동작)
+- TypeScript: 0 errors (`pnpm tsc --noEmit`)
+- Vitest: 7/7 tests passing (`pnpm vitest run`)
+
+```mermaid
+flowchart LR
+    Dev["로컬 개발\npnpm dev"] --> Commit["git commit\n(9 commits)"]
+    Commit --> GitHub["GitHub Push"]
+    GitHub --> Vercel["Vercel 자동 빌드\nnext build"]
+    Vercel --> Prod["Production\nlogi-hvdc-dash.vercel.app"]
+
+    Vercel -->|"필요 환경변수"| EnvVars["SUPABASE_URL\nANON_KEY\nSERVICE_ROLE_KEY"]
+    EnvVars -->|"런타임 쓰기"| StatusDB["status.shipments_status\n(POST /api/shipments/new)"]
+```
+
+---
+
+*문서 작성: 2026-03-13 | 최종 수정: 2026-03-14*
+*버전: 1.3.0 — Overview 툴바, 화물 검색, 신규 항차 등록 POST API, 검색 유틸리티 추가*
 *기준 프로젝트: LOGI-MASTER-DASH-claude-improve-dashboard-layout*

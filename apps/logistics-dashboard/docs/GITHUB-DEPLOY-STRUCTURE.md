@@ -41,11 +41,13 @@ logi_hvdc_dash/                          ← GitHub 리포 루트
 │       │   │   │   └── summary/route.ts  ← 공급망 요약 (origins, ports, stages, sites)
 │       │   │   ├── stock/route.ts
 │       │   │   ├── shipments/
-│       │   │   │   ├── route.ts                 ← 선적 레코드 목록
+│       │   │   │   ├── route.ts                 ← 선적 레코드 목록 + ?q= ilike 검색 (업데이트)
+│       │   │   │   ├── new/
+│       │   │   │   │   └── route.ts             ← 신규 항차 등록 POST (NEW)
 │       │   │   │   ├── stages/
-│       │   │   │   │   └── route.ts             ← 항차 단계별 집계 (NEW)
+│       │   │   │   │   └── route.ts
 │       │   │   │   ├── vendors/
-│       │   │   │   │   └── route.ts             ← 고유 벤더 목록 + 건수 (NEW)
+│       │   │   │   │   └── route.ts
 │       │   │   │   └── origin-summary/
 │       │   │   │       └── route.ts             ← 출발지 국가별 집계
 │       │   │   ├── events/route.ts
@@ -64,7 +66,7 @@ logi_hvdc_dash/                          ← GitHub 리포 루트
 │       │   ├── theme-provider.tsx
 │       │   ├── ui/                      ← shadcn 기본 컴포넌트
 │       │   ├── layout/                  ← Sidebar, Header, KpiProvider
-│       │   ├── overview/                ← KpiStripCards, OverviewMap, OverviewRightPanel
+│       │   ├── overview/                ← 툴바 + 지도 + 우측 패널 (업데이트)
 │       │   ├── pipeline/                ← FlowPipeline + 5 chart panels + 2 table components
 │       │   ├── sites/                   ← SiteCards, SiteDetail, AgiAlertBanner, SiteTypeTag
 │       │   ├── cargo/                   ← CargoTabs, CargoDrawer, 3 tables
@@ -105,7 +107,11 @@ logi_hvdc_dash/                          ← GitHub 리포 루트
 │       │   │   ├── poiLocations.ts
 │       │   │   ├── poiTypes.ts
 │       │   │   └── flowLines.ts         ← 흐름 라인 레이어 (신규)
-│       │   └── search/searchIndex.ts
+│       │   ├── search/                       ← 검색 유틸리티 (NEW)
+│       │   │   ├── normalizeShipmentId.ts    ← ID 정규화 함수
+│       │   │   ├── searchIndex.ts
+│       │   │   └── __tests__/
+│       │   │       └── normalizeShipmentId.test.ts  ← Vitest 7개 테스트
 │       │
 │       ├── scripts/                     ← ETL 스크립트 (신규)
 │       │   └── import-excel.mjs         ← Excel → Supabase ETL (Node.js)
@@ -465,10 +471,21 @@ Vercel 빌드
 
 ## 11. 컴포넌트 구조 상세 (현재 구현)
 
-### 신규 추가 컴포넌트 (2026-03-13 기준)
+### 신규 추가 컴포넌트 (2026-03-14 기준)
 
 ```
 components/
+├── overview/                            ← 툴바 + 지도 + 우측 패널 (업데이트)
+│   ├── OverviewPageClient.tsx           ← 툴바 + 모달 배선 (업데이트)
+│   ├── OverviewToolbar.tsx              ← 검색 + 레이어 토글 + 신규항차 버튼 (NEW)
+│   ├── ShipmentSearchBar.tsx            ← fuzzy ID 검색바 (NEW)
+│   ├── MapLayerToggles.tsx              ← Origin Arc / 항차 / Heatmap 토글 (NEW)
+│   ├── NewVoyageModal.tsx               ← 신규 항차 등록 폼 (NEW)
+│   ├── KpiStripCards.tsx
+│   ├── OverviewMap.tsx                  ← layerOriginArcs, layerTrips 배선 (업데이트)
+│   ├── OverviewRightPanel.tsx           ← selectedShipmentId prop (업데이트)
+│   └── OverviewBottomPanel.tsx
+│
 ├── chain/                               ← 공급망 시각화 (신규)
 │   ├── FlowChain.tsx                    ← 수평 공급망 시각화 (원산지 → 항구 → 거점 → 현장)
 │   └── OriginCountrySummary.tsx         ← 원산지 국가별 케이스 집계
@@ -513,7 +530,7 @@ types/
 
 ---
 
-## 12. 구현 상태 (2026-03-13 기준)
+## 12. 구현 상태 (2026-03-14 기준)
 
 | 항목 | 상태 | 비고 |
 |------|------|------|
@@ -522,12 +539,44 @@ types/
 | React Hydration 경고 | ✅ 해결됨 | `suppressHydrationWarning` 적용 (Kapture 브라우저 확장 충돌) |
 | KPI pagination 버그 | ✅ 해결됨 | `fetchAllCases()` loop (PostgREST db-max-rows=1000 workaround) |
 | ESLint | ⚠️ 비차단 | workspace eslint binary 미설정 (빌드에 영향 없음) |
-| /overview 페이지 | ✅ 완성 | KPI strip + deck.gl 지도 + 우측 패널 |
+| /overview 페이지 | ✅ 완성 | KPI strip + deck.gl 지도 + 우측 패널 + Overview 툴바 |
 | /pipeline 페이지 | ✅ 완성 | FlowPipeline + 필터바 + 케이스 테이블 |
 | /sites 페이지 | ✅ 완성 | SiteCards + SiteDetail + AgiAlertBanner |
 | /cargo 페이지 | ✅ 완성 | CargoTabs + CargoDrawer + WH 테이블 |
 | /chain 페이지 | ✅ 완성 | FlowChain + OriginCountrySummary |
 | Supabase Realtime | ✅ 설정됨 | v_cases, v_stock_onhand publication |
+| Overview 툴바 | ✅ 완성 | 화물 검색 + 레이어 토글 + 신규 항차 등록 |
+| POST /api/shipments/new | ✅ 완성 | status.shipments_status INSERT (SERVICE_ROLE_KEY 필요) |
+| GET /api/shipments?q= | ✅ 완성 | ilike 부분 검색 |
+| Vitest 테스트 | ✅ 7/7 통과 | normalizeShipmentId 7개 테스트 |
+
+---
+
+## v1.3.0 신규 파일 (2026-03-14)
+
+```mermaid
+graph LR
+    subgraph API["app/api/"]
+        SN["shipments/new/route.ts\nPOST 신규 항차"]
+    end
+    subgraph UI["components/overview/"]
+        OT["OverviewToolbar"]
+        SSB["ShipmentSearchBar"]
+        MLT["MapLayerToggles"]
+        NVM["NewVoyageModal"]
+    end
+    subgraph LIB["lib/search/"]
+        NS["normalizeShipmentId.ts"]
+        NST["__tests__/\nnormalizeShipmentId.test.ts"]
+    end
+
+    OT --> SSB
+    OT --> MLT
+    OT --> NVM
+    SSB --> NS
+    NVM --> SN
+    NS --> NST
+```
 
 ---
 
@@ -546,6 +595,6 @@ types/
 
 ---
 
-*문서 작성: 2026-03-13*
-*버전: 1.2.0 — scripts/ 디렉토리, chain/ 페이지, 신규 API 라우트, 신규 컴포넌트, 구현 상태 업데이트*
+*문서 작성: 2026-03-13 | 최종 수정: 2026-03-14*
+*버전: 1.3.0 — Overview 툴바, 화물 검색, 신규 항차 등록 POST API, 검색 유틸리티 추가*
 *기준 프로젝트: LOGI-MASTER-DASH-claude-improve-dashboard-layout*
