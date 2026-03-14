@@ -36,10 +36,7 @@ interface ArcDatum {
 /** Main UAE receiving hub for HVDC cargo — Khalifa Port (KPCT) */
 const UAE_HUB: [number, number] = [54.64842, 24.8095]
 
-/** Fixed arrival color: UAE port blue */
-const TARGET_COLOR: [number, number, number, number] = [59, 130, 246, 210]
-
-/** Region base RGB colors for arc sources */
+/** Region base RGB colors — applied to BOTH source and target for full arc visibility */
 export const REGION_COLORS: Record<Region, [number, number, number]> = {
   EU:       [56,  189, 248],   // sky-400  — Europe
   Asia:     [52,  211, 153],   // emerald-400 — East/SE/South Asia
@@ -73,14 +70,23 @@ function arcWidthPx(count: number, maxCount: number): number {
 }
 
 /**
- * Region-tinted source color. Alpha scales linearly with volume share.
- * Min alpha 60 (always visible), max 220 (dominant route).
+ * Region color with volume-based alpha.
+ * Source end (origin): full brightness.
+ * Target end (UAE): dimmed to 60% so convergence point is visually softer
+ * while still showing the regional color throughout the arc.
+ * Min alpha 80 (always visible), max 230 (dominant route).
  */
-function sourceColor(region: Region, count: number, maxCount: number): [number, number, number, number] {
+function arcColor(
+  region: Region,
+  count: number,
+  maxCount: number,
+  targetEnd = false,
+): [number, number, number, number] {
   const [r, g, b] = REGION_COLORS[region]
   const t = maxCount > 0 ? count / maxCount : 0.5
-  const alpha = Math.round(60 + t * 160)
-  return [r, g, b, alpha]
+  const alpha = Math.round(80 + t * 150)
+  // Target (UAE) end is slightly dimmer to keep the hub from being too cluttered
+  return [r, g, b, targetEnd ? Math.round(alpha * 0.6) : alpha]
 }
 
 export function createOriginArcLayer(
@@ -116,8 +122,8 @@ export function createOriginArcLayer(
     getSourcePosition: (d) => d.sourcePosition,
     getTargetPosition: (d) => d.targetPosition,
 
-    getSourceColor: (d) => sourceColor(d.region, d.count, maxCount),
-    getTargetColor: TARGET_COLOR,
+    getSourceColor: (d) => arcColor(d.region, d.count, maxCount, false),
+    getTargetColor: (d) => arcColor(d.region, d.count, maxCount, true),
 
     getWidth: (d) => arcWidthPx(d.count, maxCount),
     widthUnits: "pixels",
@@ -127,6 +133,7 @@ export function createOriginArcLayer(
 
     updateTriggers: {
       getSourceColor: [maxCount],
+      getTargetColor: [maxCount],
       getWidth: [maxCount],
     },
   })
