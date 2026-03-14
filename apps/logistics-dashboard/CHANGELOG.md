@@ -36,7 +36,67 @@ timeline
         v1.0.0 : Multi-schema fix
                : PostgREST view workaround
                : Seed data & KPI validation
+    section v1.1.x
+        v1.1.0 : Logistics Chain page
+               : Excel import alignment
+               : 5-stage pipeline classification
+        v1.1.1 : Overview cockpit deep-link rework
+               : BFF payload & navigation contracts
+    section v1.3.x
+        v1.3.0 : Overview Toolbar
+               : ShipmentSearchBar with fuzzy search
+               : MapLayerToggles & NewVoyageModal
 ```
+
+---
+
+## [1.3.0] — 2026-03-14
+
+### Overview Toolbar (Search + Map Toggles + New Voyage Modal)
+
+```mermaid
+flowchart LR
+    OPC[OverviewPageClient] --> OT[OverviewToolbar]
+    OT --> SSB[ShipmentSearchBar]
+    OT --> MLT[MapLayerToggles]
+    OT --> NVM[NewVoyageModal]
+
+    SSB --> NSI[normalizeShipmentId]
+    NSI --> GAPI["GET /api/shipments\n(?q= ilike / ?sct_ship_no= exact)"]
+    SSB --> LS1[logisticsStore\nsetHighlightedShipmentId]
+    SSB --> ORP[OverviewRightPanel\nselectedShipmentId]
+
+    MLT --> LS2[logisticsStore\nlayerOriginArcs\nlayerTrips\nshowHeatmap]
+
+    NVM --> PAPI["POST /api/shipments/new"]
+    PAPI --> DB[(status.shipments_status)]
+    PAPI -->|success| RK[refreshKey++]
+    RK --> UOD[useOverviewData re-fetch]
+```
+
+### Added
+
+- `components/overview/OverviewToolbar.tsx` — toolbar row above KpiStripCards containing search, map layer toggles, and new voyage button
+- `components/overview/ShipmentSearchBar.tsx` — fuzzy shipment ID search bar with debounced dropdown (300 ms), map highlight, and right-panel detail card
+- `components/overview/MapLayerToggles.tsx` — three pill toggle buttons: Origin Arc / 항차 / Heatmap
+- `components/overview/NewVoyageModal.tsx` — full voyage entry form (8 field rows: SCT SHIP NO, vendor, POL/POD, ship mode/incoterms/MR No., vessel/B/L, ETD/ATD/ETA/ATA, transit/customs/inland days, site checkboxes, description textarea) that POSTs to `/api/shipments/new`
+- `lib/search/normalizeShipmentId.ts` — ID normalization supporting `hvdc-adopt-sct-0001`, `sct0001`, `sct001`, `case12345` formats; returns `{ type: 'exact' | 'ilike', value: string }`
+- `lib/search/__tests__/normalizeShipmentId.test.ts` — 7 Vitest tests, all passing
+- `app/api/shipments/new/route.ts` — `POST /api/shipments/new`; inserts into `status.shipments_status` via `supabaseAdmin.schema('status')`; returns 200 ok / 409 duplicate_hvdc_code / 400 / 500
+
+### Changed
+
+- `app/api/shipments/route.ts` — added `?q=` ilike param (mutually exclusive with `?sct_ship_no=` exact match via `else if`)
+- `store/logisticsStore.ts` + `types/logistics.ts` — added `layerOriginArcs: boolean` (default `true`), `layerTrips: boolean` (default `true`), `highlightedShipmentId: string | null`, and their corresponding actions
+- `components/map/layers/createTripsLayer.ts` — added optional `highlightId?: string | null` 4th param; highlighted trip renders white `[255,255,255,220]`, others dimmed to 30% alpha
+- `components/overview/OverviewMap.tsx` — `showOriginArcs` now respects `layerOriginArcs` store toggle; `createTripsLayer` call fixed from wrong `showPoiLayer` to `layerTrips`; `highlightedShipmentId` passed through
+- `components/overview/OverviewRightPanel.tsx` — new optional props `selectedShipmentId?: string | null` and `onClearSelection?: () => void`; shows `ShipmentDetailCard` at top when a shipment is selected
+- `hooks/useOverviewData.ts` — added optional `options?: { refreshKey?: number }` param; third `useEffect` triggers re-fetch when `refreshKey` changes
+- `components/overview/OverviewPageClient.tsx` — integrated `OverviewToolbar` as first child, `NewVoyageModal` wired with `refreshKey++` on success, `selectedShipmentId` state wired to `OverviewRightPanel`
+
+### Fixed
+
+- `createTripsLayer` was incorrectly receiving `showPoiLayer` (a zoom-gated boolean) as its `visible` argument — now correctly uses `layerTrips` store toggle
 
 ---
 
