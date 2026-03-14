@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 
 type SiteKey = 'SHU' | 'MIR' | 'DAS' | 'AGI'
 type DashMode = 'program' | 'ops'
@@ -26,22 +27,22 @@ export function ProgramFilterBar({
   const t = useT()
 
   return (
-    <div className="flex h-12 items-center justify-between gap-4 border-b border-white/8 bg-[#0B1730] px-4">
+    <div className={`flex h-12 items-center justify-between gap-4 border-b border-hvdc-border-soft bg-hvdc-bg-panel px-4`}>
       {/* LEFT: Title */}
-      <span className="text-base font-bold text-white">
+      <span className="text-base font-bold text-hvdc-text-primary">
         {t.programBar.title}
       </span>
 
       {/* CENTER: Segmented control */}
-      <div className="flex rounded-full bg-white/5 p-0.5 gap-0.5">
+      <div className="flex gap-0.5 rounded-full bg-hvdc-surface-subtle p-0.5">
         <button
           type="button"
           onClick={() => onModeChange('program')}
           className={cn(
             'px-3 py-1 rounded-full text-sm font-medium transition-colors duration-100',
             mode === 'program'
-              ? 'bg-[#2563EB] text-white'
-              : 'text-slate-400 hover:text-white',
+              ? 'bg-hvdc-brand text-white shadow-hvdc-active'
+              : 'text-hvdc-text-secondary hover:text-hvdc-text-primary',
           )}
         >
           {t.programBar.modeProgram}
@@ -52,8 +53,8 @@ export function ProgramFilterBar({
           className={cn(
             'px-3 py-1 rounded-full text-sm font-medium transition-colors duration-100',
             mode === 'ops'
-              ? 'bg-[#2563EB] text-white'
-              : 'text-slate-400 hover:text-white',
+              ? 'bg-hvdc-brand text-white shadow-hvdc-active'
+              : 'text-hvdc-text-secondary hover:text-hvdc-text-primary',
           )}
         >
           {t.programBar.modeOps}
@@ -69,8 +70,8 @@ export function ProgramFilterBar({
           className={cn(
             'px-2 py-0.5 rounded-full text-[11px] font-semibold border transition-colors duration-100',
             selectedSite === null
-              ? 'bg-[#2563EB] text-white border-[#2563EB]'
-              : 'text-slate-400 border-white/8 hover:border-[#2563EB]',
+              ? 'border-hvdc-brand bg-hvdc-brand text-white shadow-hvdc-active'
+              : 'border-hvdc-border-soft text-hvdc-text-secondary hover:border-hvdc-brand',
           )}
         >
           {t.programBar.filterAll}
@@ -85,8 +86,8 @@ export function ProgramFilterBar({
             className={cn(
               'px-2 py-0.5 rounded-full text-[11px] font-semibold border transition-colors duration-100',
               selectedSite === site
-                ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                : 'text-slate-400 border-white/8 hover:border-[#2563EB]',
+                ? 'border-hvdc-brand bg-hvdc-brand text-white shadow-hvdc-active'
+                : 'border-hvdc-border-soft text-hvdc-text-secondary hover:border-hvdc-brand',
             )}
           >
             {site}
@@ -94,7 +95,7 @@ export function ProgramFilterBar({
         ))}
 
         {/* Updated at timestamp */}
-        <span className="text-[11px] text-slate-400 ml-2">
+        <span className="ml-2 text-[11px] text-hvdc-text-secondary">
           Updated {updatedAt}
         </span>
       </div>

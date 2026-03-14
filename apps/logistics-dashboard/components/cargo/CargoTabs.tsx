@@ -9,6 +9,7 @@ import { DsvStockTable } from '@/components/cargo/DsvStockTable'
 import { CargoDrawer } from '@/components/cargo/CargoDrawer'
 import { useCasesStore } from '@/store/casesStore'
 import { cn } from '@/lib/utils'
+import { ui } from '@/lib/overview/ui'
 
 type TabKey = 'wh' | 'shipments' | 'stock'
 
@@ -78,7 +79,7 @@ export function CargoTabs() {
   return (
     <div className="flex flex-col h-full">
       {/* Tab bar */}
-      <div className="flex border-b border-white/8 bg-[#0B1730]">
+      <div className="flex border-b border-hvdc-border-soft bg-hvdc-bg-panel">
         {tabs.map(t => (
           <button
             key={t.key}
@@ -86,8 +87,8 @@ export function CargoTabs() {
             className={cn(
               'px-5 py-2.5 text-xs font-medium transition-colors border-b-2',
               activeTab === t.key
-                ? 'border-[#3B82F6] text-white'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-hvdc-brand text-hvdc-text-primary'
+                : 'border-transparent text-hvdc-text-muted hover:text-hvdc-text-primary'
             )}
           >
             {t.label}

@@ -7,7 +7,7 @@ import type { PipelineStage } from '@/lib/cases/pipelineStage'
 import { PIPELINE_STAGE_META } from '@/lib/cases/pipelineStage'
 import { PipelineCasesTable } from '@/components/pipeline/PipelineCasesTable'
 import { OriginCountrySummary } from '@/components/chain/OriginCountrySummary'
-import { SITE_META } from '@/lib/overview/ui'
+import { SITE_META, ui } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
 import { useT } from '@/hooks/useT'
 
@@ -114,15 +114,15 @@ function ChainNode({
       className={cn(
         'w-full rounded-2xl border px-4 py-4 text-left transition-colors',
         active
-          ? 'border-blue-500 bg-blue-500/10'
-          : 'border-white/8 bg-[#0D1A35] hover:border-white/12 hover:bg-[#0D1A35]/80',
+          ? 'border-hvdc-brand bg-hvdc-brand/10'
+          : 'border-hvdc-border-soft bg-hvdc-bg-inner hover:border-hvdc-border-strong hover:bg-hvdc-surface-hover',
       )}
     >
-      <div className={cn('text-xs font-semibold uppercase tracking-wide text-slate-400', accentClass)}>{title}</div>
-      <div className="mt-2 text-2xl font-bold text-white">{count.toLocaleString()}</div>
-      <div className="mt-0.5 text-xs text-slate-400">{subtitle}</div>
+      <div className={cn('text-xs font-semibold uppercase tracking-wide text-hvdc-text-secondary', accentClass)}>{title}</div>
+      <div className="mt-2 text-2xl font-bold text-hvdc-text-primary">{count.toLocaleString()}</div>
+      <div className="mt-0.5 text-xs text-hvdc-text-secondary">{subtitle}</div>
       {voyageLabel !== undefined ? (
-        <div className="mt-1.5 text-xs font-medium text-blue-400">{voyageLabel}</div>
+        <div className="mt-1.5 text-xs font-medium text-hvdc-brand">{voyageLabel}</div>
       ) : null}
       {children}
     </button>
@@ -224,18 +224,18 @@ export function FlowChain({
     <div className="space-y-4">
       {!compact ? <OriginCountrySummary origins={summary.origins} /> : null}
 
-      <section className="rounded-[24px] border border-white/8 bg-[#0B1730] p-4 shadow-[0_1px_0_rgba(255,255,255,.03),0_16px_40px_rgba(0,0,0,.28)]">
+      <section className={`${ui.panel} p-4`}>
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-white">{t.chain.title}</h2>
-            <p className="text-sm text-slate-400">{t.chain.subtitle}</p>
+            <h2 className="text-lg font-semibold text-hvdc-text-primary">{t.chain.title}</h2>
+            <p className="text-sm text-hvdc-text-secondary">{t.chain.subtitle}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs text-orange-300">
+            <div className={ui.badgeWarn}>
               {t.chain.mosbVia} {summary.mosbTransit.toLocaleString()}{t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}
             </div>
             {!voyageLoading && voyageStages.agi_das_no_mosb_alert > 0 ? (
-              <div className="rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-300">
+              <div className={ui.badgeRisk}>
                 {t.chain.mosbAlert} {voyageStages.agi_das_no_mosb_alert.toLocaleString()}{t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}
               </div>
             ) : null}
@@ -245,7 +245,7 @@ export function FlowChain({
         {loading ? (
           <div className="grid gap-3 md:grid-cols-5">
             {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="h-28 animate-pulse rounded-2xl bg-white/5" />
+              <div key={index} className="h-28 animate-pulse rounded-2xl bg-hvdc-surface-subtle" />
             ))}
           </div>
         ) : (
@@ -264,27 +264,27 @@ export function FlowChain({
             </div>
 
             <div className="grid gap-3 lg:grid-cols-[1.3fr_1fr_1fr]">
-              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
-                <div className="mb-3 text-sm font-semibold text-white">{t.chain.originPortTitle}</div>
+              <section className={`${ui.panelInner} p-4`}>
+                <div className="mb-3 text-sm font-semibold text-hvdc-text-primary">{t.chain.originPortTitle}</div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-white/8 bg-[#0A1428] p-3">
-                    <div className="mb-2 text-xs text-slate-400">{t.chain.originTop5}</div>
-                    <div className="space-y-1 text-sm text-slate-300">
+                  <div className={`${ui.panelInner} p-3`}>
+                    <div className="mb-2 text-xs text-hvdc-text-secondary">{t.chain.originTop5}</div>
+                    <div className="space-y-1 text-sm text-hvdc-text-primary">
                       {summary.origins.slice(0, 5).map((origin) => (
                         <div key={origin.country} className="flex items-center justify-between">
                           <span>{origin.country}</span>
-                          <span className="text-slate-400">{origin.count.toLocaleString()}</span>
+                          <span className="text-hvdc-text-secondary">{origin.count.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="rounded-xl border border-white/8 bg-[#0A1428] p-3">
-                    <div className="mb-2 text-xs text-slate-400">{t.chain.portAirport}</div>
-                    <div className="space-y-1 text-sm text-slate-300">
+                  <div className={`${ui.panelInner} p-3`}>
+                    <div className="mb-2 text-xs text-hvdc-text-secondary">{t.chain.portAirport}</div>
+                    <div className="space-y-1 text-sm text-hvdc-text-primary">
                       {summary.ports.map((port) => (
                         <div key={port.name} className="flex items-center justify-between">
                           <span>{port.name}</span>
-                          <span className="text-slate-400">{port.count.toLocaleString()}</span>
+                          <span className="text-hvdc-text-secondary">{port.count.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>
@@ -292,8 +292,8 @@ export function FlowChain({
                 </div>
               </section>
 
-              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
-                <div className="mb-3 text-sm font-semibold text-white">{t.chain.landSites}</div>
+              <section className={`${ui.panelInner} p-4`}>
+                <div className="mb-3 text-sm font-semibold text-hvdc-text-primary">{t.chain.landSites}</div>
                 <div className="space-y-2">
                   {(['SHU', 'MIR'] as const).map((siteKey) => {
                     const vc = siteKey === 'SHU' ? voyageStages.nominated_shu : voyageStages.nominated_mir
@@ -311,15 +311,15 @@ export function FlowChain({
                         onSiteChange?.(siteKey)
                       }}
                     >
-                      <div className="mt-1 text-xs text-slate-400">{t.chain.directDelivery}</div>
+                      <div className="mt-1 text-xs text-hvdc-text-secondary">{t.chain.directDelivery}</div>
                     </ChainNode>
                     )
                   })}
                 </div>
               </section>
 
-              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
-                <div className="mb-3 text-sm font-semibold text-white">{t.chain.islandSites}</div>
+              <section className={`${ui.panelInner} p-4`}>
+                <div className="mb-3 text-sm font-semibold text-hvdc-text-primary">{t.chain.islandSites}</div>
                 <div className="space-y-2">
                   {(['DAS', 'AGI'] as const).map((siteKey) => {
                     const vc = siteKey === 'DAS' ? voyageStages.nominated_das : voyageStages.nominated_agi
@@ -337,9 +337,9 @@ export function FlowChain({
                         onSiteChange?.(siteKey)
                       }}
                     >
-                      <div className="mt-1 text-xs text-orange-400/80">{t.chain.managedViaMosb}</div>
+                      <div className="mt-1 text-xs text-hvdc-status-warn">{t.chain.managedViaMosb}</div>
                       {siteKey === 'AGI' && !voyageLoading && voyageStages.agi_das_no_mosb_alert > 0 ? (
-                        <div className="mt-1.5 inline-block rounded-full border border-red-500/40 bg-red-500/10 px-2 py-0.5 text-xs font-medium text-red-300">
+                        <div className={`mt-1.5 inline-block ${ui.badgeRisk}`}>
                           {t.chain.missingMosb} {voyageStages.agi_das_no_mosb_alert.toLocaleString()}{t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}
                         </div>
                       ) : null}
@@ -351,8 +351,8 @@ export function FlowChain({
             </div>
 
             {!voyageLoading ? (
-              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
-                <div className="mb-3 text-sm font-semibold text-white">{t.chain.voyageBySite}</div>
+              <section className={`${ui.panelInner} p-4`}>
+                <div className="mb-3 text-sm font-semibold text-hvdc-text-primary">{t.chain.voyageBySite}</div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {[
                     { site: 'SHU', count: voyageStages.nominated_shu, note: t.chain.directLand },
@@ -367,13 +367,13 @@ export function FlowChain({
                         changeStage('site')
                         onSiteChange?.(siteKey as 'SHU' | 'MIR' | 'DAS' | 'AGI')
                       }}
-                      className="flex flex-col gap-1 rounded-xl border border-white/8 bg-white/[0.02] px-4 py-3 text-left hover:bg-white/[0.04] transition-colors duration-150"
+                      className={`${ui.row} flex flex-col gap-1 px-4 py-3 text-left`}
                     >
                       <div className={`text-xs font-semibold uppercase tracking-wide ${SITE_META[siteKey as keyof typeof SITE_META].accentClass}`}>
                         {siteKey}
                       </div>
-                      <div className="text-xl font-bold text-white">{count.toLocaleString()} {t.chain.voyageCount}</div>
-                      <div className="text-xs text-slate-400">{note}</div>
+                      <div className="text-xl font-bold text-hvdc-text-primary">{count.toLocaleString()} {t.chain.voyageCount}</div>
+                      <div className="text-xs text-hvdc-text-secondary">{note}</div>
                     </button>
                   ))}
                 </div>

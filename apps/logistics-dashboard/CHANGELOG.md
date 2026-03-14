@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.4] — 2026-03-15
+
+### Overview Heatmap Fix
+
+#### Fixed
+- `app/api/overview/route.ts` — overview map now uses the same joined-event query and fallback logic as `/api/events`, so the heatmap receives event data again when the live table is empty or partially unmappable
+- `app/api/events/route.ts` — event route now reuses the shared logistics event helper instead of maintaining a second copy of the mapping and mock fallback logic
+- `lib/logistics/events.ts` — added a shared Supabase event mapper, joined select SSOT, and mock event generator used by both overview and events routes
+- `lib/logistics/__tests__/events.test.ts` — added regression coverage for joined-event mapping and non-empty mock fallback generation
+
+---
+
+## [1.3.2] — 2026-03-14
+
+### Overview Visual Polish
+
+#### Changed
+- `components/overview/OverviewPageClient.tsx` — widened the breathing room between Open Radar and Ops Snapshot with a `gap-5` row-7 grid and a slightly more balanced desktop column ratio
+- `components/overview/OpenRadarTable.tsx` — tightened radar row density and increased filter-pill spacing without changing selection or navigation behavior
+- `components/overview/OpsSnapshot.tsx` — aligned the four subsection cards with larger grid gaps and a shared minimum card height
+- `lib/overview/ui.ts` — softened risk badges/progress fills and increased DAS/AGI chip fill visibility while keeping the dark premium token system intact
+
+---
+
+## [1.3.3] — 2026-03-14
+
+### Overview Count Stability Fix
+
+#### Fixed
+- `app/api/overview/route.ts` — removed the shared nested summary-state bug that caused overview counts to inflate on repeated requests
+- `app/api/cases/summary/route.ts` — now uses the same shared cases-summary builder as overview so both routes stay aligned
+- `lib/cases/summary.ts` — added a fresh summary factory and reusable aggregation helper to prevent request-to-request mutation drift
+- `lib/cases/__tests__/summary.test.ts` — added regression tests for isolated empty summaries and stable repeated aggregation output
+
+---
+
+## [1.3.1] — 2026-03-14
+
+### Dark Premium Theme Consolidation
+
+#### Added
+- `docs/superpowers/plans/2026-03-14-dark-premium-dashboard-theme.md` — implementation plan that locks the CSS-theme SSOT, 7-row Overview preservation, and cross-page retheme scope
+
+#### Changed
+- `app/globals.css` — added hvdc semantic dashboard tokens for page, panel, border, text, site, brand, status, radius, and shadow values
+- `lib/overview/ui.ts` — converted to a semantic recipe layer with shared helpers for route badges, gate badges, readiness badges, voyage stage badges, customs states, and progress fills
+- `overview`, `chain`, `pipeline`, `sites`, and `cargo` page shells now use the same dark premium token system
+- Overview support surfaces (`MissionControl`, `SiteDeliveryMatrix`, `OpenRadarTable`, `OpsSnapshot`, `ShipmentSearchBar`, `MapLayerToggles`, `NewVoyageModal`) now consume semantic recipes instead of inline color literals
+- Chain, Sites, Pipeline, and Cargo tables/cards/chips/progress surfaces were aligned to the same panel and badge system without changing the existing data or navigation contracts
+- docs in `apps/logistics-dashboard/docs` and `README.md` now describe the actual Tailwind v4 CSS-theme architecture instead of the removed `light-ops`/`tailwind.config.ts` approach
+
+---
+
 ## Change History Overview
 
 ```mermaid

@@ -7,6 +7,7 @@ import { useLogisticsStore } from '@/store/logisticsStore'
 import { useT } from '@/hooks/useT'
 import type { CaseRow } from '@/types/cases'
 import { classifyStage } from '@/lib/cases/pipelineStage'
+import { ui } from '@/lib/overview/ui'
 
 const DISMISS_KEY = 'agi_alert_dismissed'
 
@@ -49,11 +50,11 @@ export function AgiAlertBanner() {
   )
 
   return (
-    <div className="bg-red-900/80 border border-red-700 rounded-lg mx-4 mt-3 px-4 py-3 flex items-start gap-3">
-      <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={18} />
+    <div className="mx-4 mt-3 flex items-start gap-3 rounded-lg border border-hvdc-status-risk/50 bg-hvdc-status-risk/12 px-4 py-3">
+      <AlertTriangle className="mt-0.5 shrink-0 text-hvdc-status-risk" size={18} />
       <div className="flex-1 text-sm">
-        <span className="font-semibold text-red-200">{t.sites.agiAlertTitle}</span>
-        <span className="text-red-300 ml-2">
+        <span className="font-semibold text-hvdc-text-primary">{t.sites.agiAlertTitle}</span>
+        <span className="ml-2 text-hvdc-text-secondary">
           {locale === 'ko'
             ? `달성률 ${(rate * 100).toFixed(1)}% — 미납 ${pending.toLocaleString()}건`
             : `Rate ${(rate * 100).toFixed(1)}% — Pending ${pending.toLocaleString()}`}
@@ -68,7 +69,7 @@ export function AgiAlertBanner() {
           sessionStorage.setItem(DISMISS_KEY, 'true')
           setDismissed(true)
         }}
-        className="text-red-400 hover:text-red-200"
+        className="text-hvdc-status-risk hover:text-hvdc-text-primary"
         aria-label="Close alert"
       >
         <X size={16} />

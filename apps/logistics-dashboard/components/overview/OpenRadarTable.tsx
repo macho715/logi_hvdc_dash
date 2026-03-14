@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
-import { gateClassLight, SITE_META, getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { gateClassLight, SITE_META, getRouteTypeBadgeClass, ui } from '@/lib/overview/ui'
 import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
 import { useT } from '@/hooks/useT'
 import type { NavigationIntent, OverviewCockpitResponse } from '@/types/overview'
@@ -59,7 +59,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
 
   if (loading && !data) {
     return (
-      <div className="border-t border-white/8 bg-[#071225] px-4 py-4">
+      <div className="border-t border-hvdc-border-soft bg-hvdc-bg-page px-4 py-4">
         <div className="h-5 w-32 animate-pulse rounded bg-white/10" />
         <div className="mt-3 space-y-2">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -71,23 +71,23 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
   }
 
   return (
-    <div className="border-t border-white/8 bg-[#071225] px-4 py-4">
-      <h2 className="text-[16px] font-semibold text-white">
+    <div className="border-t border-hvdc-border-soft bg-hvdc-bg-page px-4 py-4">
+      <h2 className={ui.sectionTitle}>
         {t.openRadar.title}
       </h2>
 
       {/* Filter tabs */}
-      <div className="flex gap-1 mt-2 mb-3">
+      <div className="mt-2 mb-5 flex gap-2.5">
         {filters.map(({ key, label }) => (
           <button
             key={key}
             type="button"
             onClick={() => setActiveFilter(key)}
             className={cn(
-              'px-3 py-1 rounded-full text-[12px] font-semibold transition-colors duration-100',
+              'rounded-full px-3 py-1 text-[12px] font-semibold transition-colors duration-100',
               activeFilter === key
-                ? 'bg-blue-600 text-white shadow-sm border border-blue-600'
-                : 'border border-white/8 bg-white/5 text-slate-400 hover:border-[#2563EB]',
+                ? 'border border-hvdc-brand bg-hvdc-brand text-white shadow-hvdc-active'
+                : 'border border-hvdc-border-soft bg-hvdc-surface-subtle text-hvdc-text-secondary hover:border-hvdc-brand',
             )}
           >
             {label}
@@ -98,7 +98,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
       {/* List */}
       <div className="overflow-y-auto max-h-[540px] space-y-2">
         {filtered.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-white/8 bg-white/[0.02] py-6 text-center text-sm text-slate-400">
+          <div className="rounded-lg border border-dashed border-hvdc-border-soft bg-hvdc-surface-subtle py-6 text-center text-sm text-hvdc-text-secondary">
             {t.openRadar.noItems}
           </div>
         ) : (
@@ -125,18 +125,18 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                   })
                 }
                 className={cn(
-                  'w-full flex items-start gap-3 rounded-xl px-4 py-3.5 cursor-pointer transition-colors duration-150 text-left',
+                  'flex w-full cursor-pointer items-start gap-3 rounded-xl px-4 py-3 text-left transition-colors duration-150',
                   highlightedIdSet.has(row.id)
-                    ? 'border border-[#3B82F6]/40 bg-[#3B82F6]/10 ring-1 ring-[#3B82F6]/20'
-                    : 'border border-white/8 bg-white/[0.02] hover:bg-white/[0.04]'
+                    ? `${ui.rowSelected} border-hvdc-brand/40 bg-hvdc-brand/10 ring-hvdc-brand/20`
+                    : ui.row
                 )}
               >
                 {/* Left: title + subtitle */}
                 <div className="min-w-0 flex-1">
-                  <div className="text-[15px] font-bold text-white truncate">
+                  <div className="truncate text-[15px] font-bold text-hvdc-text-primary">
                     {row.title}
                   </div>
-                  <div className="text-[11px] text-slate-400 truncate">
+                  <div className="truncate text-[11px] text-hvdc-text-secondary">
                     {row.subtitle ?? row.currentLocation ?? t.bottomPanel.noLocation}
                   </div>
                 </div>
@@ -165,7 +165,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                   </span>
 
                   {row.dueAt ? (
-                    <span className="text-[11px] text-slate-400 whitespace-nowrap">
+                    <span className="whitespace-nowrap text-[11px] text-hvdc-text-secondary">
                       {t.bottomPanel.dueAt} {row.dueAt}
                     </span>
                   ) : null}

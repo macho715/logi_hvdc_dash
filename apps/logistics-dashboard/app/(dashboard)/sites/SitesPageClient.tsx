@@ -7,6 +7,7 @@ import { PageContextBanner } from '@/components/navigation/PageContextBanner'
 import { SiteCards } from '@/components/sites/SiteCards'
 import { SiteDetail } from '@/components/sites/SiteDetail'
 import { buildDashboardLink, getPageContextChips, parseSitesQuery } from '@/lib/navigation/contracts'
+import { ui } from '@/lib/overview/ui'
 import { useCasesStore } from '@/store/casesStore'
 
 type SiteKey = 'SHU' | 'MIR' | 'DAS' | 'AGI'
@@ -37,9 +38,9 @@ export function SitesPageClient() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={`flex h-full flex-col ${ui.pageShell}`}>
       <AgiAlertBanner />
-      <div className="p-4 pb-0">
+      <div className={`${ui.pageContent} pb-0`}>
         <PageContextBanner
           title="Sites Context"
           description="Overview에서 전달된 현장과 탭 상태를 URL 기준으로 유지합니다."

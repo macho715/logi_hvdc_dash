@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useCasesStore } from '@/store/casesStore'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 import type { PipelineStage } from '@/lib/cases/pipelineStage'
 
 type SiteKey = 'SHU' | 'MIR' | 'DAS' | 'AGI'
@@ -81,10 +82,10 @@ export function ChainRibbonStrip({ site, onStageClick }: ChainRibbonStripProps) 
 
   if (loading) {
     return (
-      <div className="relative border-b border-white/8 bg-[#0B1730] px-4 py-3">
+      <div className="relative border-b border-hvdc-border-soft bg-hvdc-bg-panel px-4 py-3">
         <div className="flex items-stretch justify-between gap-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex-1 animate-pulse rounded-lg bg-white/5 h-16" />
+            <div key={i} className="h-16 flex-1 animate-pulse rounded-lg bg-hvdc-surface-subtle" />
           ))}
         </div>
       </div>
@@ -101,9 +102,9 @@ export function ChainRibbonStrip({ site, onStageClick }: ChainRibbonStripProps) 
     : 0
 
   return (
-    <div className="relative border-b border-white/8 bg-[#0B1730] px-4 py-3">
+    <div className="relative border-b border-hvdc-border-soft bg-hvdc-bg-panel px-4 py-3">
       {/* Ribbon connecting line behind nodes */}
-      <div className="absolute top-1/2 left-4 right-4 h-px bg-white/8 -z-0" />
+      <div className="absolute top-1/2 left-4 right-4 -z-0 h-px bg-hvdc-border-soft" />
 
       {/* Nodes wrapper */}
       <div className={cn('relative z-10 flex items-stretch justify-between gap-2 ribbon-trace')}>
@@ -138,15 +139,15 @@ export function ChainRibbonStrip({ site, onStageClick }: ChainRibbonStripProps) 
               )}
             >
               {/* Stage label */}
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-hvdc-text-secondary">
                 {t.chainRibbon[node.labelKey]}
               </div>
               {/* Count */}
-              <div className="text-lg font-bold text-white">
+              <div className="text-lg font-bold text-hvdc-text-primary">
                 {displayCount}
               </div>
               {/* Share */}
-              <div className="text-[10px] text-slate-400">{share}</div>
+              <div className="text-[10px] text-hvdc-text-secondary">{share}</div>
             </div>
           )
         })}

@@ -113,6 +113,36 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-hvdc-bg-page: #071225;
+  --color-hvdc-bg-topbar: #09162b;
+  --color-hvdc-bg-panel: #0b1730;
+  --color-hvdc-bg-soft: #0d1a35;
+  --color-hvdc-bg-inner: #0a1428;
+  --color-hvdc-surface-subtle: rgb(255 255 255 / 0.02);
+  --color-hvdc-surface-hover: rgb(255 255 255 / 0.04);
+  --color-hvdc-surface-selected: rgb(59 130 246 / 0.1);
+  --color-hvdc-text-primary: #f8fafc;
+  --color-hvdc-text-secondary: #94a3b8;
+  --color-hvdc-text-muted: #64748b;
+  --color-hvdc-border-soft: rgb(255 255 255 / 0.08);
+  --color-hvdc-border-strong: rgb(255 255 255 / 0.12);
+  --color-hvdc-brand: #2563eb;
+  --color-hvdc-brand-hi: #3b82f6;
+  --color-hvdc-brand-low: rgb(59 130 246 / 0.14);
+  --color-hvdc-site-shu: #10b981;
+  --color-hvdc-site-mir: #8b5cf6;
+  --color-hvdc-site-das: #f59e0b;
+  --color-hvdc-site-agi: #f43f5e;
+  --color-hvdc-status-ok: #22c55e;
+  --color-hvdc-status-warn: #f59e0b;
+  --color-hvdc-status-risk: #ef4444;
+  --color-hvdc-status-info: #38bdf8;
+  --color-hvdc-status-danger: #f87171;
+  --radius-hvdc-panel: 24px;
+  --radius-hvdc-card: 18px;
+  --shadow-hvdc-panel: 0 1px 0 rgb(255 255 255 / 0.03), 0 16px 40px rgb(0 0 0 / 0.28);
+  --shadow-hvdc-card: 0 1px 0 rgb(255 255 255 / 0.02), 0 10px 30px rgb(0 0 0 / 0.22);
+  --shadow-hvdc-active: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 6px 18px rgb(37 99 235 / 0.28);
 }
 
 @layer base {
@@ -139,8 +169,9 @@
 
 /* MapLibre overrides for dark theme */
 .maplibregl-ctrl-group {
-  background: oklch(0.14 0.01 260) !important;
-  border-color: oklch(0.25 0.01 260) !important;
+  background: var(--color-hvdc-bg-panel) !important;
+  border-color: var(--color-hvdc-border-soft) !important;
+  box-shadow: var(--shadow-hvdc-card) !important;
 }
 
 .maplibregl-ctrl-group button {
@@ -148,7 +179,7 @@
 }
 
 .maplibregl-ctrl-group button:hover {
-  background-color: oklch(0.22 0.01 260) !important;
+  background-color: var(--color-hvdc-surface-hover) !important;
 }
 
 .maplibregl-ctrl-group button span {
@@ -156,52 +187,12 @@
 }
 
 .maplibregl-ctrl-attrib {
-  background: oklch(0.14 0.01 260 / 0.8) !important;
-  color: oklch(0.65 0 0) !important;
+  background: rgb(11 23 48 / 0.88) !important;
+  color: var(--color-hvdc-text-secondary) !important;
 }
 
 .maplibregl-ctrl-attrib a {
-  color: oklch(0.7 0.15 220) !important;
-}
-
-/* ── Overview 2.0 — Executive Control Room Luxe theme (scoped) ─── */
-/* Applied only to elements with data-theme="light-ops" attribute   */
-/* Does not affect any other page or dark theme                      */
-[data-theme="light-ops"] {
-  --ops-canvas:       #F4F5F7;
-  --ops-surface:      #FFFFFF;
-  --ops-surface-warm: #F7F3EA;
-  --ops-border:       #D9DEE5;
-  --ops-text-strong:  #101215;
-  --ops-text-muted:   #697586;
-  --ops-accent:       #C6F10E;
-  --ops-info:         #2563EB;
-  --ops-warn:         #D97706;
-  --ops-risk:         #DC2626;
-  --ops-done:         #16A34A;
-}
-
-/* MapLibre overrides for light-ops theme */
-[data-theme="light-ops"] .maplibregl-ctrl-group {
-  background: #ffffff !important;
-  border-color: #D9DEE5 !important;
-}
-
-[data-theme="light-ops"] .maplibregl-ctrl-group button {
-  background-color: transparent !important;
-}
-
-[data-theme="light-ops"] .maplibregl-ctrl-group button:hover {
-  background-color: #F4F5F7 !important;
-}
-
-[data-theme="light-ops"] .maplibregl-ctrl-group button span {
-  filter: none;
-}
-
-[data-theme="light-ops"] .maplibregl-ctrl-attrib {
-  background: rgba(255, 255, 255, 0.85) !important;
-  color: #697586 !important;
+  color: var(--color-hvdc-brand-hi) !important;
 }
 
 /* Chain Ribbon trace animation */

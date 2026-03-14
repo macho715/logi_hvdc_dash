@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
-import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { caseStatusDotClass, getRouteTypeBadgeClass } from '@/lib/overview/ui'
 import { parseCargoQuery } from '@/lib/navigation/contracts'
 import { useCasesStore } from '@/store/casesStore'
 import { useT } from '@/hooks/useT'
@@ -35,9 +35,9 @@ export function WhStatusTable() {
 
   return (
     <div className="overflow-auto h-full">
-      <table className="w-full text-xs text-gray-300 border-collapse">
-        <thead className="sticky top-0 bg-[#0B1730]">
-          <tr className="text-slate-400 border-b border-white/8">
+      <table className="w-full border-collapse text-xs text-hvdc-text-primary">
+        <thead className="sticky top-0 bg-hvdc-bg-panel">
+          <tr className="border-b border-hvdc-border-soft text-hvdc-text-secondary">
             <th className="py-2 px-3 text-left w-12">#</th>
             <th className="py-2 px-3 text-left">Case No</th>
             <th className="py-2 px-3 text-left w-14">Site</th>
@@ -50,18 +50,18 @@ export function WhStatusTable() {
         </thead>
         <tbody>
           {isLoading && (
-            <tr><td colSpan={8} className="py-8 text-center text-slate-500">Loading...</td></tr>
+            <tr><td colSpan={8} className="py-8 text-center text-hvdc-text-muted">Loading...</td></tr>
           )}
           {!isLoading && cases.length === 0 && (
-            <tr><td colSpan={8} className="py-8 text-center text-slate-500">{t.cargo.noData}</td></tr>
+            <tr><td colSpan={8} className="py-8 text-center text-hvdc-text-muted">{t.cargo.noData}</td></tr>
           )}
           {cases.map((c, i) => (
             <tr
               key={c.id}
-              className="border-b border-white/6 hover:bg-white/[0.03] cursor-pointer"
+              className="cursor-pointer border-b border-hvdc-border-soft hover:bg-hvdc-surface-hover"
               onClick={() => openCase(c.id)}
             >
-              <td className="py-1.5 px-3 text-slate-500">{i + 1}</td>
+              <td className="px-3 py-1.5 text-hvdc-text-muted">{i + 1}</td>
               <td className="py-1.5 px-3 font-mono">{c.case_no}</td>
               <td className="py-1.5 px-3">{c.site}</td>
               <td className="py-1.5 px-3 truncate max-w-32">{c.status_location}</td>
@@ -72,7 +72,9 @@ export function WhStatusTable() {
               </td>
               <td className="py-1.5 px-3">{c.sqm}</td>
               <td className="py-1.5 px-3">
-                {c.status_current === 'site' ? '●' : c.status_current === 'warehouse' ? '△' : '○'}
+                <span className={caseStatusDotClass(c.status_current)}>
+                  {c.status_current === 'site' ? '●' : c.status_current === 'warehouse' ? '△' : '○'}
+                </span>
               </td>
               <td className="py-1.5 px-3">{c.source_vendor}</td>
             </tr>

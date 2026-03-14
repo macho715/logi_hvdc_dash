@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 
 interface CustomsStats { cleared: number; in_progress: number; pending: number }
 
@@ -21,23 +22,23 @@ export function CustomsStatusCard() {
     }).catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="h-24 bg-gray-800 animate-pulse rounded" />
+  if (loading) return <div className="h-24 animate-pulse rounded bg-hvdc-surface-subtle" />
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-2">{t.pipeline.customsStatus} <span className="text-gray-600 font-normal">{t.pipeline.customsStatusDesc}</span></h4>
+    <div className={`${ui.panelInner} p-3`}>
+      <h4 className="mb-2 text-xs font-semibold text-hvdc-text-secondary">{t.pipeline.customsStatus} <span className="font-normal text-hvdc-text-muted">{t.pipeline.customsStatusDesc}</span></h4>
       <div className="grid grid-cols-3 gap-2 text-center">
         <div>
-          <div className="text-lg font-bold text-green-400">{stats.cleared}</div>
-          <div className="text-xs text-gray-500">{t.pipeline.cleared}</div>
+          <div className="text-lg font-bold text-hvdc-status-ok">{stats.cleared}</div>
+          <div className="text-xs text-hvdc-text-muted">{t.pipeline.cleared}</div>
         </div>
         <div>
-          <div className="text-lg font-bold text-yellow-400">{stats.in_progress}</div>
-          <div className="text-xs text-gray-500">{t.pipeline.inProgress}</div>
+          <div className="text-lg font-bold text-hvdc-status-warn">{stats.in_progress}</div>
+          <div className="text-xs text-hvdc-text-muted">{t.pipeline.inProgress}</div>
         </div>
         <div>
-          <div className="text-lg font-bold text-gray-400">{stats.pending}</div>
-          <div className="text-xs text-gray-500">{t.pipeline.pending}</div>
+          <div className="text-lg font-bold text-hvdc-text-secondary">{stats.pending}</div>
+          <div className="text-xs text-hvdc-text-muted">{t.pipeline.pending}</div>
         </div>
       </div>
     </div>

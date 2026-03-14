@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { getRouteTypeLabel } from '@/lib/overview/routeTypes'
-import { SITE_META, getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { SITE_META, getRouteTypeBadgeClass, severitySurfaceClass, ui } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
 import { useT } from '@/hooks/useT'
 import type { NavigationIntent, OverviewCockpitResponse } from '@/types/overview'
@@ -47,13 +47,13 @@ function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear
   }, [sctShipNo])
 
   return (
-    <div className="rounded-xl border border-[#3B82F6]/40 bg-[#3B82F6]/10 p-3">
+    <div className={`${ui.panelInner} border-hvdc-brand/40 bg-hvdc-brand/10 p-3`}>
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs font-semibold text-[#3B82F6]">{t.rightPanel.searchResult}</span>
+        <span className="text-xs font-semibold text-hvdc-brand">{t.rightPanel.searchResult}</span>
         {onClear && (
           <button
             onClick={onClear}
-            className="text-xs text-slate-400 hover:text-white"
+            className="text-xs text-hvdc-text-secondary hover:text-hvdc-text-primary"
             aria-label={t.rightPanel.close}
           >
             ×
@@ -61,32 +61,32 @@ function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear
         )}
       </div>
       {loadingDetail && (
-        <div className="text-xs text-slate-400">{t.rightPanel.loading}</div>
+        <div className="text-xs text-hvdc-text-secondary">{t.rightPanel.loading}</div>
       )}
       {!loadingDetail && fetchError && (
-        <div className="text-xs text-red-400">{t.rightPanel.fetchError}</div>
+        <div className="text-xs text-hvdc-status-risk">{t.rightPanel.fetchError}</div>
       )}
       {!loadingDetail && !fetchError && detail == null && (
-        <div className="text-xs text-slate-400">{t.rightPanel.noResult}</div>
+        <div className="text-xs text-hvdc-text-secondary">{t.rightPanel.noResult}</div>
       )}
       {!loadingDetail && detail != null && (
         <div className="space-y-1">
-          <div className="text-sm font-semibold text-white">{detail.sct_ship_no}</div>
-          <div className="text-xs text-slate-400">{detail.vendor}</div>
-          <div className="text-xs text-slate-400">
+          <div className="text-sm font-semibold text-hvdc-text-primary">{detail.sct_ship_no}</div>
+          <div className="text-xs text-hvdc-text-secondary">{detail.vendor}</div>
+          <div className="text-xs text-hvdc-text-secondary">
             {t.rightPanel.stage}: {t.voyageStage[detail.voyage_stage as keyof typeof t.voyageStage] ?? detail.voyage_stage}
           </div>
           {detail.eta && (
-            <div className="text-xs text-slate-400">ETA: {detail.eta}</div>
+            <div className="text-xs text-hvdc-text-secondary">ETA: {detail.eta}</div>
           )}
           {(detail.pol || detail.pod) && (
-            <div className="text-xs text-slate-400">
+            <div className="text-xs text-hvdc-text-secondary">
               {detail.pol} → {detail.pod}
             </div>
           )}
           <a
             href={`/cargo?tab=shipments&sct_ship_no=${encodeURIComponent(detail.sct_ship_no)}`}
-            className="mt-1 inline-block text-xs text-[#3B82F6] hover:underline"
+            className="mt-1 inline-block text-xs text-hvdc-brand hover:text-hvdc-brand-hi hover:underline"
           >
             {t.rightPanel.viewDetail}
           </a>
@@ -94,12 +94,6 @@ function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear
       )}
     </div>
   )
-}
-
-function severityClass(severity: 'critical' | 'warning' | 'info'): string {
-  if (severity === 'critical') return 'border-l-red-400/60 bg-red-500/10'
-  if (severity === 'warning') return 'border-l-amber-400/60 bg-amber-500/10'
-  return 'border-l-sky-400/60 bg-sky-500/10'
 }
 
 export function MissionControl({
@@ -114,7 +108,7 @@ export function MissionControl({
 
   if (loading && !data) {
     return (
-      <div className="flex flex-col h-full overflow-y-auto bg-[#0B1730] border-l border-white/8 p-4 gap-4 space-y-4">
+      <div className={`flex h-full flex-col gap-4 space-y-4 overflow-y-auto border-l border-hvdc-border-soft p-4 ${ui.panelSoft}`}>
         <div className="animate-pulse space-y-3">
           <div className="h-5 w-32 rounded bg-white/10" />
           <div className="h-16 rounded-xl bg-white/5" />
@@ -130,14 +124,14 @@ export function MissionControl({
 
   if (!data) {
     return (
-      <div className="flex flex-col h-full overflow-y-auto bg-[#0B1730] border-l border-white/8 p-4">
-        <p className="text-sm text-slate-400">{t.rightPanel.loadError}</p>
+      <div className={`flex h-full flex-col overflow-y-auto border-l border-hvdc-border-soft p-4 ${ui.panelSoft}`}>
+        <p className="text-sm text-hvdc-text-secondary">{t.rightPanel.loadError}</p>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto bg-[#0B1730] border-l border-white/8 p-4 gap-4 space-y-4">
+    <div className={`flex h-full flex-col gap-4 space-y-4 overflow-y-auto border-l border-hvdc-border-soft p-4 ${ui.panelSoft}`}>
       {/* Shipment Detail Card */}
       {selectedShipmentId != null && (
         <ShipmentDetailCard sctShipNo={selectedShipmentId} onClear={onClearSelection} />
@@ -145,11 +139,11 @@ export function MissionControl({
 
       {/* Alerts — Critical */}
       <section className="space-y-2">
-        <h2 className="text-[16px] font-semibold text-white">
+        <h2 className={ui.sectionTitle}>
           {t.missionControl.critical}
         </h2>
         {data.alerts.length === 0 ? (
-          <p className="text-xs text-slate-400">{t.missionControl.noItems}</p>
+          <p className={ui.textHint}>{t.missionControl.noItems}</p>
         ) : (
           <div className="space-y-2">
             {data.alerts.map((alert) => (
@@ -158,20 +152,20 @@ export function MissionControl({
                 type="button"
                 onClick={() => onNavigate(alert.navigationIntent)}
                 className={cn(
-                  'w-full rounded-xl border-l-4 p-3 text-left transition-shadow duration-[140ms] hover:shadow-sm',
-                  severityClass(alert.severity),
+                  `${ui.row} w-full border-l-4 p-3 text-left hover:shadow-hvdc-card`,
+                  severitySurfaceClass(alert.severity),
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm font-semibold text-white truncate">
+                    <div className="truncate text-sm font-semibold text-hvdc-text-primary">
                       {alert.title}
                     </div>
-                    <div className="mt-0.5 text-xs text-slate-400 line-clamp-2">
+                    <div className="mt-0.5 line-clamp-2 text-xs text-hvdc-text-secondary">
                       {alert.description}
                     </div>
                   </div>
-                  <div className="text-lg font-bold text-white shrink-0">
+                  <div className="shrink-0 text-lg font-bold text-hvdc-text-primary">
                     {alert.count.toLocaleString()}
                   </div>
                 </div>
@@ -183,11 +177,11 @@ export function MissionControl({
 
       {/* Route Summary — Action Queue */}
       <section className="space-y-2">
-        <h2 className="text-[16px] font-semibold text-white">
+        <h2 className={ui.sectionTitle}>
           {t.missionControl.actionQueue}
         </h2>
         {data.routeSummary.length === 0 ? (
-          <p className="text-xs text-slate-400">{t.missionControl.noItems}</p>
+          <p className={ui.textHint}>{t.missionControl.noItems}</p>
         ) : (
           <div className="space-y-2">
             {data.routeSummary.map((item) => (
@@ -195,7 +189,7 @@ export function MissionControl({
                 key={item.routeTypeId}
                 type="button"
                 onClick={() => onNavigate(item.navigationIntent)}
-                className="w-full rounded-xl border border-white/8 bg-white/[0.02] p-3 text-left transition-shadow duration-[140ms] hover:shadow-sm"
+                className={`${ui.row} w-full p-3 text-left hover:shadow-hvdc-card`}
               >
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <span
@@ -207,17 +201,17 @@ export function MissionControl({
                     {getRouteTypeLabel(item.routeTypeId)}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-hvdc-text-secondary">
                       {item.percent.toFixed(1)}%
                     </span>
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-hvdc-text-primary">
                       {item.count.toLocaleString()}
                     </span>
                   </div>
                 </div>
-                <div className="h-2 rounded-full bg-white/10">
+                <div className={ui.progressTrack}>
                   <div
-                    className="h-full rounded-full bg-[#3B82F6]"
+                    className={ui.progressFillBlue}
                     style={{ width: `${Math.max(item.percent, 2)}%` }}
                   />
                 </div>
@@ -229,11 +223,11 @@ export function MissionControl({
 
       {/* Site Readiness — AGI / DAS Blockers */}
       <section className="space-y-2">
-        <h2 className="text-[16px] font-semibold text-white">
+        <h2 className={ui.sectionTitle}>
           {t.missionControl.agiDasBlockers}
         </h2>
         {data.siteReadiness.length === 0 ? (
-          <p className="text-xs text-slate-400">{t.missionControl.noItems}</p>
+          <p className={ui.textHint}>{t.missionControl.noItems}</p>
         ) : (
           <div className="space-y-2">
             {data.siteReadiness.map((item) => (
@@ -241,7 +235,7 @@ export function MissionControl({
                 key={item.site}
                 type="button"
                 onClick={() => onNavigate(item.navigationIntent)}
-                className="w-full rounded-xl border border-white/8 bg-white/[0.02] p-3 text-left transition-shadow duration-[140ms] hover:shadow-sm"
+                className={`${ui.row} w-full p-3 text-left hover:shadow-hvdc-card`}
               >
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <span
@@ -252,11 +246,11 @@ export function MissionControl({
                   >
                     {item.site}
                   </span>
-                  <span className="text-sm font-semibold text-white">
+                  <span className="text-sm font-semibold text-hvdc-text-primary">
                     {item.readinessPercent.toFixed(1)}%
                   </span>
                 </div>
-                <div className="grid grid-cols-4 gap-1 text-[10px] text-slate-400">
+                <div className="grid grid-cols-4 gap-1 text-[10px] text-hvdc-text-secondary">
                   <span>{t.rightPanel.arrived} {item.arrived}</span>
                   <span>{t.rightPanel.warehouse} {item.warehouse}</span>
                   <span>MOSB {item.mosb}</span>
@@ -270,11 +264,11 @@ export function MissionControl({
 
       {/* Live Feed — Next 72h */}
       <section className="space-y-2">
-        <h2 className="text-[16px] font-semibold text-white">
+        <h2 className={ui.sectionTitle}>
           {t.missionControl.next72h}
         </h2>
         {data.liveFeed.length === 0 ? (
-          <p className="text-xs text-slate-400">{t.missionControl.noItems}</p>
+          <p className={ui.textHint}>{t.missionControl.noItems}</p>
         ) : (
           <div className="space-y-2">
             {data.liveFeed.slice(-4).map((item) => (
@@ -282,15 +276,15 @@ export function MissionControl({
                 key={item.id}
                 type="button"
                 onClick={() => onNavigate(item.navigationIntent)}
-                className="w-full rounded-xl border border-white/8 bg-white/[0.02] p-3 text-left transition-shadow duration-[140ms] hover:shadow-sm"
+                className={`${ui.row} w-full p-3 text-left hover:shadow-hvdc-card`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm font-semibold text-white truncate">
+                    <div className="truncate text-sm font-semibold text-hvdc-text-primary">
                       {item.title}
                     </div>
                     {item.subtitle && (
-                      <div className="mt-0.5 text-xs text-slate-400 truncate">
+                      <div className="mt-0.5 truncate text-xs text-hvdc-text-secondary">
                         {item.subtitle}
                       </div>
                     )}
@@ -306,7 +300,7 @@ export function MissionControl({
                     </span>
                   )}
                 </div>
-                <div className="mt-1.5 text-[11px] text-slate-400">
+                <div className="mt-1.5 text-[11px] text-hvdc-text-secondary">
                   {formatDistanceToNowStrict(new Date(item.timestamp), { addSuffix: true, locale: ko })}
                 </div>
               </button>

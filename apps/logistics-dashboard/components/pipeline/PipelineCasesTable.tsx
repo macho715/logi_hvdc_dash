@@ -12,6 +12,7 @@ import type { PipelineStage } from '@/lib/cases/pipelineStage'
 import type { OverviewRouteTypeId } from '@/types/overview'
 import { normalizeStorageType } from '@/lib/cases/storageType'
 import { cn } from '@/lib/utils'
+import { ui } from '@/lib/overview/ui'
 
 export type PipelineTableFilters = Pick<CasesFilter, 'site' | 'vendor' | 'category'>
 
@@ -81,26 +82,26 @@ export function PipelineCasesTable({
 
   if (!stage) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/70 p-6 text-sm text-gray-400">
+      <div className="rounded-xl border border-dashed border-hvdc-border-soft bg-hvdc-surface-subtle p-6 text-sm text-hvdc-text-secondary">
         {t.pipeline.selectStageHint}
       </div>
     )
   }
 
   return (
-    <section className="rounded-xl border border-gray-800 bg-gray-900/80">
-      <div className="flex items-center justify-between border-b border-gray-800 px-4 py-3">
+    <section className={ui.panel}>
+      <div className="flex items-center justify-between border-b border-hvdc-border-soft px-4 py-3">
         <div>
-          <h3 className="text-sm font-semibold text-white">{displayTitle}</h3>
-          <p className="text-xs text-gray-500">{t.pipeline.rowClickHint}</p>
+          <h3 className="text-sm font-semibold text-hvdc-text-primary">{displayTitle}</h3>
+          <p className="text-xs text-hvdc-text-muted">{t.pipeline.rowClickHint}</p>
         </div>
-        <span className="text-xs text-gray-500">{rows.length.toLocaleString()} rows</span>
+        <span className="text-xs text-hvdc-text-muted">{rows.length.toLocaleString()} rows</span>
       </div>
 
       <div className="max-h-[360px] overflow-auto">
-        <table className="w-full text-xs text-gray-300">
-          <thead className="sticky top-0 bg-gray-900">
-            <tr className="border-b border-gray-800 text-gray-500">
+        <table className="w-full text-xs text-hvdc-text-primary">
+          <thead className="sticky top-0 bg-hvdc-bg-panel">
+            <tr className="border-b border-hvdc-border-soft text-hvdc-text-secondary">
               <th className="px-3 py-2 text-left">Case No</th>
               <th className="px-3 py-2 text-left">Site</th>
               <th className="px-3 py-2 text-left">{t.pipeline.currentLocation}</th>
@@ -112,14 +113,14 @@ export function PipelineCasesTable({
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={6} className="px-3 py-8 text-center text-gray-600">
+                <td colSpan={6} className="px-3 py-8 text-center text-hvdc-text-muted">
                   Loading...
                 </td>
               </tr>
             )}
             {!loading && rows.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-3 py-8 text-center text-gray-600">
+                <td colSpan={6} className="px-3 py-8 text-center text-hvdc-text-muted">
                   {t.pipeline.noMatchingCases}
                 </td>
               </tr>
@@ -127,7 +128,7 @@ export function PipelineCasesTable({
             {rows.map((row) => (
               <tr
                 key={row.id}
-                className="cursor-pointer border-b border-gray-800/80 transition-colors hover:bg-gray-800/70"
+                className="cursor-pointer border-b border-hvdc-border-soft transition-colors hover:bg-hvdc-surface-hover"
                 onClick={() =>
                   router.push(
                     buildDashboardLink({
@@ -143,7 +144,7 @@ export function PipelineCasesTable({
                   )
                 }
               >
-                <td className="px-3 py-2 font-mono text-gray-200">{row.case_no}</td>
+                <td className="px-3 py-2 font-mono text-hvdc-text-primary">{row.case_no}</td>
                 <td className="px-3 py-2">{row.site ?? '–'}</td>
                 <td className="px-3 py-2">{row.status_location ?? row.status_current}</td>
                 <td className="px-3 py-2">

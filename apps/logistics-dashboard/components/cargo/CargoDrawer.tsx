@@ -11,8 +11,8 @@ import type { CaseRow, ShipmentRow } from '@/types/cases'
 
 function TimelineItem({ label, date }: { label: string; date: string | null }) {
   return (
-    <div className={`flex gap-3 items-start ${date ? 'text-gray-200' : 'text-gray-600'}`}>
-      <div className={`mt-1 w-2.5 h-2.5 rounded-full shrink-0 ${date ? 'bg-blue-500' : 'bg-gray-700'}`} />
+    <div className={`flex items-start gap-3 ${date ? 'text-hvdc-text-primary' : 'text-hvdc-text-muted'}`}>
+      <div className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${date ? 'bg-hvdc-brand' : 'bg-hvdc-border-strong'}`} />
       <div>
         <div className="text-xs font-medium">{label}</div>
         <div className="text-xs">{date ?? '–'}</div>
@@ -71,11 +71,11 @@ export function CargoDrawer() {
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 w-80 bg-gray-900 border-l border-gray-700 shadow-xl z-50 flex flex-col">
+    <div className={`fixed inset-y-0 right-0 z-50 flex w-80 flex-col border-l border-hvdc-border-soft bg-hvdc-bg-panel shadow-xl`}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
-        <h2 className="text-sm font-semibold text-white">{caseRow.case_no}</h2>
-        <button onClick={handleClose} className="text-gray-500 hover:text-white">
+      <div className="flex items-center justify-between border-b border-hvdc-border-soft px-4 py-3">
+        <h2 className="text-sm font-semibold text-hvdc-text-primary">{caseRow.case_no}</h2>
+        <button onClick={handleClose} className="text-hvdc-text-muted hover:text-hvdc-text-primary">
           <X size={18} />
         </button>
       </div>
@@ -83,7 +83,7 @@ export function CargoDrawer() {
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
         {/* Basic info */}
         <section>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">{t.cargo.basicInfo}</h3>
+          <h3 className="mb-2 text-xs font-semibold uppercase text-hvdc-text-muted">{t.cargo.basicInfo}</h3>
           <dl className="space-y-1.5">
             {([
               [t.cargo.site, caseRow.site],
@@ -94,8 +94,8 @@ export function CargoDrawer() {
               ['SQM', caseRow.sqm ? `${caseRow.sqm} ㎡` : '–'],
             ] as [string, string | number | null | undefined][]).map(([k, v]) => (
               <div key={k} className="flex justify-between text-xs">
-                <dt className="text-gray-500">{k}</dt>
-                <dd className="text-gray-200 text-right max-w-[60%] break-words">{String(v ?? '–')}</dd>
+                <dt className="text-hvdc-text-muted">{k}</dt>
+                <dd className="max-w-[60%] break-words text-right text-hvdc-text-primary">{String(v ?? '–')}</dd>
               </div>
             ))}
           </dl>
@@ -104,8 +104,8 @@ export function CargoDrawer() {
         {/* Timeline */}
         {shipment && (
           <section>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">{t.cargo.logisticsTimeline}</h3>
-            <div className="space-y-2 pl-1 border-l border-gray-700 ml-1">
+            <h3 className="mb-2 text-xs font-semibold uppercase text-hvdc-text-muted">{t.cargo.logisticsTimeline}</h3>
+            <div className="ml-1 space-y-2 border-l border-hvdc-border-soft pl-1">
               <TimelineItem label={t.cargo.etdLabel} date={shipment.etd} />
               <TimelineItem label={t.cargo.atdLabel} date={shipment.atd} />
               <TimelineItem label={t.cargo.etaLabel} date={shipment.eta} />
@@ -116,7 +116,7 @@ export function CargoDrawer() {
         )}
 
         {!caseRow.sct_ship_no && (
-          <p className="text-xs text-gray-600">{t.cargo.noShipmentNo}</p>
+          <p className="text-xs text-hvdc-text-muted">{t.cargo.noShipmentNo}</p>
         )}
       </div>
     </div>

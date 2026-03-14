@@ -3,17 +3,17 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { useCasesStore } from '@/store/casesStore'
 import { OVERVIEW_ROUTE_TYPES } from '@/lib/overview/routeTypes'
-import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { chartColors, getRouteTypeBadgeClass, ui } from '@/lib/overview/ui'
 import type { OverviewRouteTypeId } from '@/types/overview'
 import { useT } from '@/hooks/useT'
 
 const ROUTE_COLORS: Record<OverviewRouteTypeId, string> = {
-  'pre-arrival': '#64748b',
-  'direct-to-site': '#0ea5e9',
-  'via-warehouse': '#f59e0b',
-  'via-mosb': '#f97316',
-  'via-warehouse-mosb': '#f43f5e',
-  'review-required': '#71717a',
+  'pre-arrival': chartColors.route['pre-arrival'],
+  'direct-to-site': chartColors.route['direct-to-site'],
+  'via-warehouse': chartColors.route['via-warehouse'],
+  'via-mosb': chartColors.route['via-mosb'],
+  'via-warehouse-mosb': chartColors.route['via-warehouse-mosb'],
+  'review-required': chartColors.route['review-required'],
 }
 
 interface FlowCodeDonutProps {
@@ -24,7 +24,7 @@ interface FlowCodeDonutProps {
 export function FlowCodeDonut({ selectedRouteType, onRouteTypeSelect }: FlowCodeDonutProps) {
   const t = useT()
   const { summary } = useCasesStore()
-  if (!summary) return <div className="h-48 bg-gray-800 animate-pulse rounded" />
+  if (!summary) return <div className="h-48 animate-pulse rounded bg-hvdc-surface-subtle" />
 
   const data = OVERVIEW_ROUTE_TYPES
     .map((routeType) => ({
@@ -35,9 +35,9 @@ export function FlowCodeDonut({ selectedRouteType, onRouteTypeSelect }: FlowCode
     .filter((entry) => entry.value > 0)
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3">
+    <div className={`${ui.panelInner} p-3`}>
       <div className="mb-2 flex items-center justify-between gap-2">
-        <h4 className="text-xs font-semibold text-gray-400">{t.pipeline.routeDistribution}</h4>
+        <h4 className="text-xs font-semibold text-hvdc-text-secondary">{t.pipeline.routeDistribution}</h4>
         {selectedRouteType ? (
           <button
             type="button"
@@ -64,7 +64,7 @@ export function FlowCodeDonut({ selectedRouteType, onRouteTypeSelect }: FlowCode
             {data.map((entry) => <Cell key={entry.id} fill={ROUTE_COLORS[entry.id]} />)}
           </Pie>
           <Tooltip formatter={(value: number) => value.toLocaleString()} />
-          <Legend iconSize={10} />
+          <Legend iconSize={10} wrapperStyle={{ color: chartColors.axis, fontSize: '11px' }} />
         </PieChart>
       </ResponsiveContainer>
     </div>

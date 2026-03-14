@@ -6,6 +6,7 @@ import { useCasesStore } from '@/store/casesStore'
 import type { PipelineStage } from '@/types/cases'
 import { PIPELINE_STAGE_META } from '@/lib/cases/pipelineStage'
 import { cn } from '@/lib/utils'
+import { ui } from '@/lib/overview/ui'
 
 const STAGES = Object.keys(PIPELINE_STAGE_META) as PipelineStage[]
 
@@ -27,7 +28,7 @@ export function FlowPipeline({ activeStage: controlledStage, onStageChange }: Fl
   const selectedStage = controlledStage ?? activePipelineStage
 
   return (
-    <div className="flex items-stretch gap-0 rounded-[24px] overflow-hidden border border-white/8 bg-[#0B1730]">
+    <div className={`flex items-stretch gap-0 overflow-hidden ${ui.panel}`}>
       {STAGES.map((stage, i) => {
         const meta = PIPELINE_STAGE_META[stage]
         const count = summary?.byStatus[meta.summaryKey] ?? 0
@@ -37,7 +38,7 @@ export function FlowPipeline({ activeStage: controlledStage, onStageChange }: Fl
         return (
           <div key={stage} className="flex items-center">
             {i > 0 && (
-              <div className="text-slate-600 text-xl px-1 select-none">→</div>
+              <div className="select-none px-1 text-xl text-hvdc-text-muted">→</div>
             )}
             <button
               onClick={() =>
@@ -51,13 +52,13 @@ export function FlowPipeline({ activeStage: controlledStage, onStageChange }: Fl
                 'flex min-w-[140px] flex-col items-center px-6 py-4 transition-colors text-center',
                 active
                   ? `${meta.activeClass} text-white`
-                  : 'text-slate-300 hover:bg-white/5'
+                  : 'text-hvdc-text-primary hover:bg-hvdc-surface-hover'
               )}
             >
               <span className="text-2xl font-bold">{count.toLocaleString()}</span>
               <span className="mt-1 text-xs">{meta.label}</span>
-              <span className="mt-1 text-[11px] text-slate-400">{meta.sublabel}</span>
-              <span className="text-xs text-slate-400 mt-0.5">{pct}%</span>
+              <span className="mt-1 text-[11px] text-hvdc-text-secondary">{meta.sublabel}</span>
+              <span className="mt-0.5 text-xs text-hvdc-text-secondary">{pct}%</span>
             </button>
           </div>
         )

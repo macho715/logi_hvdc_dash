@@ -17,6 +17,7 @@ import { buildDashboardLink } from '@/lib/navigation/contracts'
 import { useLogisticsStore } from '@/store/logisticsStore'
 import { useCasesStore } from '@/store/casesStore'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 import type { PipelineStage } from '@/lib/cases/pipelineStage'
 import type { NavigationIntent } from '@/types/overview'
 
@@ -38,7 +39,7 @@ export function OverviewPageClient() {
   }
 
   return (
-    <div className="flex h-full flex-col overflow-auto bg-[#071225] text-slate-100">
+    <div className={`flex h-full flex-col overflow-auto ${ui.pageShell}`}>
       {/* Row 1: Existing toolbar */}
       <OverviewToolbar
         onShipmentSelect={(sctShipNo) => setSelectedShipmentId(sctShipNo)}
@@ -91,7 +92,7 @@ export function OverviewPageClient() {
       />
 
       {/* Row 7: Open radar + Ops snapshot */}
-      <div className="grid xl:grid-cols-[7fr_5fr]">
+      <div className="grid gap-5 xl:grid-cols-[1.45fr_.95fr]">
         <OpenRadarTable
           worklist={worklist}
           data={data}

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useLogisticsStore } from '@/store/logisticsStore'
 import { normalizeShipmentId } from '@/lib/search/normalizeShipmentId'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 
 interface SearchResult {
   sct_ship_no: string
@@ -101,19 +102,19 @@ export function ShipmentSearchBar({ onSelect }: Props) {
   return (
     <div ref={containerRef} className="relative w-72">
       <div className="relative flex items-center">
-        <span className="pointer-events-none absolute left-3 text-gray-400">🔍</span>
+        <span className="pointer-events-none absolute left-3 text-hvdc-text-secondary">🔍</span>
         <input
           type="text"
           value={query}
           onChange={handleChange}
           placeholder={t.search.placeholder}
-          className="w-full rounded-lg border border-gray-700 bg-gray-900 py-1.5 pl-9 pr-8 text-sm text-gray-100 placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+          className={`${ui.input} py-1.5 pl-9 pr-8`}
         />
         {query && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-2 text-gray-400 hover:text-gray-200"
+            className="absolute right-2 text-hvdc-text-secondary hover:text-hvdc-text-primary"
             aria-label="검색 초기화"
           >
             ×
@@ -122,25 +123,25 @@ export function ShipmentSearchBar({ onSelect }: Props) {
       </div>
 
       {open && (
-        <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-700 bg-gray-900 shadow-xl">
+        <div className={`absolute top-full z-50 mt-1 w-full ${ui.panelInner}`}>
           {loading && (
-            <div className="px-4 py-3 text-sm text-gray-400">{t.search.loading}</div>
+            <div className="px-4 py-3 text-sm text-hvdc-text-secondary">{t.search.loading}</div>
           )}
           {!loading && error && (
-            <div className="px-4 py-3 text-sm text-red-400">{t.search.error}</div>
+            <div className="px-4 py-3 text-sm text-hvdc-status-risk">{t.search.error}</div>
           )}
           {!loading && !error && results.length === 0 && (
-            <div className="px-4 py-3 text-sm text-gray-400">{t.search.noResults}</div>
+            <div className="px-4 py-3 text-sm text-hvdc-text-secondary">{t.search.noResults}</div>
           )}
           {!loading && results.map((r) => (
             <div
               key={r.id}
-              className="flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-gray-800"
+              className="flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-hvdc-surface-hover"
               onMouseDown={() => handleSelect(r)}
             >
               <div>
-                <div className="text-sm font-medium text-gray-100">{r.sct_ship_no}</div>
-                <div className="text-xs text-gray-400">
+                <div className="text-sm font-medium text-hvdc-text-primary">{r.sct_ship_no}</div>
+                <div className="text-xs text-hvdc-text-secondary">
                   {r.vendor} · {t.voyageStage[r.voyage_stage as keyof typeof t.voyageStage] ?? r.voyage_stage}
                   {r.eta ? ` · ${t.search.eta} ${r.eta}` : ''}
                 </div>
@@ -148,7 +149,7 @@ export function ShipmentSearchBar({ onSelect }: Props) {
               <a
                 href={`/cargo?tab=shipments&sct_ship_no=${encodeURIComponent(r.sct_ship_no)}`}
                 onMouseDown={(e) => e.stopPropagation()}
-                className="ml-2 shrink-0 text-xs text-blue-400 hover:underline"
+                className="ml-2 shrink-0 text-xs text-hvdc-brand hover:text-hvdc-brand-hi hover:underline"
               >
                 {t.rightPanel.viewDetail}
               </a>

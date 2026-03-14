@@ -3,6 +3,7 @@
 import type { CasesFilter } from '@/types/cases'
 import type { PipelineTableFilters } from '@/components/pipeline/PipelineCasesTable'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 
 type SelectProps = {
   label: string
@@ -14,11 +15,11 @@ type SelectProps = {
 function FilterSelect({ label, value, onChange, options }: SelectProps) {
   return (
     <div className="flex items-center gap-2">
-      <label className="text-xs text-slate-400 whitespace-nowrap">{label}</label>
+      <label className="whitespace-nowrap text-xs text-hvdc-text-secondary">{label}</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="bg-[#0A1428] text-slate-200 text-xs rounded px-2 py-1 border border-white/8 focus:outline-none focus:border-[#2563EB]"
+        className={`${ui.select} px-2 py-1 text-xs`}
       >
         {options.map(o => (
           <option key={o.value} value={o.value}>{o.label}</option>
@@ -37,7 +38,7 @@ interface Props {
 export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
   const t = useT()
   return (
-    <div className="flex items-center gap-4 flex-wrap bg-[#0D1A35] px-4 py-2 border-b border-white/8">
+    <div className={`flex flex-wrap items-center gap-4 border-b border-hvdc-border-soft px-4 py-2 ${ui.panelInner}`}>
       <FilterSelect
         label={t.pipeline.siteFilter}
         value={String(filters.site)}
@@ -74,7 +75,7 @@ export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
       />
       <button
         onClick={resetFilters}
-        className="text-xs text-slate-500 hover:text-slate-300 ml-auto"
+        className="ml-auto text-xs text-hvdc-text-muted hover:text-hvdc-text-primary"
       >
         {t.pipeline.reset}
       </button>

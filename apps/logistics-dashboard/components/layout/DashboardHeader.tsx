@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useOpsStore } from '@repo/shared'
 import { useT } from '@/hooks/useT'
 import { LangToggle } from '@/components/ui/LangToggle'
+import { ui } from '@/lib/overview/ui'
 
 export function DashboardHeader() {
   const pathname = usePathname()
@@ -21,11 +22,11 @@ export function DashboardHeader() {
   const title = PAGE_TITLES[pathname] ?? 'Dashboard'
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between border-b border-white/5 bg-[#09162b]/90 px-6 py-4 backdrop-blur-md">
-      <h1 className="text-[20px] font-bold tracking-[-0.02em] text-white">{title}</h1>
+    <header className={`sticky top-0 z-20 flex items-center justify-between px-6 py-4 ${ui.topbar}`}>
+      <h1 className="text-[20px] font-bold tracking-[-0.02em] text-hvdc-text-primary">{title}</h1>
       <div className="flex items-center">
         {lastRefreshAt && (
-          <span className="text-[12px] font-medium text-slate-400">
+          <span className="text-[12px] font-medium text-hvdc-text-secondary">
             {t.header.updated}: {new Date(lastRefreshAt).toLocaleTimeString('en-US', { hour12: false })}
           </span>
         )}

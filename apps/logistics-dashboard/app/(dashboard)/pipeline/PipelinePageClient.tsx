@@ -12,6 +12,7 @@ import { TransportModeBar } from '@/components/pipeline/TransportModeBar'
 import { CustomsStatusCard } from '@/components/pipeline/CustomsStatusCard'
 import { WarehouseSqmBar } from '@/components/pipeline/WarehouseSqmBar'
 import { buildDashboardLink, getPageContextChips, parsePipelineQuery } from '@/lib/navigation/contracts'
+import { ui } from '@/lib/overview/ui'
 import { useCasesStore } from '@/store/casesStore'
 import type { PipelineTableFilters } from '@/components/pipeline/PipelineCasesTable'
 import type { OverviewRouteTypeId } from '@/types/overview'
@@ -70,8 +71,8 @@ export function PipelinePageClient() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 space-y-4">
+    <div className={`flex h-full flex-col ${ui.pageShell}`}>
+      <div className={`${ui.pageContent} ${ui.pageStack}`}>
         <PageContextBanner
           title="Pipeline Context"
           description="Overview에서 넘어온 단계/현장/경로 조건을 URL 기준으로 복원합니다."

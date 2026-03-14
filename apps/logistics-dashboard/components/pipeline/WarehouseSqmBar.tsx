@@ -3,11 +3,12 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useCasesStore } from '@/store/casesStore'
 import { useT } from '@/hooks/useT'
+import { chartColors, ui } from '@/lib/overview/ui'
 
 export function WarehouseSqmBar() {
   const t = useT()
   const { summary } = useCasesStore()
-  if (!summary) return <div className="h-32 bg-gray-800 animate-pulse rounded" />
+  if (!summary) return <div className="h-32 animate-pulse rounded bg-hvdc-surface-subtle" />
 
   const data = Object.entries(summary.bySqmByLocation)
     .sort((a, b) => b[1] - a[1])
@@ -15,14 +16,14 @@ export function WarehouseSqmBar() {
     .map(([name, value]) => ({ name: name.replace('DSV ', ''), value: Math.round(value) }))
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-2">{t.pipeline.warehouseSqm}</h4>
+    <div className={`${ui.panelInner} p-3`}>
+      <h4 className="mb-2 text-xs font-semibold text-hvdc-text-secondary">{t.pipeline.warehouseSqm}</h4>
       <ResponsiveContainer width="100%" height={120}>
         <BarChart data={data} layout="vertical" margin={{ left: 10 }}>
           <XAxis type="number" hide />
-          <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fill: '#9ca3af' }} width={65} />
+          <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fill: chartColors.axis }} width={65} />
           <Tooltip formatter={(v: number) => `${v.toLocaleString()} ㎡`} />
-          <Bar dataKey="value" fill="#6366f1" radius={[0,3,3,0]} />
+          <Bar dataKey="value" fill={chartColors.siteMir} radius={[0,3,3,0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { buildDashboardLink } from '@/lib/navigation/contracts'
 import { OVERVIEW_ROUTE_TYPES, getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
-import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { chartColors, getRouteTypeBadgeClass, ui } from '@/lib/overview/ui'
 import { useCasesStore } from '@/store/casesStore'
 import { useLogisticsStore } from '@/store/logisticsStore'
 import { useT } from '@/hooks/useT'
@@ -83,16 +83,16 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
   const vendorData = Object.entries(vendorMap).map(([name, value]) => ({ name, value }))
 
   return (
-    <div className="mx-4 mb-4 flex flex-1 flex-col overflow-hidden rounded-[24px] bg-[#0B1730]">
-      <div className="flex border-b border-white/8">
+    <div className={`mx-4 mb-4 flex flex-1 flex-col overflow-hidden ${ui.panel}`}>
+      <div className="flex border-b border-hvdc-border-soft">
         {tabs.map((entry) => (
           <button
             key={entry.key}
             onClick={() => onTabChange(entry.key)}
             className={`px-4 py-2 text-sm transition-colors ${
               tab === entry.key
-                ? 'border-b-2 border-[#3B82F6] text-white'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'border-b-2 border-hvdc-brand text-hvdc-text-primary'
+                : 'text-hvdc-text-secondary hover:text-hvdc-text-primary'
             }`}
           >
             {entry.label}
@@ -101,30 +101,30 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
       </div>
 
       <div className="flex-1 overflow-auto p-4">
-        {loading ? <div className="text-sm text-slate-400">Loading...</div> : null}
+        {loading ? <div className="text-sm text-hvdc-text-secondary">Loading...</div> : null}
 
         {!loading && tab === 'summary' ? (
           <div className="space-y-4">
             <div>
               <div className="mb-2 flex items-center gap-2">
-                <div className="text-3xl font-bold text-white">{rate.toFixed(1)}%</div>
+                <div className="text-3xl font-bold text-hvdc-text-primary">{rate.toFixed(1)}%</div>
                 <SiteTypeTag site={site} />
               </div>
-              <div className="text-sm text-slate-400">
+              <div className="text-sm text-hvdc-text-secondary">
                 {locale === 'ko'
                   ? `${arrived.toLocaleString()} / ${total.toLocaleString()}건 도착`
                   : `${arrived.toLocaleString()} / ${total.toLocaleString()} ${t.sites.arrivedOf}`}
               </div>
-              <div className="mt-4 h-3 w-full rounded-full bg-white/10">
-                <div className="h-3 rounded-full bg-blue-500" style={{ width: `${Math.min(rate, 100)}%` }} />
+              <div className={`mt-4 ${ui.progressTrack} h-3`}>
+                <div className={`${ui.progressFillBlue} h-3`} style={{ width: `${Math.min(rate, 100)}%` }} />
               </div>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
               {Object.entries(storageBreakdown).map(([label, value]) => (
-                <div key={label} className="rounded-lg border border-white/8 bg-gray-950/60 p-3">
-                  <div className="text-xs text-slate-400">{label}</div>
-                  <div className="mt-1 text-xl font-semibold text-white">{value.toLocaleString()}</div>
+                <div key={label} className={`${ui.panelInner} p-3`}>
+                  <div className="text-xs text-hvdc-text-secondary">{label}</div>
+                  <div className="mt-1 text-xl font-semibold text-hvdc-text-primary">{value.toLocaleString()}</div>
                 </div>
               ))}
             </div>
@@ -135,10 +135,10 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
           <div className="space-y-4">
             <ResponsiveContainer width="100%" height={240}>
               <BarChart data={routeData}>
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} interval={0} angle={-15} height={70} />
-                <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: chartColors.axis }} interval={0} angle={-15} height={70} />
+                <YAxis tick={{ fontSize: 11, fill: chartColors.axis }} />
                 <Tooltip formatter={(value: number) => value.toLocaleString()} />
-                <Bar dataKey="value" fill="#3b82f6" />
+                <Bar dataKey="value" fill={chartColors.brand} />
               </BarChart>
             </ResponsiveContainer>
             <div className="flex flex-wrap gap-2">
@@ -158,22 +158,22 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
           monthlyData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={monthlyData}>
-                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#9ca3af' }} />
-                <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: chartColors.axis }} />
+                <YAxis tick={{ fontSize: 11, fill: chartColors.axis }} />
                 <Tooltip formatter={(value: number) => value.toLocaleString()} />
-                <Bar dataKey="value" fill="#10b981" />
+                <Bar dataKey="value" fill={chartColors.ok} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-sm text-slate-400">{t.sites.siteArrivalNoData}</div>
+            <div className="text-sm text-hvdc-text-secondary">{t.sites.siteArrivalNoData}</div>
           )
         ) : null}
 
         {!loading && tab === 'pending' ? (
           <div className="overflow-auto">
-            <table className="w-full text-xs text-slate-300">
+            <table className="w-full text-xs text-hvdc-text-primary">
               <thead>
-                <tr className="border-b border-white/8 text-slate-400">
+                <tr className="border-b border-hvdc-border-soft text-hvdc-text-secondary">
                   <th className="py-1 text-left">Case No</th>
                   <th className="py-1 text-left">{t.sites.currentLocation}</th>
                   <th className="py-1 text-left">{t.sites.route}</th>
@@ -186,7 +186,7 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
                   return (
                     <tr
                       key={row.id}
-                      className="cursor-pointer border-b border-white/8 transition-colors hover:bg-[#0D1A35]/70"
+                      className="cursor-pointer border-b border-hvdc-border-soft transition-colors hover:bg-hvdc-surface-hover"
                       onClick={() =>
                         router.push(
                           buildDashboardLink({
@@ -222,9 +222,9 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={vendorData} layout="vertical" margin={{ left: 10 }}>
               <XAxis type="number" hide />
-              <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} width={60} />
+              <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: chartColors.axis }} width={60} />
               <Tooltip formatter={(value: number) => value.toLocaleString()} />
-              <Bar dataKey="value" fill="#6366f1" radius={[0, 3, 3, 0]} />
+              <Bar dataKey="value" fill={chartColors.siteMir} radius={[0, 3, 3, 0]} />
             </BarChart>
           </ResponsiveContainer>
         ) : null}

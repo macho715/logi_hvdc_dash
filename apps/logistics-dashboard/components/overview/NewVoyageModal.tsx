@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import type { NewVoyagePayload } from '@/app/api/shipments/new/route'
 import { useT } from '@/hooks/useT'
+import { ui } from '@/lib/overview/ui'
 
 interface Props {
   open: boolean
@@ -144,16 +145,16 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl rounded-2xl border border-gray-700 bg-gray-900 p-6 shadow-2xl"
+        className={`w-full max-w-2xl ${ui.panel} p-6 shadow-2xl`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-1 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">{t.modal.title}</h2>
-          <button onClick={onClose} className="text-xl text-gray-400 hover:text-gray-200">
+          <h2 className="text-lg font-bold text-hvdc-text-primary">{t.modal.title}</h2>
+          <button onClick={onClose} className="text-xl text-hvdc-text-secondary hover:text-hvdc-text-primary">
             ×
           </button>
         </div>
-        <p className="mb-4 text-xs text-gray-500">
+        <p className="mb-4 text-xs text-hvdc-text-muted">
           {t.modal.subtitle}
           <br />
           {t.modal.updateNote}
@@ -163,26 +164,26 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 1: SCT SHIP NO (required) + Vendor */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">
-                {t.modal.sctShipNo} <span className="text-red-400">*</span>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">
+                {t.modal.sctShipNo} <span className="text-hvdc-status-risk">*</span>
               </label>
               <input
                 type="text"
                 value={form.hvdc_code}
                 onChange={(e) => handleChange('hvdc_code', e.target.value)}
                 placeholder={t.modal.sctShipNoPlaceholder}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
                 required
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.vendor}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.vendor}</label>
               <input
                 type="text"
                 value={form.vendor}
                 onChange={(e) => handleChange('vendor', e.target.value)}
                 placeholder={t.modal.vendorPlaceholder}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
               />
             </div>
           </div>
@@ -190,23 +191,23 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 2: POL + POD */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.pol}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.pol}</label>
               <input
                 type="text"
                 value={form.pol}
                 onChange={(e) => handleChange('pol', e.target.value)}
                 placeholder={t.modal.polPlaceholder}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.pod}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.pod}</label>
               <input
                 type="text"
                 value={form.pod}
                 onChange={(e) => handleChange('pod', e.target.value)}
                 placeholder={t.modal.podPlaceholder}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
               />
             </div>
           </div>
@@ -214,11 +215,11 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 3: Ship Mode + Incoterms + MR No. */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.shipMode}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.shipMode}</label>
               <select
                 value={form.ship_mode}
                 onChange={(e) => handleChange('ship_mode', e.target.value)}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+                className={`${ui.select} w-full`}
               >
                 {SHIP_MODES.map((m) => (
                   <option key={m} value={m}>
@@ -228,11 +229,11 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.incoterms}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.incoterms}</label>
               <select
                 value={form.incoterms}
                 onChange={(e) => handleChange('incoterms', e.target.value)}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+                className={`${ui.select} w-full`}
               >
                 <option value="">{t.modal.incotermsSelect}</option>
                 {INCOTERMS_LIST.map((inc) => (
@@ -243,7 +244,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.mrNo}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.mrNo}</label>
               <input
                 type="number"
                 value={form.status_no ?? ''}
@@ -251,7 +252,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
                   handleChange('status_no', e.target.value ? Number(e.target.value) : null)
                 }
                 placeholder="12345"
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
               />
             </div>
           </div>
@@ -259,17 +260,17 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 4: Vessel + B/L AWB */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.vessel}</label>
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.vessel}</label>
               <input
                 type="text"
                 value={form.vessel}
                 onChange={(e) => handleChange('vessel', e.target.value)}
                 placeholder={t.modal.vesselPlaceholder}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">
+              <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">
                 {t.modal.blAwb}
               </label>
               <input
@@ -277,7 +278,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
                 value={form.bl_awb}
                 onChange={(e) => handleChange('bl_awb', e.target.value)}
                 placeholder={t.modal.blAwbPlaceholder}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className={ui.input}
               />
             </div>
           </div>
@@ -286,14 +287,14 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           <div className="grid grid-cols-4 gap-3">
             {(['etd', 'atd', 'eta', 'ata'] as const).map((field) => (
               <div key={field}>
-                <label className="mb-1 block text-xs font-medium text-gray-400">
+                <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">
                   {t.modal[field]}
                 </label>
                 <input
                   type="date"
                   value={form[field]}
                   onChange={(e) => handleChange(field, e.target.value)}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+                  className={`${ui.input} px-2`}
                 />
               </div>
             ))}
@@ -309,7 +310,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
               ] as const
             ).map(([field, label]) => (
               <div key={field}>
-                <label className="mb-1 block text-xs font-medium text-gray-400">{label}</label>
+                <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{label}</label>
                 <input
                   type="number"
                   value={form[field] ?? ''}
@@ -317,7 +318,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
                     handleChange(field, e.target.value ? Number(e.target.value) : null)
                   }
                   placeholder="0"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className={ui.input}
                 />
               </div>
             ))}
@@ -325,7 +326,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
 
           {/* Row 7: Site checkboxes */}
           <div>
-            <label className="mb-2 block text-xs font-medium text-gray-400">
+            <label className="mb-2 block text-xs font-medium text-hvdc-text-secondary">
               {t.modal.siteNomination}
             </label>
             <div className="flex gap-4">
@@ -337,9 +338,9 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
                       type="checkbox"
                       checked={form[key]}
                       onChange={(e) => handleChange(key, e.target.checked)}
-                      className="h-4 w-4 rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
+                      className="h-4 w-4 rounded border-hvdc-border-strong bg-hvdc-bg-inner text-hvdc-brand focus:ring-hvdc-brand"
                     />
-                    <span className="text-sm text-gray-300">{site}</span>
+                    <span className="text-sm text-hvdc-text-primary">{site}</span>
                   </label>
                 )
               })}
@@ -348,19 +349,19 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
 
           {/* Row 8: Description */}
           <div>
-            <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.description}</label>
+            <label className="mb-1 block text-xs font-medium text-hvdc-text-secondary">{t.modal.description}</label>
             <textarea
               value={form.description}
               onChange={(e) => handleChange('description', e.target.value)}
               placeholder={t.modal.descriptionPlaceholder}
               rows={3}
-              className="w-full resize-none rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+              className={`${ui.input} resize-none py-2`}
             />
           </div>
 
           {/* Error */}
           {submitError && (
-            <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm text-red-400">
+            <div className="rounded-lg border border-hvdc-status-risk/30 bg-hvdc-status-risk/10 px-4 py-2 text-sm text-hvdc-status-risk">
               {submitError}
             </div>
           )}
@@ -370,14 +371,14 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-gray-700 px-4 py-2 text-sm text-gray-400 transition-colors hover:text-gray-200"
+              className="rounded-lg border border-hvdc-border-soft px-4 py-2 text-sm text-hvdc-text-secondary transition-colors hover:text-hvdc-text-primary"
             >
               {t.modal.cancel}
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
+              className="rounded-lg bg-hvdc-brand px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-hvdc-brand-hi disabled:opacity-50"
             >
               {submitting ? t.modal.submitting : t.modal.submit}
             </button>

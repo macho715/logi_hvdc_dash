@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { FlowChain } from '@/components/chain/FlowChain'
 import { PageContextBanner } from '@/components/navigation/PageContextBanner'
 import { buildDashboardLink, getPageContextChips, parseChainQuery } from '@/lib/navigation/contracts'
+import { ui } from '@/lib/overview/ui'
 
 export function ChainPageClient() {
   const router = useRouter()
@@ -24,8 +25,8 @@ export function ChainPageClient() {
   }
 
   return (
-    <div className="h-full overflow-auto p-4">
-      <div className="space-y-4">
+    <div className={`h-full overflow-auto ${ui.pageShell}`}>
+      <div className={`${ui.pageContent} ${ui.pageStack}`}>
         <PageContextBanner
           title="Chain Context"
           description="Overview의 route/site/focus 조건을 같은 URL로 유지합니다."

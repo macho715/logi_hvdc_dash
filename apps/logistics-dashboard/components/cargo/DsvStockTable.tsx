@@ -13,12 +13,12 @@ export function DsvStockTable() {
 
   return (
     <div className="flex flex-col h-full overflow-auto">
-      <div className="flex px-3 py-1 text-xs text-gray-600 border-b border-gray-800">
+      <div className="flex border-b border-hvdc-border-soft px-3 py-1 text-xs text-hvdc-text-muted">
         {t.cargo.totalCount} {total.toLocaleString()}{unitSuffix} ({t.cargo.dsvStock})
       </div>
-      <table className="w-full text-xs text-gray-300 border-collapse">
-        <thead className="sticky top-0 bg-gray-900">
-          <tr className="text-gray-500 border-b border-gray-700">
+      <table className="w-full border-collapse text-xs text-hvdc-text-primary">
+        <thead className="sticky top-0 bg-hvdc-bg-panel">
+          <tr className="border-b border-hvdc-border-soft text-hvdc-text-secondary">
             <th className="py-2 px-3 text-left w-10">No</th>
             <th className="py-2 px-3 text-left">SKU</th>
             <th className="py-2 px-3 text-left">Description</th>
@@ -29,13 +29,13 @@ export function DsvStockTable() {
           </tr>
         </thead>
         <tbody>
-          {isLoading && <tr><td colSpan={7} className="py-8 text-center text-gray-600">Loading...</td></tr>}
+          {isLoading && <tr><td colSpan={7} className="py-8 text-center text-hvdc-text-muted">Loading...</td></tr>}
           {!isLoading && stock.length === 0 && (
-            <tr><td colSpan={7} className="py-8 text-center text-gray-600">{t.cargo.noData}</td></tr>
+            <tr><td colSpan={7} className="py-8 text-center text-hvdc-text-muted">{t.cargo.noData}</td></tr>
           )}
           {stock.map(s => (
-            <tr key={s.id} className="border-b border-gray-800 hover:bg-gray-800">
-              <td className="py-1.5 px-3 text-gray-600">{s.no}</td>
+            <tr key={s.id} className="border-b border-hvdc-border-soft hover:bg-hvdc-surface-hover">
+              <td className="py-1.5 px-3 text-hvdc-text-muted">{s.no}</td>
               <td className="py-1.5 px-3 font-mono">{s.sku}</td>
               <td className="py-1.5 px-3 truncate max-w-40">{s.description}</td>
               <td className="py-1.5 px-3">{s.location}</td>

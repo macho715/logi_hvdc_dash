@@ -4,6 +4,7 @@ import { MapLayerToggles } from './MapLayerToggles'
 import { ShipmentSearchBar } from './ShipmentSearchBar'
 import { useT } from '@/hooks/useT'
 import { LangToggle } from '@/components/ui/LangToggle'
+import { ui } from '@/lib/overview/ui'
 
 interface OverviewToolbarProps {
   onShipmentSelect: (sctShipNo: string) => void
@@ -14,7 +15,7 @@ export function OverviewToolbar({ onShipmentSelect, onNewVoyageClick }: Overview
   const t = useT()
 
   return (
-    <div className="flex items-center justify-between border-b border-white/5 bg-[#09162b]/90 px-4 py-2 backdrop-blur-md">
+    <div className={`flex items-center justify-between px-4 py-2 ${ui.topbar}`}>
       {/* Left: search */}
       <ShipmentSearchBar onSelect={onShipmentSelect} />
 
@@ -27,7 +28,7 @@ export function OverviewToolbar({ onShipmentSelect, onNewVoyageClick }: Overview
         <button
           type="button"
           onClick={onNewVoyageClick}
-          className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-500 transition-colors"
+          className="flex items-center gap-1.5 rounded-lg bg-hvdc-brand px-3 py-1.5 text-sm font-medium text-white shadow-hvdc-active transition-colors hover:bg-hvdc-brand-hi"
         >
           {t.toolbar.newVoyage}
         </button>

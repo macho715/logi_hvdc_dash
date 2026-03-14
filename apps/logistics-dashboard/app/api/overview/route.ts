@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type { DashboardPayload, Event, Location, LocationStatus, WorklistRow } from '@repo/shared'
-import { PIPELINE_STAGES, PIPELINE_STAGE_META, classifyStage, type PipelineStage } from '@/lib/cases/pipelineStage'
+import { PIPELINE_STAGES, PIPELINE_STAGE_META, type PipelineStage } from '@/lib/cases/pipelineStage'
+import { buildCasesSummary, type CasesSummarySourceRow } from '@/lib/cases/summary'
 import { buildMockLocationStatuses } from '@/lib/api'
 import { ontologyLocations } from '@/lib/data/ontology-locations'
-import { OVERVIEW_ROUTE_TYPES, aggregateCountsByRouteType, getRouteTypeIdFromFlowCode } from '@/lib/overview/routeTypes'
+import { EVENTS_JOIN_SELECT, generateMockEvents, mapSupabaseEvents } from '@/lib/logistics/events'
+import { OVERVIEW_ROUTE_TYPES, aggregateCountsByRouteType } from '@/lib/overview/routeTypes'
 import { shipmentToWorklistRow, calculateKpis, getDubaiTimestamp, getDubaiToday, type ShipmentRow } from '@/lib/worklist-utils'
-import { normalizeStorageType } from '@/lib/cases/storageType'
-import { normalizeSite } from '@/lib/logistics/normalizers'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 import type { CasesSummary } from '@/types/cases'
 import type { OverviewAlert, OverviewCockpitResponse, OverviewLiveFeedItem, OverviewPipelineItem, OverviewRouteSummaryItem, OverviewSiteReadinessItem, OverviewWarehousePressureItem } from '@/types/overview'
@@ -18,22 +18,6 @@ type ShipmentStagesResponse = {
 }
 
 const SCHEMA_VERSION = '2026-03-13'
-
-const EMPTY_SUMMARY: CasesSummary = {
-  total: 0,
-  byStatus: { site: 0, warehouse: 0, 'Pre Arrival': 0, port: 0, mosb: 0 },
-  bySite: { SHU: 0, MIR: 0, DAS: 0, AGI: 0, Unassigned: 0 },
-  bySiteArrived: { SHU: 0, MIR: 0, DAS: 0, AGI: 0 },
-  bySiteStorageType: {},
-  byRouteType: OVERVIEW_ROUTE_TYPES.reduce((acc, routeType) => {
-    acc[routeType.id] = 0
-    return acc
-  }, {} as CasesSummary['byRouteType']),
-  byFlowCode: {},
-  byVendor: {},
-  bySqmByLocation: {},
-  totalSqm: 0,
-}
 
 /** Paginate any Supabase table */
 async function fetchAllPages(table: string, cols: string): Promise<any[]> {
@@ -80,53 +64,6 @@ function normalizeRate(value: number | string | null): number {
   const n = typeof value === 'number' ? value : parseFloat(String(value))
   if (isNaN(n)) return 0
   return n > 1 ? n / 100 : n
-}
-
-function buildCasesSummary(data: any[]): CasesSummary {
-  const summary: CasesSummary = { ...EMPTY_SUMMARY, total: data.length }
-  for (const row of data) {
-    const stage = classifyStage(row.status_current ?? null, row.status_location ?? null)
-    const stageKey = PIPELINE_STAGE_META[stage].summaryKey
-    summary.byStatus[stageKey]++
-
-    const site = normalizeSite((row.site as string) ?? null)
-    if (site === 'SHU') summary.bySite.SHU++
-    else if (site === 'MIR') summary.bySite.MIR++
-    else if (site === 'DAS') summary.bySite.DAS++
-    else if (site === 'AGI') summary.bySite.AGI++
-    else summary.bySite.Unassigned++
-
-    if (stage === 'site' && site) {
-      if (site === 'SHU') summary.bySiteArrived.SHU++
-      else if (site === 'MIR') summary.bySiteArrived.MIR++
-      else if (site === 'DAS') summary.bySiteArrived.DAS++
-      else if (site === 'AGI') summary.bySiteArrived.AGI++
-    }
-
-    if (site) {
-      if (!summary.bySiteStorageType[site]) {
-        summary.bySiteStorageType[site] = { Indoor: 0, Outdoor: 0, 'Outdoor Cov': 0 }
-      }
-      const storageBucket = normalizeStorageType((row.storage_type as string) ?? null)
-      if (storageBucket) summary.bySiteStorageType[site][storageBucket]++
-    }
-
-    const fc = String(row.flow_code ?? 'null')
-    summary.byFlowCode[fc] = (summary.byFlowCode[fc] ?? 0) + 1
-    const routeTypeId = getRouteTypeIdFromFlowCode(typeof row.flow_code === 'number' ? row.flow_code : null)
-    summary.byRouteType[routeTypeId] = (summary.byRouteType[routeTypeId] ?? 0) + 1
-
-    const v = row.source_vendor as string
-    const vendorKey = v === 'Hitachi' || v === 'Siemens' ? v : 'Other'
-    summary.byVendor[vendorKey] = (summary.byVendor[vendorKey] ?? 0) + 1
-
-    const sqm = typeof row.sqm === 'number' ? row.sqm : 0
-    summary.totalSqm += sqm
-    if (stage === 'warehouse' && row.status_location) {
-      summary.bySqmByLocation[row.status_location] = (summary.bySqmByLocation[row.status_location] ?? 0) + sqm
-    }
-  }
-  return summary
 }
 
 function getFreshnessMinutes(statuses: LocationStatus[], events: Event[]): number {
@@ -361,11 +298,11 @@ export async function GET(_request: NextRequest) {
         // location_statuses
         supabase.from('location_statuses').select('location_id, status, occupancy_rate, updated_at').order('updated_at', { ascending: false }),
         // events
-        supabase.from('events').select('event_id, event_type, status, location_id, shpt_no, ts, lat, lng').order('ts', { ascending: false }).limit(100),
+        supabase.from('events').select(EVENTS_JOIN_SELECT).order('ts', { ascending: false }).limit(1000),
       ])
 
     // ── 2. Build cases summary ──────────────────────────────────────────────
-    const casesData = casesResult ?? []
+    const casesData = (casesResult ?? []) as CasesSummarySourceRow[]
     const summary = buildCasesSummary(casesData)
 
     // ── 3. Build worklist + stages from ONE shipments scan ──────────────────
@@ -422,16 +359,14 @@ export async function GET(_request: NextRequest) {
         : buildMockLocationStatuses(ontologyLocations)
 
     // ── 6. Build events ─────────────────────────────────────────────────────
-    const events: Event[] = (eventsResult.data ?? []).map((r: any) => ({
-      event_id: r.event_id,
-      event_type: r.event_type ?? null,
-      status: r.status ?? '',
-      location_id: r.location_id ?? null,
-      shpt_no: r.shpt_no ?? null,
-      ts: r.ts,
-      lat: r.lat ?? null,
-      lon: r.lng ?? r.lon ?? null,
-    }))
+    if (eventsResult.error) {
+      console.warn('[overview] events query failed, using mock events', eventsResult.error)
+    }
+    const mappedEvents = mapSupabaseEvents(eventsResult.data ?? [])
+    const events: Event[] =
+      mappedEvents.length > 0
+        ? mappedEvents
+        : generateMockEvents()
 
     const pipeline = buildPipeline(summary)
     const routeSummary = buildRouteSummary(summary)

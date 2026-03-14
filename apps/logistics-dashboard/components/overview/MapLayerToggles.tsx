@@ -2,6 +2,7 @@
 
 import { useLogisticsStore } from '@/store/logisticsStore'
 import { cn } from '@/lib/utils'
+import { useT } from '@/hooks/useT'
 
 interface ToggleButtonProps {
   label: string
@@ -20,8 +21,8 @@ function ToggleButton({ label, icon, active, title, onToggle }: ToggleButtonProp
       className={cn(
         'flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors',
         active
-          ? 'bg-blue-600/80 text-white'
-          : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200',
+          ? 'bg-hvdc-brand text-white shadow-hvdc-active'
+          : 'bg-hvdc-surface-subtle text-hvdc-text-secondary hover:bg-hvdc-surface-hover hover:text-hvdc-text-primary',
       )}
     >
       <span>{icon}</span>
@@ -29,8 +30,6 @@ function ToggleButton({ label, icon, active, title, onToggle }: ToggleButtonProp
     </button>
   )
 }
-
-import { useT } from '@/hooks/useT'
 
 export function MapLayerToggles() {
   const t = useT()

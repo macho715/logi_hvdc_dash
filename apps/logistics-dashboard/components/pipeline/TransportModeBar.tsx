@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useT } from '@/hooks/useT'
+import { chartColors, ui } from '@/lib/overview/ui'
 
 interface ModeCount { name: string; value: number }
 
@@ -26,17 +27,17 @@ export function TransportModeBar() {
       .catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="h-32 bg-gray-800 animate-pulse rounded" />
+  if (loading) return <div className="h-32 animate-pulse rounded bg-hvdc-surface-subtle" />
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-1">{t.pipeline.transportMode} <span className="text-gray-600 font-normal">{t.pipeline.transportModeDesc}</span></h4>
+    <div className={`${ui.panelInner} p-3`}>
+      <h4 className="mb-1 text-xs font-semibold text-hvdc-text-secondary">{t.pipeline.transportMode} <span className="font-normal text-hvdc-text-muted">{t.pipeline.transportModeDesc}</span></h4>
       <ResponsiveContainer width="100%" height={120}>
         <BarChart data={data} layout="vertical" margin={{ left: 10 }}>
           <XAxis type="number" hide />
-          <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} width={60} />
+          <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: chartColors.axis }} width={60} />
           <Tooltip formatter={(v: number) => v.toLocaleString()} />
-          <Bar dataKey="value" fill="#f59e0b" radius={[0,3,3,0]} />
+          <Bar dataKey="value" fill={chartColors.warn} radius={[0,3,3,0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
