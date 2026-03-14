@@ -75,6 +75,32 @@ Plain-language route labels:
 
 ---
 
+## Screen Gallery
+
+Captured from the local dashboard runtime on `http://localhost:3001`.
+
+### Overview
+
+![Overview cockpit](public/readme/overview.png)
+
+### Pipeline
+
+![Pipeline page](public/readme/pipeline.png)
+
+### Sites
+
+![Sites page](public/readme/sites.png)
+
+### Cargo
+
+![Cargo page](public/readme/cargo.png)
+
+### Chain
+
+![Chain page](public/readme/chain.png)
+
+---
+
 ## Quick Start
 
 ### Prerequisites
