@@ -1,6 +1,6 @@
 # System Architecture — HVDC Logistics Dashboard
 
-> **Version:** 1.2.0 | **Last Updated:** 2026-03-13
+> **Version:** 1.3.0 | **Last Updated:** 2026-03-14
 > **Stack:** Next.js 16 · React 19 · TypeScript 5 · Supabase · Deck.gl · Zustand
 
 ---
@@ -35,6 +35,9 @@
   - `configs/overview.destinations.json`
 - Cross-page navigation is URL-first through `lib/navigation/contracts.ts`
   - `flow_code` remains an internal compatibility field only
+- Overview toolbar layer (v1.3.0): `OverviewToolbar` row above KPI rail with search, layer toggles, voyage modal
+- `useOverviewData` now accepts `refreshKey` option — new voyage submission triggers overview re-fetch
+- `logisticsStore` extended with layer visibility toggles and shipment highlight
 
 ## 1. Architecture Overview
 
@@ -48,7 +51,7 @@ graph TB
     end
 
     subgraph BFF["Next.js BFF Layer (Edge/Node)"]
-        APIRoutes["API Routes<br/>/api/cases<br/>/api/cases/summary<br/>/api/stock<br/>/api/shipments<br/>/api/chain/summary"]
+        APIRoutes["API Routes<br/>/api/cases<br/>/api/cases/summary<br/>/api/stock<br/>/api/shipments<br/>/api/shipments/new (POST)<br/>/api/chain/summary"]
         Middleware["Middleware<br/>(Auth check, CORS)"]
     end
 
@@ -328,7 +331,9 @@ graph LR
         R11["/api/shipments/vendors
 GET · 고유 벤더 목록 + 건수 (42개)"]
         R12["/api/shipments/stages
-GET · 항차 단계별 집계"]]
+GET · 항차 단계별 집계"]
+        R13["/api/shipments/new
+POST · 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/500"]]
     end
 
     subgraph QueryParams["Query Parameters"]
@@ -378,6 +383,36 @@ GET · 항차 단계별 집계"]]
 | `/api/shipments` | 서버 페이지네이션 | 890 rows — 단순 페이징으로 충분 |
 | `/api/shipments/vendors` | **전체 로드** (pagination loop) | 벤더 distinct + 건수 집계에 전체 rows 필요 |
 | `/api/shipments/stages` | **전체 로드** (pagination loop) | 항차 단계 집계에 전체 rows 필요 |
+| `/api/shipments/new` | INSERT (POST) | 신규 항차 등록 — 페이지네이션 없음 |
+
+### 신규/변경 API 요약 (v1.3.0)
+
+| Route | 변경 | 설명 |
+|-------|------|------|
+| `POST /api/shipments/new` | 신규 | 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/500 |
+| `GET /api/shipments?q=` | 변경 | `?q=` ilike param — `sct_ship_no` 컬럼 부분 매칭 (mutually exclusive with `?sct_ship_no=` exact match via else if) |
+
+### 항차 생성 흐름 (POST /api/shipments/new)
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant M as NewVoyageModal
+    participant A as POST /api/shipments/new
+    participant DB as status.shipments_status
+
+    U->>M: 폼 제출 (hvdc_code 필수)
+    M->>A: POST { hvdc_code, vendor, pol, pod, ... }
+    alt 중복 hvdc_code
+        A-->>M: 409 duplicate_hvdc_code
+        M-->>U: 오류 표시
+    else 성공
+        A->>DB: INSERT (supabaseAdmin.schema('status'))
+        DB-->>A: ok
+        A-->>M: 200 { ok: true }
+        M-->>U: 모달 닫기 + refreshKey++
+    end
+```
 
 ### Response Schemas
 
@@ -497,6 +532,30 @@ graph TD
     Actions --> State
     State --> Selectors
     Selectors -->|"shallow equality check"| Components
+```
+
+### v1.3.0 신규 logisticsStore 필드
+
+```
+logisticsStore:
+  layerOriginArcs: boolean    ← NEW: OriginArcLayer on/off
+  layerTrips: boolean         ← NEW: TripsLayer on/off
+  highlightedShipmentId       ← NEW: selected trip UUID for highlight
+```
+
+Actions: `toggleLayerOriginArcs()`, `toggleLayerTrips()`, `setHighlightedShipmentId(id)`
+
+### 검색 및 하이라이트 흐름 (v1.3.0)
+
+```mermaid
+flowchart LR
+    SB[ShipmentSearchBar] -->|normalizeShipmentId| API[GET /api/shipments]
+    API -->|results| SB
+    SB -->|setHighlightedShipmentId| Store[(logisticsStore)]
+    Store -->|highlightedShipmentId| TL[createTripsLayer]
+    TL -->|white highlight| Map[OverviewMap]
+    SB -->|selectedShipmentId| RightPanel[OverviewRightPanel]
+    RightPanel -->|ShipmentDetailCard| U[User]
 ```
 
 ### Store Normalization Pattern

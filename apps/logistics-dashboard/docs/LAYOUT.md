@@ -172,6 +172,40 @@ graph LR
 
 > Layout type changed from grid-based to **flex column** in v1.3.0 to support
 > a fixed bottom panel and proper viewport-filling behaviour without overflow.
+> v1.3.0 also adds `OverviewToolbar` as the first child above `KpiStripCards`.
+
+```
+OverviewPageClient (flex col, h-full, overflow-hidden)
+├── OverviewToolbar        ← NEW (v1.3.0): ~44px, search + toggles + button
+├── KpiStripCards          ← ~80px KPI rail (5 cards)
+├── Middle section (flex-1, min-h-0)
+│   ├── OverviewMap        ← left, flex-1, min-h-[360px]
+│   └── OverviewRightPanel ← right, xl:w-[360px], overflow-y-auto
+│       └── ShipmentDetailCard ← NEW (v1.3.0): shown when shipment selected
+└── OverviewBottomPanel    ← ~240px, worklist + pipeline strip
+```
+
+```mermaid
+graph TD
+    OPC["OverviewPageClient\nflex col · h-full · overflow-hidden"]
+    OT["OverviewToolbar\n~44px · border-b"]
+    KSC["KpiStripCards\n~80px · 5 KPI cards"]
+    MID["Middle Section\nflex-1 · min-h-0 · flex row"]
+    MAP["OverviewMap\nflex-1 · min-h-360px"]
+    ORP["OverviewRightPanel\nw-80 · overflow-y-auto"]
+    SDC["ShipmentDetailCard\n(when selected)"]
+    OBP["OverviewBottomPanel\n~240px · pipeline + worklist"]
+
+    OPC --> OT
+    OPC --> KSC
+    OPC --> MID
+    MID --> MAP
+    MID --> ORP
+    ORP --> SDC
+    OPC --> OBP
+```
+
+The older mermaid diagram (pre-v1.3.0):
 
 ```mermaid
 graph TD
@@ -187,6 +221,39 @@ graph TD
     KpiStrip --> Middle
     Middle --> BottomPanel
 ```
+
+### OverviewToolbar Layout (v1.3.0)
+
+**File:** `components/overview/OverviewToolbar.tsx`
+
+The toolbar sits between the `DashboardHeader` and `KpiStripCards`, using `flex items-center justify-between` with a `border-b border-gray-800` separator and approximately **44px** height.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  [ShipmentSearchBar w-72]  [🌐 Arc][🚢 항차][🔥 Heat]  [신규 항차 ▸] │
+│  ← left ──────────────── center ──────────────── right →  │
+└──────────────────────────────────────────────────────────┘
+                  ~44px · border-b · flex items-center justify-between
+```
+
+| Zone | Component | Layout class | Notes |
+|------|-----------|-------------|-------|
+| Left | `ShipmentSearchBar` | `w-72 relative` | Dropdown positioned `absolute top-full z-50` |
+| Center | `MapLayerToggles` | `flex gap-2` | Pill buttons |
+| Right | 신규 항차 button | — | Blue (`bg-blue-600`), opens `NewVoyageModal` |
+
+**ShipmentSearchBar dropdown z-index:** The input wrapper uses `position: relative` and the results dropdown uses `z-50` to float above the map and KPI strip without being clipped.
+
+**MapLayerToggles pill states:**
+
+```
+Active:   bg-blue-600/80  text-white
+Inactive: bg-gray-800     text-gray-400
+```
+
+Each pill directly toggles a boolean field in `logisticsStore` — no prop threading required.
+
+---
 
 ### KPI Strip Layout
 
@@ -242,15 +309,16 @@ graph TD
 - 왼쪽: Pipeline 단계 버튼 5개 (`md:grid-cols-5`)
 - 오른쪽: Priority Worklist (`max-h-[160px] overflow-y-auto`)
 
-### Height Budget (viewport ~739px 기준)
+### Height Budget (viewport ~739px 기준, v1.3.0)
 
 | Zone | Height | Notes |
 |------|--------|-------|
-| KPI Strip | ~138px | 고정 |
+| OverviewToolbar | ~44px | 고정 (v1.3.0 신규) |
+| KPI Strip | ~80px | 고정 |
 | Bottom Panel | ~240px | 고정 (pipeline + worklist max-h-[160px]) |
-| Middle (flex-1) | ~361px | 739 − 138 − 240 |
+| Middle (flex-1) | ~375px | 739 − 44 − 80 − 240 |
 | Map min-h | 360px | min-h-[360px] 충족 ✓ |
-| Right Panel content | ~329px | 361px − 32px(padding), overflow-y-auto |
+| Right Panel content | ~343px | 375px − 32px(padding), overflow-y-auto |
 
 ### KpiProvider Context Tree
 

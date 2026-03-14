@@ -1,7 +1,7 @@
 # Component Documentation — HVDC Logistics Dashboard
 
-> **Version:** 1.2.0 | **Last Updated:** 2026-03-13
-> **Component Count:** 43 custom components + Shadcn UI base
+> **Version:** 1.3.0 | **Last Updated:** 2026-03-14
+> **Component Count:** 47 custom components + Shadcn UI base
 
 ---
 
@@ -35,6 +35,14 @@ New or materially changed overview-linked components:
   - Config-driven KPI rail using `NavigationIntent`
 - `components/overview/OverviewRightPanel.tsx`
   - Exception board, route summary, site readiness, recent activity
+- `components/overview/OverviewToolbar.tsx`
+  - Toolbar row: search + layer toggles + new voyage button
+- `components/overview/ShipmentSearchBar.tsx`
+  - Fuzzy ID search with dropdown and map highlight
+- `components/overview/MapLayerToggles.tsx`
+  - Origin Arc / 항차 / Heatmap pill toggles
+- `components/overview/NewVoyageModal.tsx`
+  - Voyage entry form → POST /api/shipments/new
 
 Supporting contracts:
 
@@ -62,6 +70,10 @@ graph TD
         OverviewRightPanel["OverviewRightPanel"]
         OverviewBottomPanel["OverviewBottomPanel"]
         OverviewPageClient["OverviewPageClient"]
+        OverviewToolbar["OverviewToolbar"]
+        ShipmentSearchBar["ShipmentSearchBar"]
+        MapLayerToggles["MapLayerToggles"]
+        NewVoyageModal["NewVoyageModal"]
     end
 
     subgraph MapComponents["🗺️ Map"]
@@ -117,6 +129,10 @@ graph TD
     App --> Chain
     Overview --> MapComponents
     App --> UI
+    OverviewPageClient --> OverviewToolbar
+    OverviewToolbar --> ShipmentSearchBar
+    OverviewToolbar --> MapLayerToggles
+    OverviewToolbar --> NewVoyageModal
 ```
 
 ---
@@ -357,6 +373,148 @@ graph TD
 
     Feed --> FeedItem
 ```
+
+**Updated props (v1.3.0):**
+
+```typescript
+interface OverviewRightPanelProps {
+  selectedShipmentId?: string | null
+  onClearSelection?: () => void
+}
+```
+
+When `selectedShipmentId` is set, a `ShipmentDetailCard` sub-component is rendered at the top of the panel showing full shipment details. `onClearSelection` is wired to a clear button inside the card.
+
+---
+
+### 3.6 OverviewToolbar System
+
+**Files:**
+- `components/overview/OverviewToolbar.tsx`
+- `components/overview/ShipmentSearchBar.tsx`
+- `components/overview/MapLayerToggles.tsx`
+- `components/overview/NewVoyageModal.tsx`
+- `lib/search/normalizeShipmentId.ts`
+
+```mermaid
+flowchart LR
+    subgraph OverviewToolbar["OverviewToolbar (flex row · border-b · ~44px)"]
+        ShipmentSearchBar["ShipmentSearchBar\n(w-72, position relative)"]
+        MapLayerToggles["MapLayerToggles\n(flex gap-2 pills)"]
+        신규항차Button["신규 항차 Button\n(blue, right)"]
+    end
+
+    ShipmentSearchBar --> normalizeShipmentId["normalizeShipmentId\n(lib/search/normalizeShipmentId.ts)"]
+    normalizeShipmentId --> GET_API["GET /api/shipments\n(?sct_ship_no= or ?q=)"]
+    ShipmentSearchBar --> ZustandStore[("logisticsStore\n(highlightedShipmentId)")]
+    ShipmentSearchBar --> OverviewRightPanel["OverviewRightPanel\n(via onShipmentSelect)"]
+    MapLayerToggles --> ZustandStore
+    신규항차Button --> NewVoyageModal["NewVoyageModal"]
+    NewVoyageModal --> POST_API["POST /api/shipments/new"]
+    POST_API --> StatusDB[("status.shipments_status")]
+    NewVoyageModal -->|onSuccess| OverviewPageClient["OverviewPageClient\n(refreshKey++)"]
+```
+
+#### Props
+
+**OverviewToolbar**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `onShipmentSelect` | `(sctShipNo: string) => void` | Called when user selects a search result |
+| `onNewVoyageClick` | `() => void` | Called when 신규 항차 button is clicked |
+
+**ShipmentSearchBar**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `onSelect` | `(sctShipNo: string) => void` | Called on result selection; also writes `logisticsStore.setHighlightedShipmentId` |
+
+**MapLayerToggles**
+
+No external props — reads and writes Zustand `logisticsStore` directly.
+
+| Toggle | Store field | Default | Active style |
+|--------|-------------|---------|-------------|
+| Origin Arc 🌐 | `layerOriginArcs` | `true` | `bg-blue-600/80` |
+| 항차 🚢 | `layerTrips` | `true` | `bg-blue-600/80` |
+| Heatmap 🔥 | `showHeatmap` | — | `bg-blue-600/80` |
+
+Inactive style: `bg-gray-800`.
+
+**NewVoyageModal**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `open` | `boolean` | Controls modal visibility |
+| `onClose` | `() => void` | Called on cancel / close |
+| `onSuccess` | `() => void` | Called after successful POST; triggers `refreshKey++` in `OverviewPageClient` |
+
+Form fields (8 rows):
+
+| Row | Fields |
+|-----|--------|
+| 1 | SCT SHIP NO (required) |
+| 2 | Vendor |
+| 3 | POL / POD |
+| 4 | ship_mode / incoterms / MR No |
+| 5 | Vessel / BL_AWB |
+| 6 | ETD / ATD / ETA / ATA |
+| 7 | transit_days / customs_days / inland_days |
+| 8 | Site checkboxes: SHU / MIR / DAS / AGI |
+| 9 | Description (textarea) |
+
+HTTP: `POST /api/shipments/new`. A `409` response surfaces a "중복" error in the form. On `2xx`, `onSuccess()` and `onClose()` are called.
+
+#### normalizeShipmentId utility
+
+**File:** `lib/search/normalizeShipmentId.ts`
+
+```typescript
+function normalizeShipmentId(raw: string): { type: 'exact' | 'ilike'; value: string }
+```
+
+| Input pattern | Output type | Output value example |
+|---------------|------------|---------------------|
+| `hvdc-*` prefix | `exact` | `HVDC-ADOPT-SCT-0012` (uppercased) |
+| `sct` + 1–4 digits | `exact` | `sct12` → `HVDC-ADOPT-SCT-0012` (zero-padded to 4) |
+| `case` + digits | `ilike` | bare digits only |
+| anything else | `ilike` | lowercased raw value |
+
+Tests: `lib/search/__tests__/normalizeShipmentId.test.ts` (7 test cases, Vitest).
+
+#### ShipmentSearchBar dropdown
+
+- 300ms debounce before fetching
+- Uses `normalizeShipmentId` to determine `exact` (`?sct_ship_no=`) vs `ilike` (`?q=`) query param
+- Dropdown columns: sct_ship_no / vendor / voyage_stage / ETA / 상세 보기 link
+- On select: `logisticsStore.setHighlightedShipmentId(result.id)` then `onSelect(sct_ship_no)`
+- Click-outside closes dropdown (z-50 on dropdown container)
+
+#### OverviewPageClient state (v1.3.0 additions)
+
+```typescript
+const [selectedShipmentId, setSelectedShipmentId] = useState<string | null>(null)
+const [showNewVoyageModal, setShowNewVoyageModal]  = useState(false)
+const [refreshKey, setRefreshKey]                  = useState(0)
+```
+
+`OverviewToolbar` is placed as the **first child** of `OverviewPageClient`, above `KpiStripCards`.
+
+#### logisticsStore new fields (v1.3.0)
+
+| Field | Type | Default | Action |
+|-------|------|---------|--------|
+| `layerOriginArcs` | `boolean` | `true` | `setLayerOriginArcs(v)` |
+| `layerTrips` | `boolean` | `true` | `setLayerTrips(v)` |
+| `highlightedShipmentId` | `string \| null` | `null` | `setHighlightedShipmentId(id)` |
+
+#### createTripsLayer highlight behaviour
+
+The 4th optional parameter `highlightId?: string | null` controls per-trip colouring:
+- Matching trip: `[255, 255, 255, 220]` (white, high opacity)
+- Non-matching trips: 30% alpha
+- `updateTriggers.getColor: [highlightId]` ensures the layer re-renders when the highlight changes
 
 ---
 
@@ -1020,6 +1178,32 @@ function useBatchUpdates<T>(
 
 // Prevents UI thrashing during rapid realtime updates
 // Buffers updates and applies them in a single render cycle
+```
+
+### useOverviewData
+
+```typescript
+function useOverviewData(options?: { refreshKey?: number }): {
+  data: OverviewData | null
+  loading: boolean
+  error: string | null
+}
+```
+
+Fetches `GET /api/overview` and returns parsed overview data for the Overview page. Contains three `useEffect`s:
+
+1. Initial fetch on mount
+2. Re-fetch when filter/query parameters change
+3. Re-fetch when `options.refreshKey` changes — used by `OverviewPageClient` to trigger a data reload after a new voyage is submitted via `NewVoyageModal`
+
+**Usage in OverviewPageClient (v1.3.0):**
+
+```typescript
+const [refreshKey, setRefreshKey] = useState(0)
+const { data, loading } = useOverviewData({ refreshKey })
+
+// After NewVoyageModal onSuccess:
+// setRefreshKey(k => k + 1)  →  triggers the third useEffect
 ```
 
 ---

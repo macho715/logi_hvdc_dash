@@ -1,6 +1,6 @@
 # Supabase Documentation — HVDC Logistics Dashboard
 
-> **Version:** 1.1.0 | **Last Updated:** 2026-03-13
+> **Version:** 1.3.0 | **Last Updated:** 2026-03-14
 > **Project ID:** `rkfffveonaskewwzghex` | **Name:** supabase-cyan-yacht
 > **Region:** ap-southeast-1 | **PostgreSQL:** 15
 
@@ -319,6 +319,46 @@ CREATE TABLE IF NOT EXISTS status.shipments_status (
 );
 ```
 
+#### Write Pattern (POST /api/shipments/new)
+
+supabaseAdmin (SERVICE_ROLE_KEY) writes directly to non-public schema:
+
+    supabaseAdmin
+      .schema('status')
+      .from('shipments_status')
+      .insert({ hvdc_code, vendor, pol, pod, ... raw: { description } })
+
+- `status_no` BIGINT — MR No. (VIEW aliases this as `mr_number`)
+- `raw` JSONB — stores free-form fields (e.g. { description: "..." })
+- Duplicate guard: Postgres error code 23505 on hvdc_code UNIQUE → HTTP 409
+
+```mermaid
+erDiagram
+    SHIPMENTS_STATUS {
+        text hvdc_code PK
+        text vendor
+        text pol
+        text pod
+        text ship_mode
+        text incoterms
+        bigint status_no
+        text vessel
+        text bl_awb
+        date etd
+        date atd
+        date eta
+        date ata
+        int transit_days
+        int customs_days
+        int inland_days
+        boolean doc_shu
+        boolean doc_das
+        boolean doc_mir
+        boolean doc_agi
+        jsonb raw
+    }
+```
+
 ---
 
 ### 3.4 `wh.stock_onhand`
@@ -628,6 +668,14 @@ const byStatus = Object.fromEntries(
 // Null check
 .is('ata', null)          // where ata IS NULL
 .not('ata', 'is', null)   // where ata IS NOT NULL
+```
+
+### Shipment Search Query Patterns (v1.3.0)
+
+```
+GET /api/shipments?q={term}         — ilike '%{term}%' on sct_ship_no
+GET /api/shipments?sct_ship_no={exact}  — exact .eq() match
+(mutually exclusive — else if guard prevents AND-chaining)
 ```
 
 ---
