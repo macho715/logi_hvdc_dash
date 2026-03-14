@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
     const customs_status = searchParams.get('customs_status')
     const ship_mode = searchParams.get('ship_mode')
     const sct_ship_no = searchParams.get('sct_ship_no')
+    const q = searchParams.get('q')  // ilike partial match against sct_ship_no
     const voyageStage = searchParams.get('voyage_stage') // 'pre-departure' | 'in-transit' | 'port-customs' | 'inland' | 'delivered'
     const nominatedSite = searchParams.get('site') ?? searchParams.get('nominated_site') // 'SHU' | 'MIR' | 'DAS' | 'AGI'
     const routeType = searchParams.get('route_type')
@@ -51,6 +52,9 @@ export async function GET(request: NextRequest) {
     if (pod && pod !== 'all') query = query.eq('port_of_discharge', pod)
     if (ship_mode && ship_mode !== 'all') query = query.eq('ship_mode', ship_mode)
     if (sct_ship_no) query = query.eq('sct_ship_no', sct_ship_no)
+    // else if — mutually exclusive with sct_ship_no exact match (prevents AND-chaining conflict)
+    // ilike searches sct_ship_no column only; no multi-column search needed per spec
+    else if (q) query = query.ilike('sct_ship_no', `%${q}%`)
     if (routeType && routeType !== 'all') {
       if (routeType === 'review-required') {
         query = query.or('flow_code.eq.5,flow_code.is.null')
