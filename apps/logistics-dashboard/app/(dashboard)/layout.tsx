@@ -5,7 +5,7 @@ import { KpiProvider } from '@/components/layout/KpiProvider'
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen bg-gray-950 text-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-[#071225] text-slate-100 overflow-hidden">
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <KpiProvider />

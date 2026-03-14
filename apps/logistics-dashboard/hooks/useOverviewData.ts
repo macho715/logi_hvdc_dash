@@ -96,7 +96,7 @@ export function useOverviewData(options?: { refreshKey?: number }): OverviewRunt
 
   return {
     data,
-    loading: loading || (shouldPrimeWorklist && initialLoad.isLoading && data == null),
+    loading,
     error,
     worklist,
   }

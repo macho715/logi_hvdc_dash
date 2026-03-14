@@ -350,7 +350,7 @@ interface KpiCardProps {
 
 **v2.0.0 changes:**
 - Grid updated from `grid-cols-4` to `xl:grid-cols-8 lg:grid-cols-4` — now renders **8 cards**
-- `toneClass()` uses `border-t-2 border-t-[var(--ops-risk/warn/border)]` (border-top accent only, no background color fill)
+- `toneClass()` uses `border-t-2` with `border-t-[var(--ops-risk)]` or `border-t-[var(--ops-warn)]` (border-top accent only, no background color fill)
 - Hero value: `text-[35px] font-bold leading-none`
 
 **Data Source:** `KpiContext` → `/api/cases/summary`

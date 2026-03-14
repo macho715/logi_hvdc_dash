@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type { DashboardPayload, Event, Location, LocationStatus, WorklistRow } from '@repo/shared'
-import { PIPELINE_STAGES, type PipelineStage } from '@/lib/cases/pipelineStage'
+import { PIPELINE_STAGES, PIPELINE_STAGE_META, classifyStage, type PipelineStage } from '@/lib/cases/pipelineStage'
 import { buildMockLocationStatuses } from '@/lib/api'
 import { ontologyLocations } from '@/lib/data/ontology-locations'
-import { OVERVIEW_ROUTE_TYPES, aggregateCountsByRouteType } from '@/lib/overview/routeTypes'
-import { getDubaiTimestamp } from '@/lib/worklist-utils'
+import { OVERVIEW_ROUTE_TYPES, aggregateCountsByRouteType, getRouteTypeIdFromFlowCode } from '@/lib/overview/routeTypes'
+import { shipmentToWorklistRow, calculateKpis, getDubaiTimestamp, getDubaiToday, type ShipmentRow } from '@/lib/worklist-utils'
+import { normalizeStorageType } from '@/lib/cases/storageType'
+import { normalizeSite } from '@/lib/logistics/normalizers'
+import { supabaseAdmin as supabase } from '@/lib/supabase'
 import type { CasesSummary } from '@/types/cases'
 import type { OverviewAlert, OverviewCockpitResponse, OverviewLiveFeedItem, OverviewPipelineItem, OverviewRouteSummaryItem, OverviewSiteReadinessItem, OverviewWarehousePressureItem } from '@/types/overview'
 
@@ -32,39 +35,98 @@ const EMPTY_SUMMARY: CasesSummary = {
   totalSqm: 0,
 }
 
-const EMPTY_WORKLIST: DashboardPayload = {
-  lastRefreshAt: getDubaiTimestamp(),
-  kpis: {
-    driAvg: 0,
-    wsiAvg: 0,
-    redCount: 0,
-    overdueCount: 0,
-    recoverableAED: 0,
-    zeroStops: 0,
-  },
-  rows: [],
-}
-
-function getBaseUrl(request: NextRequest): string {
-  const url = new URL(request.url)
-  return `${url.protocol}//${url.host}`
-}
-
-async function fetchJson<T>(request: NextRequest, path: string, fallback: T): Promise<T> {
-  try {
-    const response = await fetch(`${getBaseUrl(request)}${path}`, {
-      cache: 'no-store',
-      headers: { accept: 'application/json' },
-    })
-    if (!response.ok) {
-      console.warn(`[api/overview] Failed to fetch ${path}: ${response.status}`)
-      return fallback
+/** Paginate any Supabase table */
+async function fetchAllPages(table: string, cols: string): Promise<any[]> {
+  const PAGE = 1000
+  const all: any[] = []
+  let offset = 0
+  while (true) {
+    const { data, error } = await supabase
+      .from(table)
+      .select(cols)
+      .range(offset, offset + PAGE - 1)
+      .order('id')
+    if (error) {
+      console.warn(`[overview] fetchAllPages(${table}) error`, error)
+      break
     }
-    return (await response.json()) as T
-  } catch (error) {
-    console.warn(`[api/overview] Failed to fetch ${path}`, error)
-    return fallback
+    if (!data || data.length === 0) break
+    all.push(...data)
+    if (data.length < PAGE) break
+    offset += PAGE
   }
+  return all
+}
+
+function mapLocationType(type: string | null): Location['siteType'] {
+  if (!type) return 'OTHER'
+  const t = type.toLowerCase()
+  if (t.includes('port')) return 'PORT'
+  if (t.includes('warehouse') || t.includes('wh')) return 'MOSB_WH'
+  if (t.includes('berth')) return 'BERTH'
+  if (t.includes('site')) return 'SITE'
+  return 'OTHER'
+}
+
+function mapStatusCode(status: string | null): LocationStatus['status_code'] {
+  const s = (status ?? '').toUpperCase()
+  if (s === 'WARNING' || s === 'WARN') return 'WARNING'
+  if (s === 'CRITICAL' || s === 'CRIT') return 'CRITICAL'
+  return 'OK'
+}
+
+function normalizeRate(value: number | string | null): number {
+  if (value === null || value === undefined || value === '') return 0
+  const n = typeof value === 'number' ? value : parseFloat(String(value))
+  if (isNaN(n)) return 0
+  return n > 1 ? n / 100 : n
+}
+
+function buildCasesSummary(data: any[]): CasesSummary {
+  const summary: CasesSummary = { ...EMPTY_SUMMARY, total: data.length }
+  for (const row of data) {
+    const stage = classifyStage(row.status_current ?? null, row.status_location ?? null)
+    const stageKey = PIPELINE_STAGE_META[stage].summaryKey
+    summary.byStatus[stageKey]++
+
+    const site = normalizeSite((row.site as string) ?? null)
+    if (site === 'SHU') summary.bySite.SHU++
+    else if (site === 'MIR') summary.bySite.MIR++
+    else if (site === 'DAS') summary.bySite.DAS++
+    else if (site === 'AGI') summary.bySite.AGI++
+    else summary.bySite.Unassigned++
+
+    if (stage === 'site' && site) {
+      if (site === 'SHU') summary.bySiteArrived.SHU++
+      else if (site === 'MIR') summary.bySiteArrived.MIR++
+      else if (site === 'DAS') summary.bySiteArrived.DAS++
+      else if (site === 'AGI') summary.bySiteArrived.AGI++
+    }
+
+    if (site) {
+      if (!summary.bySiteStorageType[site]) {
+        summary.bySiteStorageType[site] = { Indoor: 0, Outdoor: 0, 'Outdoor Cov': 0 }
+      }
+      const storageBucket = normalizeStorageType((row.storage_type as string) ?? null)
+      if (storageBucket) summary.bySiteStorageType[site][storageBucket]++
+    }
+
+    const fc = String(row.flow_code ?? 'null')
+    summary.byFlowCode[fc] = (summary.byFlowCode[fc] ?? 0) + 1
+    const routeTypeId = getRouteTypeIdFromFlowCode(typeof row.flow_code === 'number' ? row.flow_code : null)
+    summary.byRouteType[routeTypeId] = (summary.byRouteType[routeTypeId] ?? 0) + 1
+
+    const v = row.source_vendor as string
+    const vendorKey = v === 'Hitachi' || v === 'Siemens' ? v : 'Other'
+    summary.byVendor[vendorKey] = (summary.byVendor[vendorKey] ?? 0) + 1
+
+    const sqm = typeof row.sqm === 'number' ? row.sqm : 0
+    summary.totalSqm += sqm
+    if (stage === 'warehouse' && row.status_location) {
+      summary.bySqmByLocation[row.status_location] = (summary.bySqmByLocation[row.status_location] ?? 0) + sqm
+    }
+  }
+  return summary
 }
 
 function getFreshnessMinutes(statuses: LocationStatus[], events: Event[]): number {
@@ -277,16 +339,99 @@ function buildAlerts(
   return alerts
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    const [summary, worklist, locations, statuses, events, shipmentStages] = await Promise.all([
-      fetchJson<CasesSummary>(request, '/api/cases/summary', EMPTY_SUMMARY),
-      fetchJson<DashboardPayload>(request, '/api/worklist', EMPTY_WORKLIST),
-      fetchJson<Location[]>(request, '/api/locations', ontologyLocations),
-      fetchJson<LocationStatus[]>(request, '/api/location-status', buildMockLocationStatuses(ontologyLocations)),
-      fetchJson<Event[]>(request, '/api/events', []),
-      fetchJson<ShipmentStagesResponse>(request, '/api/shipments/stages', { agi_das_no_mosb_alert: 0, total: 0, delivered: 0 }),
-    ])
+    const today = getDubaiToday()
+
+    // ── 1. Parallel Supabase queries ────────────────────────────────────────
+    const [casesResult, shipmentsResult, locationsResult, statusesResult, eventsResult] =
+      await Promise.all([
+        // v_cases: cases summary
+        fetchAllPages(
+          'v_cases',
+          'site, flow_code, status_current, status_location, sqm, source_vendor, storage_type',
+        ),
+        // shipments: combined worklist + stages (ONE scan, not two)
+        fetchAllPages(
+          'shipments',
+          'id, sct_ship_no, mr_number, commercial_invoice_no, invoice_date, vendor, main_description, port_of_loading, port_of_discharge, vessel_name, bl_awb_no, ship_mode, coe, etd, eta, atd, ata, do_collection_date, customs_start_date, customs_close_date, delivery_date, duty_amount_aed, vat_amount_aed, incoterms, flow_code, flow_code_original, flow_override_reason, final_location, doc_shu, doc_das, doc_mir, doc_agi',
+        ),
+        // locations
+        supabase.from('locations').select('id, name, lat, lng, type').order('name'),
+        // location_statuses
+        supabase.from('location_statuses').select('location_id, status, occupancy_rate, updated_at').order('updated_at', { ascending: false }),
+        // events
+        supabase.from('events').select('event_id, event_type, status, location_id, shpt_no, ts, lat, lng').order('ts', { ascending: false }).limit(100),
+      ])
+
+    // ── 2. Build cases summary ──────────────────────────────────────────────
+    const casesData = casesResult ?? []
+    const summary = buildCasesSummary(casesData)
+
+    // ── 3. Build worklist + stages from ONE shipments scan ──────────────────
+    const shipmentsData = shipmentsResult ?? []
+    const worklistRows = shipmentsData
+      .map((s: any) => {
+        try {
+          return shipmentToWorklistRow(s as ShipmentRow, today)
+        } catch {
+          return null
+        }
+      })
+      .filter((r: any): r is WorklistRow => r !== null)
+    const kpis = calculateKpis(worklistRows, today)
+    const worklist: DashboardPayload = { lastRefreshAt: getDubaiTimestamp(), kpis, rows: worklistRows }
+
+    // Shipment stages from same data
+    const shipmentStages: ShipmentStagesResponse = {
+      agi_das_no_mosb_alert: shipmentsData.filter((r: any) =>
+        (r.doc_agi || r.doc_das) && (r.flow_code == null || r.flow_code < 3),
+      ).length,
+      total: shipmentsData.length,
+      delivered: shipmentsData.filter((r: any) => !!r.delivery_date).length,
+    }
+
+    // ── 4. Build locations ──────────────────────────────────────────────────
+    const locData = locationsResult.data ?? []
+    const locations: Location[] =
+      locData.length > 0
+        ? locData
+            .filter((r: any) => typeof r.lat === 'number' && typeof r.lng === 'number')
+            .map((r: any) => ({
+              location_id: r.id,
+              name: r.name,
+              siteType: mapLocationType(r.type),
+              lat: r.lat,
+              lon: r.lng,
+            }))
+        : ontologyLocations
+    if (locations.length === 0) ontologyLocations.forEach((l) => locations.push(l))
+
+    // ── 5. Build location statuses ──────────────────────────────────────────
+    const statusData = statusesResult.data ?? []
+    const statuses: LocationStatus[] =
+      statusData.length > 0
+        ? statusData
+            .filter((r: any) => typeof r.location_id === 'string' && r.location_id.length > 0)
+            .map((r: any) => ({
+              location_id: r.location_id,
+              status_code: mapStatusCode(r.status),
+              occupancy_rate: normalizeRate(r.occupancy_rate),
+              last_updated: r.updated_at ?? new Date().toISOString(),
+            }))
+        : buildMockLocationStatuses(ontologyLocations)
+
+    // ── 6. Build events ─────────────────────────────────────────────────────
+    const events: Event[] = (eventsResult.data ?? []).map((r: any) => ({
+      event_id: r.event_id,
+      event_type: r.event_type ?? null,
+      status: r.status ?? '',
+      location_id: r.location_id ?? null,
+      shpt_no: r.shpt_no ?? null,
+      ts: r.ts,
+      lat: r.lat ?? null,
+      lon: r.lng ?? r.lon ?? null,
+    }))
 
     const pipeline = buildPipeline(summary)
     const routeSummary = buildRouteSummary(summary)
