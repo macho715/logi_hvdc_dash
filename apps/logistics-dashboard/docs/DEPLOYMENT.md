@@ -1,7 +1,7 @@
 # GitHub + Vercel 배포 가이드
 
 > **HVDC Logistics Dashboard — 신규 GitHub 레포지터리 → Vercel 배포 완전 가이드**
-> Version: 1.3.0 | Updated: 2026-03-14
+> Version: 2.0.0 | Updated: 2026-03-14
 
 ---
 
@@ -1614,6 +1614,50 @@ flowchart LR
 
 ---
 
+## v2.0.0 변경사항 (2026-03-14)
+
+### Overview 2.0 — 7-Row Executive Layout (fd4e6be)
+
+**구조 변경:**
+- Overview 페이지: 4-zone 다크 테마 → 7-row light-ops scoped 테마
+- `data-theme="light-ops"` 루트 div — 다른 페이지 무영향
+
+**신규 컴포넌트 (6):**
+- `ProgramFilterBar` — Program/Ops 모드 토글 + 현장 필터 바
+- `ChainRibbonStrip` — 6-노드 체인 리본 (`/api/chain/summary` 연동)
+- `MissionControl` — 알림/경로/현장 준비도/활동 피드 패널
+- `SiteDeliveryMatrix` — 4-카드 현장 납품 현황 (Assigned hero metric)
+- `OpenRadarTable` — 4-탭 미결 레이더 테이블 (540px 스크롤)
+- `OpsSnapshot` — 운영 레이어 패널 (WH Pressure + Worklist + Exceptions + Feed)
+
+**Deprecated (파일 보존, import 제거):**
+- `OverviewRightPanel.tsx` → MissionControl로 대체
+- `OverviewBottomPanel.tsx` → OpsSnapshot으로 대체
+
+**신규 API:**
+- `GET /api/overview` — 집계 BFF (KPI 8개 + alerts + siteReadiness + worklist + liveFeed)
+
+**신규 i18n:**
+- `programBar`, `missionControl`, `siteMatrix`, `openRadar`, `opsSnapshot`, `chainRibbon` 섹션 추가 (EN/KO)
+
+**Cross-page 연동:**
+- `ChainRibbonStrip` 노드 클릭 → `casesStore.activePipelineStage` → Pipeline 페이지 반응
+- `MissionControl.selectedShipmentId` ← `logisticsStore.highlightedShipmentId`
+
+### Design Polish Patch 1 (c4eb9cb)
+
+**UI 개선:**
+- Sidebar: `bg-[#071225]` 딥 네이비, 활성 메뉴 파란 glow shadow, 브랜드 18px bold white
+- LangToggle: 다크 헤더 위 흰색 pill floating (`bg-white shadow-sm`)
+- `lib/overview/ui.ts`: `gateClassLight()` → full pill badge (bg + ring-1), `uiTokens` 상수 export
+- SiteDeliveryMatrix: `p-6` 카드, Assigned hero 큰 숫자, risk badge ring-1
+- OpenRadarTable: `rounded-xl px-4 py-3.5` 행, 선택 상태 ring, 스크롤 540px
+- OpsSnapshot: 베이지 제거 (`#F7F3EA → #F8FAFC`), WH bar h-2.5 + 색상 분기
+
+**TypeScript:** 0 errors (모든 변경 후 `pnpm typecheck` 통과)
+
+---
+
 *문서 작성: 2026-03-13 | 최종 수정: 2026-03-14*
-*버전: 1.3.0 — Overview 툴바, 화물 검색, 신규 항차 등록 POST API, 검색 유틸리티 추가*
+*버전: 2.0.0 — Overview 2.0 7-Row Executive Layout, 6 신규 컴포넌트, Design Polish Patch 1*
 *기준 프로젝트: LOGI-MASTER-DASH-claude-improve-dashboard-layout*

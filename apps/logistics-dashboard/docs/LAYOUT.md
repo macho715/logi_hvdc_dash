@@ -1,7 +1,7 @@
 # Layout Documentation — HVDC Logistics Dashboard
 
-> **Version:** 1.3.0 | **Last Updated:** 2026-03-14
-> **Framework:** Next.js 16 App Router | **Theme:** Dark (forced)
+> **Version:** 2.0.0 | **Last Updated:** 2026-03-14
+> **Framework:** Next.js 16 App Router | **Theme:** Dark (global) + Light-ops (Overview scoped)
 
 ---
 
@@ -21,13 +21,20 @@
 
 ---
 
-## 0. Overview Cockpit Update
+## 0. Overview Cockpit Update (v2.0)
 
-- `/overview` keeps the integrated invariant: `상단 KPI rail + 좌측 MapView + 우측 RightPanel + 하단 HVDC panel`
-- Every clickable overview card or map target now navigates to `/pipeline`, `/sites`, `/cargo`, or `/chain`
-- Destination pages restore state from URL and show plain-language context chips
-- Overview page data is now sourced from `GET /api/overview` and hydrated through page-local `useOverviewData()`
-- Public route labels come from `configs/overview.route-types.json`; destination contracts come from `configs/overview.destinations.json`
+The `/overview` page was completely restructured in v2.0. The old 4-zone layout (KPI rail + MapView + RightPanel + BottomPanel) has been replaced with a **7-row flex column layout** scoped under `data-theme="light-ops"`.
+
+**Key changes:**
+- Layout is now `overflow-auto` (scrollable) instead of fixed-height `overflow-hidden`
+- Root div carries `data-theme="light-ops"` which activates a scoped light theme for the Overview page only — all other pages remain dark
+- `ProgramFilterBar` (Row 2) is a new 48px bar with mode toggle, site filter, and `updatedAt` timestamp
+- `ChainRibbonStrip` (Row 4) is a new 6-node horizontal ribbon fetching `/api/chain/summary`
+- `SiteDeliveryMatrix` (Row 6) is a new 4-column card grid for per-site delivery status
+- `MissionControl` replaces `OverviewRightPanel` (file preserved but removed from layout)
+- `OpsSnapshot` replaces `OverviewBottomPanel` (file preserved but removed from layout)
+- Every clickable overview card or map target continues to navigate to `/pipeline`, `/sites`, `/cargo`, or `/chain`
+- Overview page data is sourced from `GET /api/overview` and hydrated through page-local `useOverviewData()`
 
 ## 1. Layout Hierarchy
 
@@ -147,6 +154,24 @@ graph LR
 | Collapsed | `w-14` (56px) | Shows icon only |
 | Mobile | `hidden` | Off-canvas (future) |
 
+### Sidebar Style (Design Polish Patch 1 — commit c4eb9cb)
+
+| Element | Value | Previous value |
+|---------|-------|---------------|
+| Sidebar background | `bg-[#071225]` (deeper navy) | `bg-gray-900` |
+| Nav item shape | `rounded-xl px-4 py-3 text-[15px]` | `rounded-lg px-3 py-2.5 text-sm` |
+| Active nav item | `bg-[#2563EB] shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_6px_18px_rgba(37,99,235,.28)]` | `bg-blue-600 text-white` |
+
+### LangToggle (Design Polish Patch 1)
+
+The language toggle in `DashboardHeader` is styled as a **light floating pill** on the dark header:
+
+```
+border border-slate-200 bg-white p-1 shadow-sm
+```
+
+This contrasts with the surrounding dark header (`bg-gray-950` / `border-b border-gray-800`) to make the toggle visually distinct.
+
 ### Grid Layout Diagram
 
 ```
@@ -170,71 +195,98 @@ graph LR
 
 **File:** `app/(dashboard)/overview/OverviewPageClient.tsx`
 
-> Layout type changed from grid-based to **flex column** in v1.3.0 to support
-> a fixed bottom panel and proper viewport-filling behaviour without overflow.
-> v1.3.0 also adds `OverviewToolbar` as the first child above `KpiStripCards`.
+> v2.0 (commit fd4e6be): Complete restructure. The old 4-zone fixed-height layout is replaced with a
+> **7-row flex column** layout under `data-theme="light-ops"`. The page is now `overflow-auto`
+> (scrollable) rather than `overflow-hidden` (fixed-height).
+
+### Root Div
+
+```tsx
+<div
+  data-theme="light-ops"
+  className="flex h-full flex-col overflow-auto bg-[var(--ops-canvas)] text-[var(--ops-text-strong)]"
+>
+```
+
+### 7-Row Structure
 
 ```
-OverviewPageClient (flex col, h-full, overflow-hidden)
-├── OverviewToolbar        ← NEW (v1.3.0): ~44px, search + toggles + button
-├── KpiStripCards          ← ~80px KPI rail (5 cards)
-├── Middle section (flex-1, min-h-0)
-│   ├── OverviewMap        ← left, flex-1, min-h-[360px]
-│   └── OverviewRightPanel ← right, xl:w-[360px], overflow-y-auto
-│       └── ShipmentDetailCard ← NEW (v1.3.0): shown when shipment selected
-└── OverviewBottomPanel    ← ~240px, worklist + pipeline strip
+OverviewPageClient (data-theme="light-ops", flex col, h-full, overflow-auto)
+├── Row 1: OverviewToolbar         (~44px, existing, unchanged)
+├── Row 2: ProgramFilterBar        (48px, NEW — mode toggle + site filter + updatedAt)
+├── Row 3: KpiStripCards ×8        (modified — 8 cards, grid xl:grid-cols-8 lg:grid-cols-4)
+├── Row 4: ChainRibbonStrip        (NEW — 6-node horizontal ribbon, /api/chain/summary)
+├── Row 5: [OverviewMap 2fr] | [MissionControl 1fr]   (min-h-[480px], xl:grid-cols-[2fr_1fr])
+├── Row 6: SiteDeliveryMatrix      (NEW — 4 cards, grid xl:grid-cols-4)
+└── Row 7: [OpenRadarTable 7fr] | [OpsSnapshot 5fr]   (xl:grid-cols-[7fr_5fr])
 ```
 
 ```mermaid
 graph TD
-    OPC["OverviewPageClient\nflex col · h-full · overflow-hidden"]
-    OT["OverviewToolbar\n~44px · border-b"]
-    KSC["KpiStripCards\n~80px · 5 KPI cards"]
-    MID["Middle Section\nflex-1 · min-h-0 · flex row"]
-    MAP["OverviewMap\nflex-1 · min-h-360px"]
-    ORP["OverviewRightPanel\nw-80 · overflow-y-auto"]
-    SDC["ShipmentDetailCard\n(when selected)"]
-    OBP["OverviewBottomPanel\n~240px · pipeline + worklist"]
+    OPC["OverviewPageClient\ndata-theme=light-ops · flex col · h-full · overflow-auto"]
+    R1["Row 1: OverviewToolbar\n~44px · search + toggles + button"]
+    R2["Row 2: ProgramFilterBar\n48px · mode toggle + site filter + updatedAt"]
+    R3["Row 3: KpiStripCards x8\ngrid xl:grid-cols-8 lg:grid-cols-4"]
+    R4["Row 4: ChainRibbonStrip\n6-node ribbon · /api/chain/summary"]
+    R5["Row 5: Map + MissionControl\nmin-h-480px · xl:grid-cols-[2fr_1fr]"]
+    MAP["OverviewMap\n2fr"]
+    MC["MissionControl\n1fr"]
+    R6["Row 6: SiteDeliveryMatrix\n4 cards · xl:grid-cols-4"]
+    R7["Row 7: OpenRadarTable + OpsSnapshot\nxl:grid-cols-[7fr_5fr]"]
+    ORT["OpenRadarTable\n7fr · max-h-540px scroll"]
+    OS["OpsSnapshot\n5fr"]
 
-    OPC --> OT
-    OPC --> KSC
-    OPC --> MID
-    MID --> MAP
-    MID --> ORP
-    ORP --> SDC
-    OPC --> OBP
+    OPC --> R1
+    OPC --> R2
+    OPC --> R3
+    OPC --> R4
+    OPC --> R5
+    R5 --> MAP
+    R5 --> MC
+    OPC --> R6
+    OPC --> R7
+    R7 --> ORT
+    R7 --> OS
 ```
 
-The older mermaid diagram (pre-v1.3.0):
+### Page Layout ASCII Diagram
 
-```mermaid
-graph TD
-    subgraph OverviewPageClient["OverviewPageClient — flex h-full flex-col overflow-hidden"]
-        KpiStrip["KpiStripCards<br/>5 cards · ~138px fixed height"]
-        subgraph Middle["Middle Section — flex min-h-0 flex-1<br/>flex-col xl:flex-row"]
-            MapArea["OverviewMap<br/>min-h-[360px] flex-1"]
-            RightPanel["OverviewRightPanel<br/>xl:w-[360px] overflow-y-auto"]
-        end
-        BottomPanel["OverviewBottomPanel<br/>~240px fixed height"]
-    end
-
-    KpiStrip --> Middle
-    Middle --> BottomPanel
+```
++-------------------------------------------------------------------+
+|  Row 1: OverviewToolbar (~44px)                                   |
+|  [ShipmentSearchBar]  [Arc][항차][Heat]          [신규 항차 >]   |
++-------------------------------------------------------------------+
+|  Row 2: ProgramFilterBar (48px)                                   |
+|  [Mode Toggle]  [Site Filter v]                    [updatedAt]    |
++--------+--------+--------+--------+--------+--------+------+------+
+| KPI 1  | KPI 2  | KPI 3  | KPI 4  | KPI 5  | KPI 6  | KPI7 | KPI8 |
+|          Row 3: KpiStripCards x8 (xl:grid-cols-8)   ~88px        |
++-------------------------------------------------------------------+
+|  Row 4: ChainRibbonStrip (~80px)                                  |
+|  [Node 1] -- [Node 2] -- [Node 3] -- [Node 4] -- [Node 5] -- [Node 6] |
++------------------------------------------+------------------------+
+|                                          |                        |
+|  OverviewMap                             |  MissionControl        |
+|  (Deck.gl + MapLibre)                    |  1fr                   |
+|  2fr · min-h-[480px]                     |                        |
+|                  Row 5                   |                        |
++----------+----------+----------+---------+------------------------+
+|  Site 1  |  Site 2  |  Site 3  |  Site 4                         |
+|               Row 6: SiteDeliveryMatrix (xl:grid-cols-4)         |
++------------------------------------------+------------------------+
+|  OpenRadarTable                          |  OpsSnapshot           |
+|  7fr · max-h-[540px] overflow-y-auto     |  5fr                   |
+|                  Row 7                                            |
++-------------------------------------------------------------------+
 ```
 
-### OverviewToolbar Layout (v1.3.0)
+---
+
+### Row 1: OverviewToolbar (~44px, unchanged from v1.3.0)
 
 **File:** `components/overview/OverviewToolbar.tsx`
 
-The toolbar sits between the `DashboardHeader` and `KpiStripCards`, using `flex items-center justify-between` with a `border-b border-gray-800` separator and approximately **44px** height.
-
-```
-┌──────────────────────────────────────────────────────────┐
-│  [ShipmentSearchBar w-72]  [🌐 Arc][🚢 항차][🔥 Heat]  [신규 항차 ▸] │
-│  ← left ──────────────── center ──────────────── right →  │
-└──────────────────────────────────────────────────────────┘
-                  ~44px · border-b · flex items-center justify-between
-```
+The toolbar sits between the `DashboardHeader` and `ProgramFilterBar`, using `flex items-center justify-between` with a `border-b` separator.
 
 | Zone | Component | Layout class | Notes |
 |------|-----------|-------------|-------|
@@ -255,87 +307,141 @@ Each pill directly toggles a boolean field in `logisticsStore` — no prop threa
 
 ---
 
-### KPI Strip Layout
+### Row 2: ProgramFilterBar (48px, NEW)
 
-5개 카드, `flex` 행, 고정 높이 ~138px (패딩 포함).
+**File:** `components/overview/ProgramFilterBar.tsx`
 
-```
-┌──────────┬──────────┬──────────┬──────────┬──────────┐
-│  Total   │  현장    │  창고    │  Flow    │  긴급    │
-│  Cases   │  도착    │  재고    │  Code    │  알람    │
-│  30      │  10      │  10      │  Dist.   │   2      │
-└──────────┴──────────┴──────────┴──────────┴──────────┘
-                  flex row · 5 cards · ~138px
-```
+A new 48px filter bar below the toolbar. Contains three zones:
 
-### Middle Section Layout
+| Zone | Content | Notes |
+|------|---------|-------|
+| Left | Mode toggle | Switches between program display modes |
+| Center | Site filter dropdown | Filters all rows by site |
+| Right | `updatedAt` timestamp | Shows last data refresh time |
 
-`flex-1` + `min-h-0` 조합으로 KPI strip과 bottom panel 사이의 남은 공간을 채운다.
-`xl` 미만: 세로 적층 / `xl` 이상: 가로 배치.
+---
 
-```
-┌─────────────────────────────────────┬───────────────────┐
-│                                     │  OverviewRight    │
-│  OverviewMap                        │  Panel            │
-│  (Deck.gl + MapLibre)               │  xl:w-[360px]     │
-│                                     │                   │
-│  min-h-[360px]                      │  4개 섹션:        │
-│  flex-1 (남은 가로 공간 차지)       │  • 예외 보드      │
-│                                     │  • 운송 경로 요약 │
-│                                     │  • 현장 준비도    │
-│                                     │  • 최근 활동      │
-│                                     │  overflow-y-auto  │
-└─────────────────────────────────────┴───────────────────┘
-```
+### Row 3: KpiStripCards x8 (modified)
 
-### Bottom Panel Layout
-
-`border-t border-gray-800 bg-gray-950/60 p-4`, 총 높이 ~240px.
+8 KPI cards in a responsive grid. Layout class: `grid xl:grid-cols-8 lg:grid-cols-4`.
 
 ```
-┌─────────────────────────────────────┬──────────────────┐
-│  Pipeline Stages                    │  Priority        │
-│                                     │  Worklist        │
-│  [FC0] [FC1] [FC2] [FC3] [FC4]      │                  │
-│  md:grid-cols-5 버튼 행             │  max-h-[160px]   │
-│                                     │  overflow-y-auto │
-│  xl:grid-cols-[1.5fr_1fr]           │                  │
-└─────────────────────────────────────┴──────────────────┘
-                      ~240px
++--------+--------+--------+--------+--------+--------+--------+--------+
+| KPI 1  | KPI 2  | KPI 3  | KPI 4  | KPI 5  | KPI 6  | KPI 7  | KPI 8  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+         xl: 8 columns        lg: 4 columns (wraps)        ~88px
 ```
 
-내부 구조:
-- 컨테이너: `grid gap-4 xl:grid-cols-[1.5fr_1fr]`
-- 왼쪽: Pipeline 단계 버튼 5개 (`md:grid-cols-5`)
-- 오른쪽: Priority Worklist (`max-h-[160px] overflow-y-auto`)
+---
 
-### Height Budget (viewport ~739px 기준, v1.3.0)
+### Row 4: ChainRibbonStrip (NEW)
+
+**File:** `components/overview/ChainRibbonStrip.tsx`
+**Data:** `GET /api/chain/summary`
+
+A horizontal 6-node ribbon (~80px) visualising the end-to-end logistics chain. Nodes are connected by traced lines using `--ops-accent` (`#C6F10E`).
+
+```
+[Origin] ---- [Port] ---- [WH] ---- [MOSB] ---- [Transit] ---- [Site]
+  Node 1       Node 2     Node 3    Node 4        Node 5        Node 6
+                              ~80px · /api/chain/summary
+```
+
+---
+
+### Row 5: OverviewMap + MissionControl (min-h-[480px])
+
+Grid: `xl:grid-cols-[2fr_1fr]`
+
+```
++------------------------------------+--------------------+
+|  OverviewMap                       |  MissionControl    |
+|  (Deck.gl + MapLibre)              |  (replaces         |
+|  2fr · min-h-[480px]               |   OverviewRight    |
+|                                    |   Panel)  1fr      |
++------------------------------------+--------------------+
+```
+
+- **OverviewMap** (`2fr`): Deck.gl arc/scatter layers + MapLibre base, min-h-[480px]
+- **MissionControl** (`1fr`): Replaces the old `OverviewRightPanel`. `OverviewRightPanel.tsx` is preserved on disk but removed from `OverviewPageClient`.
+
+---
+
+### Row 6: SiteDeliveryMatrix (NEW)
+
+**File:** `components/overview/SiteDeliveryMatrix.tsx`
+
+4 cards in a grid, one per site (~280px total height). Layout class: `grid xl:grid-cols-4`.
+
+```
++--------------+--------------+--------------+--------------+
+|   Site A     |   Site B     |   Site C     |   Site D     |
+|  Delivery    |  Delivery    |  Delivery    |  Delivery    |
+|  Status      |  Status      |  Status      |  Status      |
++--------------+--------------+--------------+--------------+
+                      ~280px · xl:grid-cols-4
+```
+
+---
+
+### Row 7: OpenRadarTable + OpsSnapshot
+
+Grid: `xl:grid-cols-[7fr_5fr]`
+
+```
++------------------------------------+--------------------+
+|  OpenRadarTable                    |  OpsSnapshot       |
+|  7fr · max-h-[540px] scroll        |  (replaces         |
+|                                    |   OverviewBottom   |
+|                                    |   Panel)  5fr      |
++------------------------------------+--------------------+
+```
+
+- **OpenRadarTable** (`7fr`): Scrollable table with `max-h-[540px]`
+- **OpsSnapshot** (`5fr`): Replaces the old `OverviewBottomPanel`. `OverviewBottomPanel.tsx` is preserved on disk but removed from `OverviewPageClient`. Outer bg changed to `bg-[#F8FAFC]` (was warm beige `#F7F3EA`).
+
+---
+
+### Deprecated Components (files preserved, removed from OverviewPageClient)
+
+| File | Replaced by | Notes |
+|------|-------------|-------|
+| `components/overview/OverviewRightPanel.tsx` | `MissionControl` | File preserved on disk |
+| `components/overview/OverviewBottomPanel.tsx` | `OpsSnapshot` | File preserved on disk |
+
+---
+
+### Height Budget (Overview 2.0 — approx. scroll layout)
+
+The Overview page is `overflow-auto` (scrollable), not fixed-height. Key heights:
 
 | Zone | Height | Notes |
 |------|--------|-------|
-| OverviewToolbar | ~44px | 고정 (v1.3.0 신규) |
-| KPI Strip | ~80px | 고정 |
-| Bottom Panel | ~240px | 고정 (pipeline + worklist max-h-[160px]) |
-| Middle (flex-1) | ~375px | 739 − 44 − 80 − 240 |
-| Map min-h | 360px | min-h-[360px] 충족 ✓ |
-| Right Panel content | ~343px | 375px − 32px(padding), overflow-y-auto |
+| OverviewToolbar | ~44px | Row 1, unchanged |
+| ProgramFilterBar | 48px | Row 2, new |
+| KpiStripCards (8 cards) | ~88px | Row 3, modified |
+| ChainRibbonStrip | ~80px | Row 4, new |
+| Map + MissionControl | min-h-[480px] | Row 5 |
+| SiteDeliveryMatrix | ~280px (4 cards) | Row 6, new |
+| OpenRadarTable + OpsSnapshot | max-h-[540px] scroll | Row 7 |
+
+---
 
 ### KpiProvider Context Tree
 
 ```mermaid
 graph TD
-    KpiProvider["KpiProvider<br/>(useKpiRealtime → public.shipments<br/>fallback: /api/cases/summary every 30s)"]
+    KpiProvider["KpiProvider<br/>(useKpiRealtime -> public.shipments<br/>fallback: /api/cases/summary every 30s)"]
     KpiContext["KpiContext<br/>(React Context)"]
     Strip["KpiStripCards<br/>(useContext)"]
-    RightPanel["OverviewRightPanel<br/>(useContext)"]
+    MC["MissionControl<br/>(useContext)"]
     Map["OverviewMap<br/>(useContext for heatmap)"]
 
     KpiProvider --> KpiContext
     KpiContext --> Strip
-    KpiContext --> RightPanel
+    KpiContext --> MC
     KpiContext --> Map
 ```
-
 ---
 
 ## 5. Cargo Page Layout
@@ -542,14 +648,15 @@ graph LR
 
 ### Grid Responsiveness
 
-| Component | Mobile (<md) | Tablet (md-lg) | Desktop (lg+) |
-|-----------|-------------|----------------|---------------|
-| KPI Strip | 2 cols | 4 cols | 4 cols |
-| Overview Main | 1 col | 2 cols | 3 cols |
-| Site Cards | 1 col | 2 cols | 3 cols |
-| Chain Details | 1 col | 2 cols | 3 cols |
-| Sidebar | hidden | w-14 | w-48 |
-| Cargo Tables | scroll-x | scroll-x | full width |
+| Component | Mobile (<md) | Tablet (md-lg) | Desktop (lg) | Wide (xl+) |
+|-----------|-------------|----------------|--------------|------------|
+| KPI Strip | 2 cols | 4 cols | 4 cols | 8 cols |
+| Overview Main | 1 col | 2 cols | 3 cols | 7-row scroll |
+| Site Cards | 1 col | 2 cols | 3 cols | 3 cols |
+| Chain Details | 1 col | 2 cols | 3 cols | 3 cols |
+| SiteDeliveryMatrix | 1 col | 2 cols | 2 cols | 4 cols |
+| Sidebar | hidden | w-14 | w-48 | w-48 |
+| Cargo Tables | scroll-x | scroll-x | full width | full width |
 
 ---
 
@@ -615,23 +722,31 @@ const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
 
 ## 11. CSS Architecture
 
+`globals.css` now contains **two theme zones**:
+1. **Dark global theme** — `:root` tokens applied to the entire app
+2. **Light-ops scoped theme** — `[data-theme="light-ops"]` tokens applied only to the Overview page root div
+
 ```mermaid
 graph TD
     subgraph CSSLayers["CSS Architecture"]
         GlobalCSS["globals.css<br/>(CSS custom properties)"]
+        DarkGlobal[":root — dark global tokens<br/>(entire app)"]
+        LightOps["[data-theme=light-ops] — scoped light tokens<br/>(Overview page only)"]
         TailwindBase["Tailwind Base Layer<br/>(@layer base)"]
         TailwindComponents["Tailwind Components<br/>(@layer components)"]
         TailwindUtilities["Tailwind Utilities<br/>(inline className)"]
         ShadcnTokens["Shadcn CSS Variables<br/>(--background, --foreground, etc.)"]
     end
 
-    GlobalCSS --> TailwindBase
+    GlobalCSS --> DarkGlobal
+    GlobalCSS --> LightOps
+    DarkGlobal --> TailwindBase
     TailwindBase --> TailwindComponents
     TailwindComponents --> TailwindUtilities
     ShadcnTokens --> TailwindBase
 ```
 
-### CSS Custom Properties (Dark Theme)
+### CSS Custom Properties (Dark Theme — global)
 
 ```css
 /* globals.css — dark theme tokens */
@@ -658,6 +773,40 @@ graph TD
   --radius: 0.5rem;
 }
 ```
+
+### CSS Custom Properties (Light-ops Scoped Theme — Overview only)
+
+The `[data-theme="light-ops"]` selector is scoped to the `OverviewPageClient` root div. It does **not** affect any other page. The dashboard shell (`app/(dashboard)/layout.tsx`) remains dark (`bg-gray-950`).
+
+```css
+/* globals.css — light-ops scoped theme (Overview page only) */
+[data-theme="light-ops"] {
+  --ops-canvas:       #F4F5F7;   /* page background */
+  --ops-surface:      #FFFFFF;   /* card/panel background */
+  --ops-surface-warm: #F7F3EA;   /* (legacy, kept for compat) */
+  --ops-border:       #D9DEE5;   /* borders */
+  --ops-text-strong:  #101215;   /* headings */
+  --ops-text-muted:   #697586;   /* labels */
+  --ops-accent:       #C6F10E;   /* chain ribbon trace */
+  --ops-info:         #2563EB;   /* info blue */
+  --ops-warn:         #D97706;   /* amber warning */
+  --ops-risk:         #DC2626;   /* red risk */
+  --ops-done:         #16A34A;   /* green done */
+}
+```
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--ops-canvas` | `#F4F5F7` | Page background (replaces dark `bg-gray-950`) |
+| `--ops-surface` | `#FFFFFF` | Card and panel backgrounds |
+| `--ops-border` | `#D9DEE5` | Card borders, dividers |
+| `--ops-text-strong` | `#101215` | Headings and primary text |
+| `--ops-text-muted` | `#697586` | Secondary labels |
+| `--ops-accent` | `#C6F10E` | ChainRibbonStrip trace lines |
+| `--ops-info` | `#2563EB` | Info states, active indicators |
+| `--ops-warn` | `#D97706` | Amber warning states |
+| `--ops-risk` | `#DC2626` | Red risk/alert states |
+| `--ops-done` | `#16A34A` | Green complete states |
 
 ### Spacing System
 

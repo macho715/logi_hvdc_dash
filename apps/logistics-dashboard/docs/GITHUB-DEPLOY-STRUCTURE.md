@@ -53,7 +53,8 @@ logi_hvdc_dash/                          ← GitHub 리포 루트
 │       │   │   ├── events/route.ts
 │       │   │   ├── locations/route.ts
 │       │   │   ├── location-status/route.ts
-│       │   │   └── worklist/route.ts
+│       │   │   ├── worklist/route.ts
+│       │   │   └── overview/route.ts            ← 집계 BFF (KPI 8개 + alerts + siteReadiness + liveFeed) (NEW)
 │       │   └── (dashboard)/
 │       │       ├── layout.tsx
 │       │       ├── overview/page.tsx
@@ -66,7 +67,13 @@ logi_hvdc_dash/                          ← GitHub 리포 루트
 │       │   ├── theme-provider.tsx
 │       │   ├── ui/                      ← shadcn 기본 컴포넌트
 │       │   ├── layout/                  ← Sidebar, Header, KpiProvider
-│       │   ├── overview/                ← 툴바 + 지도 + 우측 패널 (업데이트)
+│       │   ├── overview/                ← 툴바 + 지도 + 우측 패널 + 2.0 레이아웃 (업데이트)
+│       │   │   ├── ProgramFilterBar.tsx     ← Program/Ops 모드 토글 + 현장 필터 바 (NEW)
+│       │   │   ├── ChainRibbonStrip.tsx     ← 6-노드 체인 리본 /api/chain/summary 연동 (NEW)
+│       │   │   ├── MissionControl.tsx       ← 알림/경로/현장 준비도/활동 피드 패널 (NEW)
+│       │   │   ├── SiteDeliveryMatrix.tsx   ← 4-카드 현장 납품 현황 (NEW)
+│       │   │   ├── OpenRadarTable.tsx       ← 4-탭 미결 레이더 테이블 540px 스크롤 (NEW)
+│       │   │   └── OpsSnapshot.tsx          ← WH Pressure + Worklist + Exceptions + Feed (NEW)
 │       │   ├── pipeline/                ← FlowPipeline + 5 chart panels + 2 table components
 │       │   ├── sites/                   ← SiteCards, SiteDetail, AgiAlertBanner, SiteTypeTag
 │       │   ├── cargo/                   ← CargoTabs, CargoDrawer, 3 tables
@@ -596,5 +603,5 @@ graph LR
 ---
 
 *문서 작성: 2026-03-13 | 최종 수정: 2026-03-14*
-*버전: 1.3.0 — Overview 툴바, 화물 검색, 신규 항차 등록 POST API, 검색 유틸리티 추가*
+*버전: 2.0.0 — Overview 2.0 7-Row Executive Layout, 6 신규 컴포넌트, overview/route.ts BFF 추가*
 *기준 프로젝트: LOGI-MASTER-DASH-claude-improve-dashboard-layout*

@@ -1,6 +1,6 @@
 # System Architecture — HVDC Logistics Dashboard
 
-> **Version:** 1.3.0 | **Last Updated:** 2026-03-14
+> **Version:** 2.0.0 | **Last Updated:** 2026-03-14
 > **Stack:** Next.js 16 · React 19 · TypeScript 5 · Supabase · Deck.gl · Zustand
 
 ---
@@ -24,20 +24,71 @@
 
 ## 0. Overview Cockpit Architecture Update
 
-- New BFF endpoint: `GET /api/overview`
-  - Aggregates `/api/cases/summary`, `/api/worklist`, `/api/events`, `/api/locations`, `/api/location-status`, `/api/shipments/stages`
-- New client hook: `useOverviewData()`
-  - Page-local fetch only, visible-only 30s polling, focus refetch
-  - Hydrates `@repo/shared` `useOpsStore` for map/events/status reuse
-- `KpiProvider` remains the single global realtime owner; overview does not add a second global subscription
-- Public overview vocabulary is config-driven:
-  - `configs/overview.route-types.json`
-  - `configs/overview.destinations.json`
-- Cross-page navigation is URL-first through `lib/navigation/contracts.ts`
-  - `flow_code` remains an internal compatibility field only
-- Overview toolbar layer (v1.3.0): `OverviewToolbar` row above KPI rail with search, layer toggles, voyage modal
-- `useOverviewData` now accepts `refreshKey` option — new voyage submission triggers overview re-fetch
-- `logisticsStore` extended with layer visibility toggles and shipment highlight
+### v2.0 Overview (commits fd4e6be, c4eb9cb)
+
+**BFF Endpoint**
+
+`GET /api/overview` — Aggregated BFF that fans out to `/api/cases/summary`, `/api/worklist`, `/api/events`, `/api/locations`, `/api/location-status`, and `/api/shipments/stages`. Returns `OverviewCockpitResponse` with the following top-level fields: `hero.metrics[8]` (KPI cards), `alerts[]`, `routeSummary[]`, `siteReadiness[]`, `liveFeed[]`, `pipeline[]`, `worklist{}`, and `generatedAt`. Consumed by the `useOverviewData({ refreshKey })` hook.
+
+**Hero KPI Rail — 8 metrics (expanded from 5)**
+
+| id | Value source | Tone condition |
+|---|---|---|
+| `total-shipments` | `shipmentStages.total` | neutral |
+| `final-delivered` | `shipmentStages.delivered` | neutral |
+| `open-anomaly` | anomaly calc | warning `>0` |
+| `overdue-eta` | `worklist.kpis.overdueCount` | critical `>0` |
+| `critical-pod` | `agi_das` alert count | warning `>0` |
+| `critical-mode` | `worklist.kpis.redCount` | warning `>0` |
+| `agi-risk` | AGI `readinessPercent` | critical `<50`, warn `<80` |
+| `data-freshness` | `freshnessMinutes` | warn `>30`, critical `>60` |
+
+**7-Row Page Layout**
+
+OverviewPageClient is structured as a 7-row layout: `ProgramFilterBar` → `ChainRibbonStrip` → KPI strip → `MissionControl` → `SiteDeliveryMatrix` → `OpenRadarTable` → `OpsSnapshot`.
+
+**6 New Components**
+
+| Component | File |
+|-----------|------|
+| `ProgramFilterBar` | `components/overview/ProgramFilterBar.tsx` |
+| `ChainRibbonStrip` | `components/overview/ChainRibbonStrip.tsx` |
+| `MissionControl` | `components/overview/MissionControl.tsx` |
+| `SiteDeliveryMatrix` | `components/overview/SiteDeliveryMatrix.tsx` |
+| `OpenRadarTable` | `components/overview/OpenRadarTable.tsx` |
+| `OpsSnapshot` | `components/overview/OpsSnapshot.tsx` |
+
+**Deprecated Components (files preserved, no longer rendered)**
+
+- `OverviewRightPanel.tsx`
+- `OverviewBottomPanel.tsx`
+
+**Cross-Page State Connections**
+
+- `casesStore.activePipelineStage` — set by `ChainRibbonStrip` node click; `PipelineTableWrapper` reads this to auto-filter the pipeline page.
+- `logisticsStore.highlightedShipmentId` — existing field; `MissionControl` is now a new consumer alongside the existing search bar flow.
+- `filterSite: SiteKey | null` — local state in `OverviewPageClient`; drives both `ChainRibbonStrip` (highlights active site) and `SiteDeliveryMatrix` (row selection).
+
+**Light-Ops CSS Scoped Theme**
+
+`SITE_META` extended with `chipClass` (light-ops chip styles) and `riskColor` fields alongside the existing `accentClass` (dark-panel). `lib/overview/ui.ts` exports `gateClassLight()` (upgraded to full pill badge: `bg-red-50 + ring-1`) and the shared design token constants object `uiTokens` (`panel`, `panelSubtle`, `hoverCard`, `hoverRow`).
+
+**New i18n Sections** added to `lib/i18n/translations.ts`: `programBar`, `missionControl`, `siteMatrix`, `openRadar`, `opsSnapshot`, `chainRibbon`.
+
+**Design Polish Patch (commit c4eb9cb)**
+
+- Sidebar: `bg-[#071225]`, active shadow, brand 18 px bold
+- `LangToggle`: light white pill
+- `SiteDeliveryMatrix`: `p-6`, hero metric, ring badges
+- `OpenRadarTable`: `rounded-xl` rows, 540 px scroll area, selected-state ring
+- `OpsSnapshot`: `bg-[#F8FAFC]` (warm beige removed), `h-2.5` WH bars, worklist border rows
+
+**Carry-forward from v1.3.0 (still valid)**
+
+- `KpiProvider` remains the single global realtime owner; overview does not add a second global subscription.
+- Public overview vocabulary is config-driven via `configs/overview.route-types.json` and `configs/overview.destinations.json`.
+- Cross-page navigation is URL-first through `lib/navigation/contracts.ts`; `flow_code` remains an internal compatibility field only.
+- `useOverviewData` accepts `refreshKey` — new voyage submission triggers overview re-fetch.
 
 ## 1. Architecture Overview
 
@@ -333,7 +384,9 @@ GET · 고유 벤더 목록 + 건수 (42개)"]
         R12["/api/shipments/stages
 GET · 항차 단계별 집계"]
         R13["/api/shipments/new
-POST · 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/500"]]
+POST · 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/500"]
+        R14["/api/overview
+GET · Aggregated BFF · OverviewCockpitResponse"]
     end
 
     subgraph QueryParams["Query Parameters"]
@@ -367,6 +420,8 @@ POST · 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/50
     R10 --> V5
     R11 --> V5
     R12 --> V5
+    R14 --> V1
+    R14 --> V5
 
     QueryParams -.->|"filter params"| R1
     QueryParams -.->|"filter params"| R4
@@ -385,12 +440,13 @@ POST · 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/50
 | `/api/shipments/stages` | **전체 로드** (pagination loop) | 항차 단계 집계에 전체 rows 필요 |
 | `/api/shipments/new` | INSERT (POST) | 신규 항차 등록 — 페이지네이션 없음 |
 
-### 신규/변경 API 요약 (v1.3.0)
+### 신규/변경 API 요약 (v1.3.0 → v2.0.0)
 
-| Route | 변경 | 설명 |
-|-------|------|------|
-| `POST /api/shipments/new` | 신규 | 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/500 |
-| `GET /api/shipments?q=` | 변경 | `?q=` ilike param — `sct_ship_no` 컬럼 부분 매칭 (mutually exclusive with `?sct_ship_no=` exact match via else if) |
+| Route | 버전 | 변경 | 설명 |
+|-------|------|------|------|
+| `POST /api/shipments/new` | v1.3.0 | 신규 | 신규 항차 등록 · status.shipments_status INSERT · 200/409/400/500 |
+| `GET /api/shipments?q=` | v1.3.0 | 변경 | `?q=` ilike param — `sct_ship_no` 컬럼 부분 매칭 (mutually exclusive with `?sct_ship_no=` exact match via else if) |
+| `GET /api/overview` | v2.0.0 | 신규 | Aggregated BFF — fans out to 6 internal endpoints; returns `OverviewCockpitResponse` with `hero.metrics[8]`, `alerts[]`, `routeSummary[]`, `siteReadiness[]`, `liveFeed[]`, `pipeline[]`, `worklist{}`, `generatedAt` |
 
 ### 항차 생성 흐름 (POST /api/shipments/new)
 
@@ -475,16 +531,27 @@ classDiagram
     }
 
     class ShipmentStagesResponse {
+        +total: number
+        +delivered: number
         +pre_departure: number
         +in_transit: number
         +port_customs: number
-        +delivered: number
-        +total: number
         +nominated_shu: number
         +nominated_das: number
         +nominated_mir: number
         +nominated_agi: number
         +agi_das_no_mosb_alert: number
+    }
+
+    class OverviewCockpitResponse {
+        +hero_metrics: HeroMetric[]
+        +alerts: AlertItem[]
+        +routeSummary: RouteSummaryItem[]
+        +siteReadiness: SiteReadinessItem[]
+        +liveFeed: LiveFeedItem[]
+        +pipeline: PipelineItem[]
+        +worklist: WorklistSummary
+        +generatedAt: string
     }
 
     CasesResponse "1" --> "many" CaseRow
@@ -534,16 +601,40 @@ graph TD
     Selectors -->|"shallow equality check"| Components
 ```
 
-### v1.3.0 신규 logisticsStore 필드
+### logisticsStore 확장 필드 (v1.3.0 신규, v2.0.0 유지)
 
 ```
 logisticsStore:
-  layerOriginArcs: boolean    ← NEW: OriginArcLayer on/off
-  layerTrips: boolean         ← NEW: TripsLayer on/off
-  highlightedShipmentId       ← NEW: selected trip UUID for highlight
+  layerOriginArcs: boolean    ← v1.3.0: OriginArcLayer on/off
+  layerTrips: boolean         ← v1.3.0: TripsLayer on/off
+  highlightedShipmentId       ← v1.3.0: selected trip UUID for highlight
+                                v2.0.0: MissionControl도 이 필드를 소비
 ```
 
 Actions: `toggleLayerOriginArcs()`, `toggleLayerTrips()`, `setHighlightedShipmentId(id)`
+
+### casesStore 신규 필드 (v2.0.0)
+
+```
+casesStore:
+  activePipelineStage: PipelineStage | null
+    ← ChainRibbonStrip 노드 클릭 시 set
+    → PipelineTableWrapper가 읽어 파이프라인 페이지 자동 필터링
+```
+
+Actions: `setActivePipelineStage(stage: PipelineStage | null)`
+
+Store file: `store/casesStore.ts`
+
+### OverviewPageClient 로컬 상태 (v2.0.0)
+
+```
+OverviewPageClient (local state):
+  filterSite: SiteKey | null
+    ← site chip 클릭 또는 SiteDeliveryMatrix 행 선택 시 set
+    → ChainRibbonStrip (활성 사이트 하이라이트)
+    → SiteDeliveryMatrix (행 선택 링 표시)
+```
 
 ### 검색 및 하이라이트 흐름 (v1.3.0)
 
@@ -927,10 +1018,20 @@ apps/logistics-dashboard/
 │       ├── events/route.ts
 │       ├── locations/route.ts
 │       ├── location-status/route.ts
-│       └── worklist/route.ts
+│       ├── worklist/route.ts
+│       └── overview/route.ts    # Aggregated BFF (v2.0 신규) → OverviewCockpitResponse
 ├── components/                   # React Components
 │   ├── layout/                  # Shell components (Sidebar, DashboardHeader)
-│   ├── overview/                # Overview page (OverviewMap, OverviewRightPanel)
+│   ├── overview/                # Overview page components
+│   │   ├── OverviewMap.tsx      # Deck.gl map
+│   │   ├── ProgramFilterBar.tsx # v2.0 신규: 프로그램 필터 바
+│   │   ├── ChainRibbonStrip.tsx # v2.0 신규: 체인 리본 (activePipelineStage set)
+│   │   ├── MissionControl.tsx   # v2.0 신규: 미션 컨트롤 패널
+│   │   ├── SiteDeliveryMatrix.tsx # v2.0 신규: 사이트별 납품 매트릭스
+│   │   ├── OpenRadarTable.tsx   # v2.0 신규: 오픈 레이더 이상징후 테이블
+│   │   ├── OpsSnapshot.tsx      # v2.0 신규: 운영 스냅샷 패널
+│   │   ├── OverviewRightPanel.tsx  # deprecated (파일 보존)
+│   │   └── OverviewBottomPanel.tsx # deprecated (파일 보존)
 │   ├── map/                     # Deck.gl map components (PoiLocationsLayer)
 │   ├── cargo/                   # Cargo (CargoDrawer, CargoTabs, WhStatusTable)
 │   ├── pipeline/                # Pipeline (FlowPipeline, PipelineFilterBar,
@@ -953,12 +1054,15 @@ apps/logistics-dashboard/
 │   │   └── normalizers.ts       # normalizeSite(), extractOriginCountry(), etc.
 │   ├── data/                    # Static data
 │   ├── map/                     # Map data (poiLocations.ts, flowLines.ts)
+│   ├── overview/                # Overview domain logic (v2.0 신규)
+│   │   └── ui.ts                # gateClassLight(), uiTokens, SITE_META (chipClass, riskColor)
 │   ├── hvdc/                    # HVDC domain logic
 │   └── search/                  # Search index
 ├── scripts/
 │   └── import-excel.mjs         # Excel → Supabase ETL (신규)
 ├── store/
-│   └── logisticsStore.ts        # Zustand store
+│   ├── logisticsStore.ts        # Zustand store (layer toggles, highlightedShipmentId)
+│   └── casesStore.ts            # v2.0 신규: activePipelineStage (ChainRibbonStrip → PipelineTableWrapper)
 ├── types/
 │   ├── logistics.ts             # KPIData, LogisticsState
 │   ├── cases.ts                 # CaseRow, StockRow, ShipmentRow, etc.
@@ -980,10 +1084,16 @@ apps/logistics-dashboard/
 
 ### 신규 컴포넌트 목록 (최근 추가)
 
-| 컴포넌트 | 위치 | 용도 |
-|----------|------|------|
-| `SiteTypeTag` | `components/sites/SiteTypeTag.tsx` | 사이트 유형 태그 (온쇼어/오프쇼어) |
-| `FlowChain` | `components/chain/` | 전체 물류 체인 시각화 |
-| `OriginCountrySummary` | `components/chain/` | 출발지 국가별 요약 |
-| `PipelineCasesTable` | `components/pipeline/PipelineCasesTable.tsx` | 파이프라인 케이스 테이블 |
-| `PipelineTableWrapper` | `components/pipeline/PipelineTableWrapper.tsx` | 파이프라인 테이블 컨테이너 |
+| 컴포넌트 | 위치 | 버전 | 용도 |
+|----------|------|------|------|
+| `SiteTypeTag` | `components/sites/SiteTypeTag.tsx` | v1.x | 사이트 유형 태그 (온쇼어/오프쇼어) |
+| `FlowChain` | `components/chain/` | v1.x | 전체 물류 체인 시각화 |
+| `OriginCountrySummary` | `components/chain/` | v1.x | 출발지 국가별 요약 |
+| `PipelineCasesTable` | `components/pipeline/PipelineCasesTable.tsx` | v1.x | 파이프라인 케이스 테이블 |
+| `PipelineTableWrapper` | `components/pipeline/PipelineTableWrapper.tsx` | v1.x | 파이프라인 테이블 컨테이너 (casesStore.activePipelineStage 구독) |
+| `ProgramFilterBar` | `components/overview/ProgramFilterBar.tsx` | v2.0 | 오버뷰 프로그램 필터 바 (사이트/프로그램 chip 선택) |
+| `ChainRibbonStrip` | `components/overview/ChainRibbonStrip.tsx` | v2.0 | 물류 체인 리본 노드 — 클릭 시 casesStore.activePipelineStage 설정 |
+| `MissionControl` | `components/overview/MissionControl.tsx` | v2.0 | 핵심 KPI 미션 컨트롤 패널 — highlightedShipmentId 소비 |
+| `SiteDeliveryMatrix` | `components/overview/SiteDeliveryMatrix.tsx` | v2.0 | 사이트별 납품 현황 매트릭스 — filterSite 연동 |
+| `OpenRadarTable` | `components/overview/OpenRadarTable.tsx` | v2.0 | 오픈 이상징후 레이더 테이블 (rounded-xl rows, 540 px scroll) |
+| `OpsSnapshot` | `components/overview/OpsSnapshot.tsx` | v2.0 | 운영 스냅샷 패널 — WH bars, worklist border rows |

@@ -1,7 +1,7 @@
 # Component Documentation — HVDC Logistics Dashboard
 
-> **Version:** 1.3.0 | **Last Updated:** 2026-03-14
-> **Component Count:** 47 custom components + Shadcn UI base
+> **Version:** 2.0.0 | **Last Updated:** 2026-03-14
+> **Component Count:** 53 custom components + Shadcn UI base
 
 ---
 
@@ -21,34 +21,60 @@
 
 ---
 
-## 0. Overview Cockpit Update
+## 0. Overview Cockpit Update (v2.0.0)
 
-New or materially changed overview-linked components:
+The Overview page was completely restructured in v2.0.0 (commit fd4e6be) from a 4-zone layout to a **7-row layout** with a new light-ops scoped theme (`[data-theme="light-ops"]`).
 
-- `components/overview/OverviewPageClient.tsx`
-  - Map-first overview shell powered by `useOverviewData`
-- `components/overview/OverviewBottomPanel.tsx`
-  - Bottom HVDC worklist + pipeline strip
-- `components/navigation/PageContextBanner.tsx`
-  - URL-restored context chips for Pipeline / Sites / Cargo / Chain
-- `components/overview/KpiStripCards.tsx`
-  - Config-driven KPI rail using `NavigationIntent`
-- `components/overview/OverviewRightPanel.tsx`
-  - Exception board, route summary, site readiness, recent activity
-- `components/overview/OverviewToolbar.tsx`
-  - Toolbar row: search + layer toggles + new voyage button
-- `components/overview/ShipmentSearchBar.tsx`
-  - Fuzzy ID search with dropdown and map highlight
-- `components/overview/MapLayerToggles.tsx`
-  - Origin Arc / 항차 / Heatmap pill toggles
-- `components/overview/NewVoyageModal.tsx`
-  - Voyage entry form → POST /api/shipments/new
+### Deprecated components (files preserved, no longer used in OverviewPageClient)
 
-Supporting contracts:
+- `components/overview/OverviewRightPanel.tsx` — @deprecated; replaced by `MissionControl`
+- `components/overview/OverviewBottomPanel.tsx` — @deprecated; replaced by `OpsSnapshot`
+
+### New components (v2.0.0)
+
+- `components/overview/ProgramFilterBar.tsx` — 48px mode-toggle + site filter bar
+- `components/overview/ChainRibbonStrip.tsx` — Horizontal 6-node chain ribbon with ribbon-trace animation
+- `components/overview/MissionControl.tsx` — Right-panel replacement (alerts, route summary, site readiness, live feed)
+- `components/overview/SiteDeliveryMatrix.tsx` — 4-card grid (SHU/MIR/DAS/AGI) with hero Assigned metric
+- `components/overview/OpenRadarTable.tsx` — Worklist table with 4 filter tabs (All/Critical/Amber/Overdue)
+- `components/overview/OpsSnapshot.tsx` — Operational layer panel (WH Pressure, Worklist, Exceptions, Recent Feed)
+
+### Unchanged overview components (still active)
+
+- `components/overview/OverviewPageClient.tsx` — Shell; now applies `data-theme="light-ops"` on root div
+- `components/overview/KpiStripCards.tsx` — Updated to 8-card grid (see §3.1)
+- `components/overview/OverviewMap.tsx` — Map style updated to `positron-gl-style` (see §3.2)
+- `components/overview/OverviewToolbar.tsx` — Toolbar row: search + layer toggles + new voyage button
+- `components/overview/ShipmentSearchBar.tsx` — Fuzzy ID search with dropdown and map highlight
+- `components/overview/MapLayerToggles.tsx` — Origin Arc / 항차 / Heatmap pill toggles
+- `components/overview/NewVoyageModal.tsx` — Voyage entry form → POST /api/shipments/new
+- `components/navigation/PageContextBanner.tsx` — URL-restored context chips for Pipeline / Sites / Cargo / Chain
+
+### Design polish (commit c4eb9cb)
+
+- `Sidebar.tsx` — bg `bg-[#071225]`; active item: `bg-[#2563EB]` with layered shadow; brand "HVDC" `text-[18px] font-bold tracking-[-0.02em] text-white`; nav items `rounded-xl px-4 py-3 text-[15px]`
+- `LangToggle.tsx` — light floating pill: `border border-slate-200 bg-white p-1 shadow-sm`; buttons `px-3 py-1 text-[12px]`; inactive `text-slate-500`
+- `lib/overview/ui.ts` — `gateClassLight()` returns full pill badge class (bg-red-50/amber/emerald + ring-1); added `uiTokens` export (shared design-token constants for all Overview components — see §11)
+
+### CSS: light-ops scoped theme
+
+Applied via `[data-theme="light-ops"]` on `OverviewPageClient`'s root div; sidebar and global pages remain dark.
+
+| CSS variable | Value |
+|---|---|
+| `--ops-canvas` | `#F4F5F7` |
+| `--ops-surface` | `#FFFFFF` |
+| `--ops-border` | `#D9DEE5` |
+| `--ops-risk` | risk accent |
+| `--ops-warn` | warn accent |
+
+### Supporting contracts
 
 - `app/api/overview/route.ts`
+- `app/api/chain/summary/route.ts`
 - `lib/navigation/contracts.ts`
 - `lib/overview/routeTypes.ts`
+- `lib/overview/ui.ts` (updated — `gateClassLight`, `uiTokens`)
 - `configs/overview.route-types.json`
 - `configs/overview.destinations.json`
 
@@ -65,15 +91,21 @@ graph TD
     end
 
     subgraph Overview["📊 Overview"]
-        KpiStripCards["KpiStripCards"]
-        OverviewMap["OverviewMap"]
-        OverviewRightPanel["OverviewRightPanel"]
-        OverviewBottomPanel["OverviewBottomPanel"]
         OverviewPageClient["OverviewPageClient"]
+        ProgramFilterBar["ProgramFilterBar"]
+        KpiStripCards["KpiStripCards"]
+        ChainRibbonStrip["ChainRibbonStrip"]
+        OverviewMap["OverviewMap"]
+        MissionControl["MissionControl"]
+        SiteDeliveryMatrix["SiteDeliveryMatrix"]
+        OpenRadarTable["OpenRadarTable"]
+        OpsSnapshot["OpsSnapshot"]
         OverviewToolbar["OverviewToolbar"]
         ShipmentSearchBar["ShipmentSearchBar"]
         MapLayerToggles["MapLayerToggles"]
         NewVoyageModal["NewVoyageModal"]
+        OverviewRightPanel["OverviewRightPanel ⚠️deprecated"]
+        OverviewBottomPanel["OverviewBottomPanel ⚠️deprecated"]
     end
 
     subgraph MapComponents["🗺️ Map"]
@@ -129,7 +161,13 @@ graph TD
     App --> Chain
     Overview --> MapComponents
     App --> UI
+    OverviewPageClient --> ProgramFilterBar
     OverviewPageClient --> OverviewToolbar
+    OverviewPageClient --> ChainRibbonStrip
+    OverviewPageClient --> MissionControl
+    OverviewPageClient --> SiteDeliveryMatrix
+    OverviewPageClient --> OpenRadarTable
+    OverviewPageClient --> OpsSnapshot
     OverviewToolbar --> ShipmentSearchBar
     OverviewToolbar --> MapLayerToggles
     OverviewToolbar --> NewVoyageModal
@@ -154,7 +192,7 @@ graph TD
     subgraph NavItem["NavItem (internal)"]
         Icon["Lucide icon"]
         Label["Text label (hidden when collapsed)"]
-        ActiveIndicator["Active: bg-blue-600 text-white"]
+        ActiveIndicator["Active: bg-[#2563EB] text-white<br/>shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_6px_18px_rgba(37,99,235,.28)]"]
     end
 
     NavList --> NavItem
@@ -176,6 +214,16 @@ graph TD
 | `/pipeline` | `ArrowRightLeft` | Pipeline |
 | `/sites` | `Building2` | Sites |
 | `/cargo` | `Package` | Cargo |
+
+**Styles (v2.0.0):**
+
+| Element | Class |
+|---|---|
+| Sidebar background | `bg-[#071225]` |
+| Brand label | `text-[18px] font-bold tracking-[-0.02em] text-white` |
+| Nav items | `rounded-xl px-4 py-3 text-[15px]` |
+| Active item bg | `bg-[#2563EB]` |
+| Active item shadow | `shadow-[inset_0_1px_0_rgba(255,255,255,.12),0_6px_18px_rgba(37,99,235,.28)]` |
 
 **Behavior:**
 - Toggle collapse: button click (ChevronLeft / ChevronRight)
@@ -261,11 +309,15 @@ interface KpiContextValue {
 
 ```mermaid
 graph LR
-    subgraph Strip["KpiStripCards — grid grid-cols-4 gap-4"]
-        Card1["Card 1<br/>📦 전체 케이스<br/>Total Cases<br/>30"]
-        Card2["Card 2<br/>🏗️ 현장 도착<br/>Site Arrival<br/>10 (33.3%)"]
-        Card3["Card 3<br/>🏭 창고 재고<br/>Warehouse Stock<br/>10 (33.3%)"]
-        Card4["Card 4<br/>📊 Flow Code<br/>Distribution<br/>mini chart"]
+    subgraph Strip["KpiStripCards — grid xl:grid-cols-8 lg:grid-cols-4 gap-4"]
+        Card1["Card 1"]
+        Card2["Card 2"]
+        Card3["Card 3"]
+        Card4["Card 4"]
+        Card5["Card 5"]
+        Card6["Card 6"]
+        Card7["Card 7"]
+        Card8["Card 8"]
     end
 ```
 
@@ -295,6 +347,11 @@ interface KpiCardProps {
   loading?: boolean
 }
 ```
+
+**v2.0.0 changes:**
+- Grid updated from `grid-cols-4` to `xl:grid-cols-8 lg:grid-cols-4` — now renders **8 cards**
+- `toneClass()` uses `border-t-2 border-t-[var(--ops-risk/warn/border)]` (border-top accent only, no background color fill)
+- Hero value: `text-[35px] font-bold leading-none`
 
 **Data Source:** `KpiContext` → `/api/cases/summary`
 
@@ -337,8 +394,10 @@ const INITIAL_VIEW_STATE = {
   bearing: 0,
 }
 
-const MAP_STYLE = 'https://tiles.protomaps.com/...'  // Dark tiles
+const MAP_STYLE = 'positron-gl-style'  // Grayscale/light tiles (changed in v2.0.0 from dark-matter)
 ```
+
+> **v2.0.0:** Map style changed from `dark-matter` to `positron-gl-style` (grayscale/light) to match the new light-ops scoped theme on the Overview page.
 
 **POI Sites (UAE):**
 
@@ -353,6 +412,8 @@ const MAP_STYLE = 'https://tiles.protomaps.com/...'  // Dark tiles
 ---
 
 ### 3.3 OverviewRightPanel
+
+> **@deprecated (v2.0.0)** — This component is no longer rendered in `OverviewPageClient`. It is replaced by `MissionControl` (§3.9). The file is preserved for reference but should not be used in new work.
 
 **File:** `components/overview/OverviewRightPanel.tsx`
 
@@ -515,6 +576,165 @@ The 4th optional parameter `highlightId?: string | null` controls per-trip colou
 - Matching trip: `[255, 255, 255, 220]` (white, high opacity)
 - Non-matching trips: 30% alpha
 - `updateTriggers.getColor: [highlightId]` ensures the layer re-renders when the highlight changes
+
+---
+
+### 3.7 ProgramFilterBar
+
+**File:** `components/overview/ProgramFilterBar.tsx`
+
+48px bar that sits at the top of the Overview page. Provides a Program/Ops mode toggle and a per-site filter.
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `mode` | `'program' \| 'ops'` | Current view mode |
+| `onModeChange` | `(mode: 'program' \| 'ops') => void` | Mode toggle handler |
+| `selectedSite` | `SiteKey \| null` | Currently selected site filter (`SHU`, `MIR`, `DAS`, `AGI`, or `null` for All) |
+| `onSiteChange` | `(site: SiteKey \| null) => void` | Site filter change handler |
+| `updatedAt` | `string` | ISO timestamp displayed as "last updated" hint |
+
+**i18n:** Uses `useT().programBar.*` keys.
+
+---
+
+### 3.8 ChainRibbonStrip
+
+**File:** `components/overview/ChainRibbonStrip.tsx`
+
+Horizontal 6-node chain ribbon that mirrors the supply chain pipeline stages. Nodes are clickable and cross-link to the Pipeline page via `casesStore`.
+
+```mermaid
+graph LR
+    Node1["Pre-Arrival"] --> Node2["Port"] --> Node3["Customs"] --> Node4["Warehouse"] --> Node5["MOSB"] --> Node6["Site"]
+```
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `site` | `SiteKey` (optional) | Filter node counts by site |
+| `onStageClick` | `(stage: PipelineStage) => void` (optional) | Called on node click; also calls `casesStore.setActivePipelineStage()` |
+
+**Data:** Fetches `GET /api/chain/summary?site=<site>` on mount / when `site` changes.
+
+**Animation:** Ribbon trace CSS animation (600ms) plays on mount and on active-stage change.
+
+**Cross-page link:** Node click calls `casesStore.setActivePipelineStage(stage)` → Pipeline page `PipelineTableWrapper` reacts (see Pattern 7 in §11).
+
+**i18n:** Uses `useT().chainRibbon.*` keys.
+
+---
+
+### 3.9 MissionControl
+
+**File:** `components/overview/MissionControl.tsx`
+
+Right-panel replacement for `OverviewRightPanel`. Rendered in the Overview 7-row layout as the persistent right column. Sections render in this order:
+
+1. `ShipmentDetailCard` — conditional; shown only when `selectedShipmentId` is set
+2. Alerts — `border-l-4` alert cards, light-ops styled
+3. Route Summary
+4. Site Readiness
+5. Live Feed
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `data` | `OverviewData \| null` | Overview data object |
+| `loading` | `boolean` | Loading state |
+| `worklist` | `WorklistItem[]` | Active worklist items |
+| `onNavigate` | `(intent: NavigationIntent) => void` | Navigation handler |
+| `selectedShipmentId` | `string \| null` | ID of currently selected shipment; drives ShipmentDetailCard visibility |
+| `onClearSelection` | `() => void` | Clears shipment selection (wired to clear button inside ShipmentDetailCard) |
+
+**i18n:** Uses `useT().missionControl.*` keys.
+
+**Store integration:** `logisticsStore.highlightedShipmentId` is kept in sync with `selectedShipmentId`.
+
+---
+
+### 3.10 SiteDeliveryMatrix
+
+**File:** `components/overview/SiteDeliveryMatrix.tsx`
+
+4-card grid displaying per-site delivery metrics for SHU, MIR, DAS, and AGI.
+
+**Card anatomy (per site):**
+- Site chip using `SITE_META.chipClass`
+- Hero metric: **Assigned** count in `text-[34px]` font size
+- Detail rows: delivered / pending / mosb / overdue / risk
+- Risk badge with `ring-1` outline
+
+**Layout:** `p-6` padding, subtle shadow on each card.
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `siteReadiness` | `OverviewSiteReadinessItem[]` | Per-site readiness data from overview API |
+| `loading` | `boolean` | Loading state |
+| `onNavigate` | `(intent: NavigationIntent) => void` | Navigation handler |
+
+**i18n:** Uses `useT().siteMatrix.*` keys.
+
+---
+
+### 3.11 OpenRadarTable
+
+**File:** `components/overview/OpenRadarTable.tsx`
+
+Worklist table with 4 filter tabs. Supports row selection which drives the `MissionControl` shipment detail view.
+
+**Filter tabs:** All / Critical / Amber / Overdue
+
+**Row styles:**
+- Default: `rounded-xl px-4 py-3.5 hover:bg-slate-50`
+- Gate badges: colored pills (`bg-red-50 ring-1`)
+- Selected row: `border-blue-200 bg-blue-50/40 ring-1 ring-blue-100`
+
+**Scroll:** `max-h-[540px]` with overflow-y-auto.
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `worklist` | `WorklistItem[]` | Full worklist data |
+| `data` | `OverviewData \| null` | Overview data for enrichment |
+| `loading` | `boolean` | Loading state |
+| `onNavigate` | `(intent: NavigationIntent) => void` | Navigation handler |
+
+**i18n:** Uses `useT().openRadar.*` keys.
+
+---
+
+### 3.12 OpsSnapshot
+
+**File:** `components/overview/OpsSnapshot.tsx`
+
+Operational layer panel. Replaces `OverviewBottomPanel`. Background is `bg-[#F8FAFC]` (cool gray — replaces the warm beige used in v1.x).
+
+**Sub-sections (4):**
+
+| Sub-section | Description |
+|---|---|
+| WH Pressure | `h-2.5` color-coded horizontal bars per warehouse |
+| Worklist | Top 5 open items |
+| Exceptions | Exception items requiring attention |
+| Recent Feed | Latest activity events |
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `data` | `OverviewData \| null` | Overview data |
+| `worklist` | `WorklistItem[]` | Worklist items |
+| `loading` | `boolean` | Loading state |
+| `onNavigate` | `(intent: NavigationIntent) => void` | Navigation handler |
+
+**i18n:** Uses `useT().opsSnapshot.*` keys.
 
 ---
 
@@ -1298,6 +1518,37 @@ graph LR
 ```
 
 `PipelineCasesTable` fetches its own data directly via `/api/cases` and does not rely on `casesStore` for case row data. This makes it reusable across both the Pipeline page and the Chain page.
+
+### Pattern 7: Cross-page Store Integration (ChainRibbonStrip → Pipeline)
+
+```mermaid
+sequenceDiagram
+    participant Ribbon as ChainRibbonStrip (Overview)
+    participant Store as casesStore (Zustand)
+    participant Wrapper as PipelineTableWrapper (Pipeline)
+    participant Table as PipelineCasesTable
+
+    Ribbon->>Store: casesStore.setActivePipelineStage(stage)
+    Note over Store: activePipelineStage = stage
+    Wrapper->>Store: useStore(s => s.activePipelineStage)
+    Store-->>Wrapper: stage
+    Wrapper->>Table: stage prop
+    Table->>Table: fetch /api/cases?stage=...
+```
+
+Clicking a node in `ChainRibbonStrip` on the Overview page writes `activePipelineStage` to `casesStore`. When the user navigates to the Pipeline page, `PipelineTableWrapper` reads that store value and pre-selects the same stage, showing the relevant cases immediately — no URL parameter passing required.
+
+### Note: `uiTokens` export in `lib/overview/ui.ts`
+
+`lib/overview/ui.ts` exports a `uiTokens` constant that centralises shared design-token values used across all Overview 2.0 components:
+
+```typescript
+export const uiTokens = {
+  // used by KpiStripCards toneClass(), OpsSnapshot bars, MissionControl alert cards, etc.
+}
+```
+
+Import from any Overview component to avoid hard-coding one-off colour strings and ensure consistency with the `[data-theme="light-ops"]` CSS variable set.
 
 ---
 
