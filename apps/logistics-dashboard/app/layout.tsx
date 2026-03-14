@@ -1,16 +1,14 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "MOSB Logistics Dashboard",
-  description: "Real-time logistics monitoring dashboard for MOSB operations",
-  generator: "v0.app",
+  title: "HVDC Logistics Dashboard",
+  description: "Real-time HVDC logistics operations dashboard with map visibility and drilldown workflows",
   icons: {
     icon: [
       {
@@ -45,7 +43,6 @@ export default function RootLayout({
     <html lang="en" className="dark text-foreground font-sans" suppressHydrationWarning>
       <body className="font-sans antialiased" suppressHydrationWarning>
         {children}
-        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   )

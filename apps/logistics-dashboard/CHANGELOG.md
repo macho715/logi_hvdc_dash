@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.5] — 2026-03-15
+
+### Production Metadata Cleanup
+
+#### Fixed
+- `app/layout.tsx` — updated the root metadata title and description from the stale MOSB-only branding to the current HVDC dashboard branding
+- `app/layout.tsx` — removed the unused Vercel Analytics injection that was causing a production `/_vercel/insights/script.js` 404 in the browser console
+
+---
+
 ## [1.3.4] — 2026-03-15
 
 ### Overview Heatmap Fix
