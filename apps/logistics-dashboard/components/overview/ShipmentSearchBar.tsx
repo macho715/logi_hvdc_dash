@@ -1,0 +1,167 @@
+'use client'
+
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { useLogisticsStore } from '@/store/logisticsStore'
+import { normalizeShipmentId } from '@/lib/search/normalizeShipmentId'
+
+const VOYAGE_STAGE_LABELS: Record<string, string> = {
+  'pre-departure': '출발 전',
+  'in-transit': '운송 중',
+  'port-customs': '통관 중',
+  'inland': '내륙 운송',
+  'delivered': '납품 완료',
+}
+
+interface SearchResult {
+  sct_ship_no: string
+  vendor: string
+  voyage_stage: string
+  eta: string | null
+  id: string
+}
+
+interface Props {
+  onSelect: (sctShipNo: string) => void
+}
+
+export function ShipmentSearchBar({ onSelect }: Props) {
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState<SearchResult[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+  const [open, setOpen] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const setHighlightedShipmentId = useLogisticsStore((s) => s.setHighlightedShipmentId)
+
+  const doSearch = useCallback(async (raw: string) => {
+    const normalized = normalizeShipmentId(raw)
+    const params = new URLSearchParams({ pageSize: '5' })
+    if (normalized.type === 'exact') {
+      params.set('sct_ship_no', normalized.value)
+    } else {
+      params.set('q', normalized.value)
+    }
+
+    setLoading(true)
+    setError(false)
+    try {
+      const res = await fetch(`/api/shipments?${params}`)
+      if (!res.ok) throw new Error('fetch failed')
+      const json = await res.json() as { data: Array<{ id: string; sct_ship_no: string; vendor: string; voyage_stage: string; eta: string | null }> }
+      setResults(
+        json.data.map((r) => ({
+          id: r.id,
+          sct_ship_no: r.sct_ship_no,
+          vendor: r.vendor,
+          voyage_stage: r.voyage_stage,
+          eta: r.eta,
+        }))
+      )
+      setOpen(true)
+    } catch {
+      setError(true)
+      setResults([])
+      setOpen(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value
+    setQuery(val)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (val.trim().length < 2) {
+      setOpen(false)
+      setResults([])
+      return
+    }
+    debounceRef.current = setTimeout(() => doSearch(val), 300)
+  }
+
+  const handleSelect = (result: SearchResult) => {
+    setQuery(result.sct_ship_no)
+    setOpen(false)
+    setHighlightedShipmentId(result.id)
+    onSelect(result.sct_ship_no)
+  }
+
+  const handleClear = () => {
+    setQuery('')
+    setOpen(false)
+    setResults([])
+    setHighlightedShipmentId(null)
+  }
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  return (
+    <div ref={containerRef} className="relative w-72">
+      <div className="relative flex items-center">
+        <span className="pointer-events-none absolute left-3 text-gray-400">🔍</span>
+        <input
+          type="text"
+          value={query}
+          onChange={handleChange}
+          placeholder="SCT0001 · hvdc-adopt-sct-0001 · case123"
+          className="w-full rounded-lg border border-gray-700 bg-gray-900 py-1.5 pl-9 pr-8 text-sm text-gray-100 placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="absolute right-2 text-gray-400 hover:text-gray-200"
+            aria-label="검색 초기화"
+          >
+            ×
+          </button>
+        )}
+      </div>
+
+      {open && (
+        <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-700 bg-gray-900 shadow-xl">
+          {loading && (
+            <div className="px-4 py-3 text-sm text-gray-400">검색 중...</div>
+          )}
+          {!loading && error && (
+            <div className="px-4 py-3 text-sm text-red-400">검색 실패, 다시 시도하세요</div>
+          )}
+          {!loading && !error && results.length === 0 && (
+            <div className="px-4 py-3 text-sm text-gray-400">결과 없음</div>
+          )}
+          {!loading && results.map((r) => (
+            <div
+              key={r.id}
+              className="flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-gray-800"
+              onMouseDown={() => handleSelect(r)}
+            >
+              <div>
+                <div className="text-sm font-medium text-gray-100">{r.sct_ship_no}</div>
+                <div className="text-xs text-gray-400">
+                  {r.vendor} · {VOYAGE_STAGE_LABELS[r.voyage_stage] ?? r.voyage_stage}
+                  {r.eta ? ` · ETA ${r.eta}` : ''}
+                </div>
+              </div>
+              <a
+                href={`/cargo?tab=shipments&sct_ship_no=${encodeURIComponent(r.sct_ship_no)}`}
+                onMouseDown={(e) => e.stopPropagation()}
+                className="ml-2 shrink-0 text-xs text-blue-400 hover:underline"
+              >
+                상세 보기 →
+              </a>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

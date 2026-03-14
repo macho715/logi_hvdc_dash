@@ -1,0 +1,31 @@
+'use client'
+
+import { MapLayerToggles } from './MapLayerToggles'
+import { ShipmentSearchBar } from './ShipmentSearchBar'
+
+interface OverviewToolbarProps {
+  onShipmentSelect: (sctShipNo: string) => void
+  onNewVoyageClick: () => void
+}
+
+export function OverviewToolbar({ onShipmentSelect, onNewVoyageClick }: OverviewToolbarProps) {
+  return (
+    <div className="flex items-center justify-between border-b border-gray-800 bg-gray-950/80 px-4 py-2">
+      {/* Left: search */}
+      <ShipmentSearchBar onSelect={onShipmentSelect} />
+
+      {/* Center: map layer toggles */}
+      <MapLayerToggles />
+
+      {/* Right: new voyage button */}
+      <button
+        type="button"
+        onClick={onNewVoyageClick}
+        className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-500 transition-colors"
+      >
+        <span>＋</span>
+        <span>신규 항차</span>
+      </button>
+    </div>
+  )
+}
