@@ -3,14 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useLogisticsStore } from '@/store/logisticsStore'
 import { normalizeShipmentId } from '@/lib/search/normalizeShipmentId'
-
-const VOYAGE_STAGE_LABELS: Record<string, string> = {
-  'pre-departure': '출발 전',
-  'in-transit': '운송 중',
-  'port-customs': '통관 중',
-  'inland': '내륙 운송',
-  'delivered': '납품 완료',
-}
+import { useT } from '@/hooks/useT'
 
 interface SearchResult {
   sct_ship_no: string
@@ -25,6 +18,7 @@ interface Props {
 }
 
 export function ShipmentSearchBar({ onSelect }: Props) {
+  const t = useT()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -112,7 +106,7 @@ export function ShipmentSearchBar({ onSelect }: Props) {
           type="text"
           value={query}
           onChange={handleChange}
-          placeholder="SCT0001 · hvdc-adopt-sct-0001 · case123"
+          placeholder={t.search.placeholder}
           className="w-full rounded-lg border border-gray-700 bg-gray-900 py-1.5 pl-9 pr-8 text-sm text-gray-100 placeholder-gray-500 focus:border-blue-500 focus:outline-none"
         />
         {query && (
@@ -130,13 +124,13 @@ export function ShipmentSearchBar({ onSelect }: Props) {
       {open && (
         <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-700 bg-gray-900 shadow-xl">
           {loading && (
-            <div className="px-4 py-3 text-sm text-gray-400">검색 중...</div>
+            <div className="px-4 py-3 text-sm text-gray-400">{t.search.loading}</div>
           )}
           {!loading && error && (
-            <div className="px-4 py-3 text-sm text-red-400">검색 실패, 다시 시도하세요</div>
+            <div className="px-4 py-3 text-sm text-red-400">{t.search.error}</div>
           )}
           {!loading && !error && results.length === 0 && (
-            <div className="px-4 py-3 text-sm text-gray-400">결과 없음</div>
+            <div className="px-4 py-3 text-sm text-gray-400">{t.search.noResults}</div>
           )}
           {!loading && results.map((r) => (
             <div
@@ -147,8 +141,8 @@ export function ShipmentSearchBar({ onSelect }: Props) {
               <div>
                 <div className="text-sm font-medium text-gray-100">{r.sct_ship_no}</div>
                 <div className="text-xs text-gray-400">
-                  {r.vendor} · {VOYAGE_STAGE_LABELS[r.voyage_stage] ?? r.voyage_stage}
-                  {r.eta ? ` · ETA ${r.eta}` : ''}
+                  {r.vendor} · {t.voyageStage[r.voyage_stage as keyof typeof t.voyageStage] ?? r.voyage_stage}
+                  {r.eta ? ` · ${t.search.eta} ${r.eta}` : ''}
                 </div>
               </div>
               <a
@@ -156,7 +150,7 @@ export function ShipmentSearchBar({ onSelect }: Props) {
                 onMouseDown={(e) => e.stopPropagation()}
                 className="ml-2 shrink-0 text-xs text-blue-400 hover:underline"
               >
-                상세 보기 →
+                {t.rightPanel.viewDetail}
               </a>
             </div>
           ))}

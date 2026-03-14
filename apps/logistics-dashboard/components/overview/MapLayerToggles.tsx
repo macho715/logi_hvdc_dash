@@ -7,15 +7,16 @@ interface ToggleButtonProps {
   label: string
   icon: string
   active: boolean
+  title: string
   onToggle: () => void
 }
 
-function ToggleButton({ label, icon, active, onToggle }: ToggleButtonProps) {
+function ToggleButton({ label, icon, active, title, onToggle }: ToggleButtonProps) {
   return (
     <button
       type="button"
       onClick={onToggle}
-      title={active ? `${label} 숨기기` : `${label} 표시`}
+      title={title}
       className={cn(
         'flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors',
         active
@@ -29,7 +30,11 @@ function ToggleButton({ label, icon, active, onToggle }: ToggleButtonProps) {
   )
 }
 
+import { useT } from '@/hooks/useT'
+
 export function MapLayerToggles() {
+  const t = useT()
+
   const layerOriginArcs = useLogisticsStore((s) => s.layerOriginArcs)
   const layerTrips = useLogisticsStore((s) => s.layerTrips)
   const showHeatmap = useLogisticsStore((s) => s.showHeatmap)
@@ -39,9 +44,27 @@ export function MapLayerToggles() {
 
   return (
     <div className="flex items-center gap-2">
-      <ToggleButton label="Origin Arc" icon="🌐" active={layerOriginArcs} onToggle={toggleLayerOriginArcs} />
-      <ToggleButton label="항차" icon="🚢" active={layerTrips} onToggle={toggleLayerTrips} />
-      <ToggleButton label="Heatmap" icon="🔥" active={showHeatmap} onToggle={toggleHeatmap} />
+      <ToggleButton
+        label={t.layers.originArc}
+        icon="🌐"
+        active={layerOriginArcs}
+        title={`${t.layers.originArc} ${layerOriginArcs ? t.layers.hide : t.layers.show}`}
+        onToggle={toggleLayerOriginArcs}
+      />
+      <ToggleButton
+        label={t.layers.voyage}
+        icon="🚢"
+        active={layerTrips}
+        title={`${t.layers.voyage} ${layerTrips ? t.layers.hide : t.layers.show}`}
+        onToggle={toggleLayerTrips}
+      />
+      <ToggleButton
+        label={t.layers.heatmap}
+        icon="🔥"
+        active={showHeatmap}
+        title={`${t.layers.heatmap} ${showHeatmap ? t.layers.hide : t.layers.show}`}
+        onToggle={toggleHeatmap}
+      />
     </div>
   )
 }

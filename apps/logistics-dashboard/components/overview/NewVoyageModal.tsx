@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import type { NewVoyagePayload } from '@/app/api/shipments/new/route'
+import { useT } from '@/hooks/useT'
 
 interface Props {
   open: boolean
@@ -97,6 +98,7 @@ function toPayload(form: FormState): NewVoyagePayload {
 }
 
 export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
+  const t = useT()
   const [form, setForm] = useState<FormState>({ ...EMPTY })
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -108,7 +110,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.hvdc_code.trim()) {
-      setSubmitError('SCT SHIP NO는 필수입니다')
+      setSubmitError(t.modal.sctShipNoRequired)
       return
     }
     setSubmitting(true)
@@ -121,14 +123,14 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
       })
       if (!res.ok) {
         const j = (await res.json().catch(() => ({}))) as { error?: string }
-        setSubmitError(j.error ?? '오류가 발생했습니다')
+        setSubmitError(j.error ?? t.modal.duplicate)
         return
       }
       setForm({ ...EMPTY })
       onSuccess()
       onClose()
     } catch {
-      setSubmitError('네트워크 오류가 발생했습니다')
+      setSubmitError(t.modal.networkError)
     } finally {
       setSubmitting(false)
     }
@@ -146,7 +148,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-1 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">항차 등록 / 수정</h2>
+          <h2 className="text-lg font-bold text-white">{t.modal.title}</h2>
           <button onClick={onClose} className="text-xl text-gray-400 hover:text-gray-200">
             ×
           </button>
@@ -162,24 +164,24 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-400">
-                SCT SHIP NO <span className="text-red-400">*</span>
+                {t.modal.sctShipNo} <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
                 value={form.hvdc_code}
                 onChange={(e) => handleChange('hvdc_code', e.target.value)}
-                placeholder="HVDC-ADOPT-SCT-0001"
+                placeholder={t.modal.sctShipNoPlaceholder}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
                 required
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">Vendor</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.vendor}</label>
               <input
                 type="text"
                 value={form.vendor}
                 onChange={(e) => handleChange('vendor', e.target.value)}
-                placeholder="Hitachi"
+                placeholder={t.modal.vendorPlaceholder}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -188,22 +190,22 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 2: POL + POD */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">POL (출발항)</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.pol}</label>
               <input
                 type="text"
                 value={form.pol}
                 onChange={(e) => handleChange('pol', e.target.value)}
-                placeholder="KRPUS"
+                placeholder={t.modal.polPlaceholder}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">POD (도착항)</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.pod}</label>
               <input
                 type="text"
                 value={form.pod}
                 onChange={(e) => handleChange('pod', e.target.value)}
-                placeholder="AEAUH"
+                placeholder={t.modal.podPlaceholder}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -212,7 +214,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 3: Ship Mode + Incoterms + MR No. */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">운송 모드</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.shipMode}</label>
               <select
                 value={form.ship_mode}
                 onChange={(e) => handleChange('ship_mode', e.target.value)}
@@ -226,22 +228,22 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">Incoterms</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.incoterms}</label>
               <select
                 value={form.incoterms}
                 onChange={(e) => handleChange('incoterms', e.target.value)}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none"
               >
-                <option value="">선택</option>
-                {INCOTERMS_LIST.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                <option value="">{t.modal.incotermsSelect}</option>
+                {INCOTERMS_LIST.map((inc) => (
+                  <option key={inc} value={inc}>
+                    {inc}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">MR No.</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.mrNo}</label>
               <input
                 type="number"
                 value={form.status_no ?? ''}
@@ -257,24 +259,24 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 4: Vessel + B/L AWB */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-400">선박명 / 항공편</label>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.vessel}</label>
               <input
                 type="text"
                 value={form.vessel}
                 onChange={(e) => handleChange('vessel', e.target.value)}
-                placeholder="MSC AURORA"
+                placeholder={t.modal.vesselPlaceholder}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
             </div>
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-400">
-                B/L No. / AWB No.
+                {t.modal.blAwb}
               </label>
               <input
                 type="text"
                 value={form.bl_awb}
                 onChange={(e) => handleChange('bl_awb', e.target.value)}
-                placeholder="MSCUABCD1234567"
+                placeholder={t.modal.blAwbPlaceholder}
                 className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -285,7 +287,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
             {(['etd', 'atd', 'eta', 'ata'] as const).map((field) => (
               <div key={field}>
                 <label className="mb-1 block text-xs font-medium text-gray-400">
-                  {field.toUpperCase()}
+                  {t.modal[field]}
                 </label>
                 <input
                   type="date"
@@ -301,9 +303,9 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           <div className="grid grid-cols-3 gap-3">
             {(
               [
-                ['transit_days', '해상 운송일'],
-                ['customs_days', '통관일'],
-                ['inland_days', '내륙 운송일'],
+                ['transit_days', t.modal.transitDays],
+                ['customs_days', t.modal.customsDays],
+                ['inland_days', t.modal.inlandDays],
               ] as const
             ).map(([field, label]) => (
               <div key={field}>
@@ -324,7 +326,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           {/* Row 7: Site checkboxes */}
           <div>
             <label className="mb-2 block text-xs font-medium text-gray-400">
-              납품 현장 노미네이션
+              {t.modal.siteNomination}
             </label>
             <div className="flex gap-4">
               {SITES.map((site) => {
@@ -346,11 +348,11 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
 
           {/* Row 8: Description */}
           <div>
-            <label className="mb-1 block text-xs font-medium text-gray-400">비고 (설명)</label>
+            <label className="mb-1 block text-xs font-medium text-gray-400">{t.modal.description}</label>
             <textarea
               value={form.description}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="추가 정보를 입력하세요..."
+              placeholder={t.modal.descriptionPlaceholder}
               rows={3}
               className="w-full resize-none rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
             />
@@ -370,14 +372,14 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
               onClick={onClose}
               className="rounded-lg border border-gray-700 px-4 py-2 text-sm text-gray-400 transition-colors hover:text-gray-200"
             >
-              취소
+              {t.modal.cancel}
             </button>
             <button
               type="submit"
               disabled={submitting}
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
             >
-              {submitting ? '저장 중...' : '저장'}
+              {submitting ? t.modal.submitting : t.modal.submit}
             </button>
           </div>
         </form>

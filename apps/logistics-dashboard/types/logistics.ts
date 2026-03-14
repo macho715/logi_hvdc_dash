@@ -1,4 +1,5 @@
 import type { Event, Location, LocationStatus, StatusCode } from "@repo/shared"
+import type { Locale } from '@/lib/i18n/translations'
 
 export type { Event, Location, LocationStatus, StatusCode }
 
@@ -55,4 +56,8 @@ export interface LogisticsState {
   setHighlightedShipmentId: (id: string | null) => void
   setConnected: (connected: boolean) => void
   setLoading: (loading: boolean) => void
+  // i18n
+  locale: Locale
+  setLocale: (locale: Locale) => void
 }
+

@@ -6,6 +6,7 @@ import { getRouteTypeBadgeClass, SITE_META } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
 import type { WorklistRow } from '@repo/shared'
 import type { NavigationIntent, OverviewCockpitResponse } from '@/types/overview'
+import { useT } from '@/hooks/useT'
 
 interface OverviewBottomPanelProps {
   data: OverviewCockpitResponse | null
@@ -43,6 +44,8 @@ export function OverviewBottomPanel({
   loading = false,
   onNavigate,
 }: OverviewBottomPanelProps) {
+  const t = useT()
+
   if (loading && !data) {
     return <div className="border-t border-gray-800 bg-gray-950/60 p-4" />
   }
@@ -61,8 +64,8 @@ export function OverviewBottomPanel({
       <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
         <div className="space-y-3">
           <div>
-            <h2 className="text-sm font-semibold text-white">단계 파이프라인</h2>
-            <p className="text-xs text-gray-500">overview의 각 단계는 Pipeline 페이지와 같은 URL 계약을 사용합니다.</p>
+            <h2 className="text-sm font-semibold text-white">{t.bottomPanel.stagePipeline}</h2>
+            <p className="text-xs text-gray-500">{t.bottomPanel.stagePipelineDesc}</p>
           </div>
           <div className="grid gap-3 md:grid-cols-5">
             {data?.pipeline.map((item) => (
@@ -82,8 +85,8 @@ export function OverviewBottomPanel({
 
         <div className="space-y-3">
           <div>
-            <h2 className="text-sm font-semibold text-white">우선순위 worklist</h2>
-            <p className="text-xs text-gray-500">공유 store의 HVDC worklist를 그대로 재사용합니다.</p>
+            <h2 className="text-sm font-semibold text-white">{t.bottomPanel.priorityWorklist}</h2>
+            <p className="text-xs text-gray-500">{t.bottomPanel.priorityWorklistDesc}</p>
           </div>
           <div className="max-h-[160px] overflow-y-auto space-y-2">
             {highlightedRows.map((row) => {
@@ -100,7 +103,7 @@ export function OverviewBottomPanel({
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="text-sm font-semibold text-white">{row.title}</div>
-                      <div className="mt-1 text-xs text-gray-400">{row.subtitle ?? row.currentLocation ?? '상세 위치 없음'}</div>
+                      <div className="mt-1 text-xs text-gray-400">{row.subtitle ?? row.currentLocation ?? t.bottomPanel.noLocation}</div>
                     </div>
                     <div className={cn('text-xs font-semibold', gateClass(row.gate))}>{row.gate}</div>
                   </div>
@@ -126,7 +129,7 @@ export function OverviewBottomPanel({
             })}
             {!loading && highlightedRows.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-gray-800 bg-gray-900/60 p-4 text-sm text-gray-500">
-                표시할 우선순위 항목이 없습니다.
+                {t.bottomPanel.noWorklist}
               </div>
             ) : null}
           </div>

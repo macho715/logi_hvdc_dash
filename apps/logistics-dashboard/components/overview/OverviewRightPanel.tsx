@@ -6,6 +6,7 @@ import { ko } from 'date-fns/locale'
 import { getRouteTypeLabel } from '@/lib/overview/routeTypes'
 import { SITE_META, getRouteTypeBadgeClass } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
+import { useT } from '@/hooks/useT'
 import type { NavigationIntent, OverviewCockpitResponse } from '@/types/overview'
 
 interface OverviewRightPanelProps {
@@ -14,14 +15,6 @@ interface OverviewRightPanelProps {
   onNavigate: (intent: NavigationIntent) => void
   selectedShipmentId?: string | null
   onClearSelection?: () => void
-}
-
-const VOYAGE_STAGE_LABELS: Record<string, string> = {
-  'pre-departure': '출발 전',
-  'in-transit': '운송 중',
-  'port-customs': '통관 중',
-  'inland': '내륙 운송',
-  'delivered': '납품 완료',
 }
 
 interface ShipmentDetailRow {
@@ -34,6 +27,7 @@ interface ShipmentDetailRow {
 }
 
 function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear?: () => void }) {
+  const t = useT()
   const [detail, setDetail] = useState<ShipmentDetailRow | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(true)
   const [fetchError, setFetchError] = useState(false)
@@ -53,26 +47,26 @@ function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear
   return (
     <div className="mb-3 rounded-xl border border-blue-500/30 bg-blue-500/10 p-3">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs font-semibold text-blue-300">검색 결과</span>
+        <span className="text-xs font-semibold text-blue-300">{t.rightPanel.searchResult}</span>
         {onClear && (
-          <button onClick={onClear} className="text-xs text-gray-400 hover:text-gray-200" aria-label="닫기">×</button>
+          <button onClick={onClear} className="text-xs text-gray-400 hover:text-gray-200" aria-label={t.rightPanel.close}>×</button>
         )}
       </div>
       {loadingDetail && (
-        <div className="text-xs text-gray-400">로딩 중...</div>
+        <div className="text-xs text-gray-400">{t.rightPanel.loading}</div>
       )}
       {!loadingDetail && fetchError && (
-        <div className="text-xs text-red-400">불러오기 실패</div>
+        <div className="text-xs text-red-400">{t.rightPanel.fetchError}</div>
       )}
       {!loadingDetail && !fetchError && detail == null && (
-        <div className="text-xs text-gray-400">결과 없음</div>
+        <div className="text-xs text-gray-400">{t.rightPanel.noResult}</div>
       )}
       {!loadingDetail && detail != null && (
         <div className="space-y-1">
           <div className="text-sm font-semibold text-white">{detail.sct_ship_no}</div>
           <div className="text-xs text-gray-300">{detail.vendor}</div>
           <div className="text-xs text-gray-400">
-            단계: {VOYAGE_STAGE_LABELS[detail.voyage_stage] ?? detail.voyage_stage}
+            {t.rightPanel.stage}: {t.voyageStage[detail.voyage_stage as keyof typeof t.voyageStage] ?? detail.voyage_stage}
           </div>
           {detail.eta && (
             <div className="text-xs text-gray-400">ETA: {detail.eta}</div>
@@ -86,7 +80,7 @@ function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear
             href={`/cargo?tab=shipments&sct_ship_no=${encodeURIComponent(detail.sct_ship_no)}`}
             className="mt-1 inline-block text-xs text-blue-400 hover:underline"
           >
-            상세 보기 →
+            {t.rightPanel.viewDetail}
           </a>
         </div>
       )}

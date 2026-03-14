@@ -5,18 +5,21 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Map, ArrowRightLeft, Building2, Package, Network, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useT } from '@/hooks/useT'
+import type { Translations } from '@/lib/i18n/translations'
 
-const NAV_ITEMS = [
-  { href: '/overview',  icon: Map,            label: 'Overview' },
-  { href: '/chain',     icon: Network,        label: '물류 체인' },
-  { href: '/pipeline',  icon: ArrowRightLeft,  label: 'Pipeline' },
-  { href: '/sites',     icon: Building2,       label: 'Sites' },
-  { href: '/cargo',     icon: Package,         label: 'Cargo' },
-] as const
+const NAV_ITEMS: { href: string; icon: React.ElementType; labelKey: keyof Translations['nav'] }[] = [
+  { href: '/overview',  icon: Map,           labelKey: 'overview' },
+  { href: '/chain',     icon: Network,       labelKey: 'chain' },
+  { href: '/pipeline',  icon: ArrowRightLeft, labelKey: 'pipeline' },
+  { href: '/sites',     icon: Building2,     labelKey: 'sites' },
+  { href: '/cargo',     icon: Package,       labelKey: 'cargo' },
+]
 
 export function Sidebar() {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+  const t = useT()
 
   return (
     <aside className={cn(
@@ -39,7 +42,7 @@ export function Sidebar() {
 
       {/* Nav items */}
       <nav className="flex-1 py-2">
-        {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
+        {NAV_ITEMS.map(({ href, icon: Icon, labelKey }) => {
           const active = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link
@@ -53,7 +56,7 @@ export function Sidebar() {
               )}
             >
               <Icon size={18} className="shrink-0" />
-              {!collapsed && <span>{label}</span>}
+              {!collapsed && <span>{t.nav[labelKey]}</span>}
             </Link>
           )
         })}

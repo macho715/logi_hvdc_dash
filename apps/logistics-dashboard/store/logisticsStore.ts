@@ -1,9 +1,11 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import type { LogisticsState, Location, LocationStatus, Event } from "@/types/logistics"
+import type { Locale } from "@/lib/i18n/translations"
 
 const MAX_EVENTS = 5000
 
-export const useLogisticsStore = create<LogisticsState>((set, get) => ({
+export const useLogisticsStore = create<LogisticsState>()(persist((set, get) => ({
   // Normalized data
   locationsById: {},
   statusByLocationId: {},
@@ -19,6 +21,8 @@ export const useLogisticsStore = create<LogisticsState>((set, get) => ({
   layerOriginArcs: true,
   layerTrips: true,
   highlightedShipmentId: null,
+  // i18n
+  locale: 'ko' as Locale,
 
   // Connection state
   isConnected: false,
@@ -81,6 +85,10 @@ export const useLogisticsStore = create<LogisticsState>((set, get) => ({
   setHighlightedShipmentId: (id) => set({ highlightedShipmentId: id }),
   setConnected: (connected: boolean) => set({ isConnected: connected }),
   setLoading: (loading: boolean) => set({ isLoading: loading }),
+  setLocale: (locale: Locale) => set({ locale }),
+}), {
+  name: 'hvdc-locale',
+  partialize: (state) => ({ locale: state.locale }),
 }))
 
 // Selectors
