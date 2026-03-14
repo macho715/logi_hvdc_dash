@@ -7,24 +7,39 @@ import { MapboxOverlay } from "@deck.gl/mapbox"
 import type { PickingInfo } from "@deck.gl/core"
 import { useOpsStore } from "@repo/shared"
 import { useLogisticsStore } from "@/store/logisticsStore"
+import { useCasesStore } from "@/store/casesStore"
 import { createLocationLayer } from "@/components/map/layers/createLocationLayer"
 import { createHeatmapLayer } from "@/components/map/layers/createHeatmapLayer"
 import { createGeofenceLayer } from "@/components/map/layers/createGeofenceLayer"
 import { createEtaWedgeLayer } from "@/components/map/layers/createEtaWedgeLayer"
 import { createGeofenceGeojson, isPointInGeofence } from "@/components/map/layers/geofenceUtils"
 import { HeatmapLegend } from "@/components/map/HeatmapLegend"
+import { MapLegend } from "@/components/map/MapLegend"
 import { createPoiLayers, getPoiTooltip } from "@/components/map/PoiLocationsLayer"
-import { createFlowArcLayer } from "@/lib/map/flowLines"
+import { createStatusRingLayer } from "@/components/map/layers/createStatusRingLayer"
+import { createTripsLayer, computeAnimTime, TRIPS_TIME_WINDOW_SECS } from "@/components/map/layers/createTripsLayer"
+import { createOriginArcLayer } from "@/components/map/layers/createOriginArcLayer"
+import type { OriginEntry } from "@/components/map/layers/createOriginArcLayer"
 import { POI_LOCATIONS } from "@/lib/map/poiLocations"
 import { buildDashboardLink } from "@/lib/navigation/contracts"
 import { formatInDubaiTimezone } from "@/lib/time"
 import type { Event, Location, LocationStatus } from "@repo/shared"
 import type { NavigationIntent } from "@/types/overview"
 import type { PoiLocation } from "@/lib/map/poiTypes"
+import type { TripData } from "@/app/api/shipments/trips/route"
+
+/** Convert ISO-3166-1 alpha-2 country code to flag emoji (e.g., "SE" → "🇸🇪") */
+function countryFlag(code: string): string {
+  return [...code.toUpperCase()]
+    .map((c) => String.fromCodePoint(c.charCodeAt(0) + 127397))
+    .join("")
+}
 
 type TooltipInfo =
   | { kind: "location"; x: number; y: number; object: Location & { status?: LocationStatus } }
   | { kind: "poi"; x: number; y: number; text: string }
+  | { kind: "arc"; x: number; y: number; country: string; count: number }
+  | { kind: "trip"; x: number; y: number; vendor: string | null; flowCode: number | null; etaUnix: number }
 
 const MAP_STYLE =
   process.env.NEXT_PUBLIC_MAP_STYLE || "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
@@ -47,7 +62,12 @@ const MAP_LAYER_ZOOM_THRESHOLDS = {
   poiMin: 7.5,
   poiLabelMin: 7.5,
   poiDetailMin: 10.5,
+  /** Show global origin arcs only when zoomed out to see supply-chain context */
+  originArcMax: 8.0,
 }
+
+/** Epoch start for animation (60 days ago in unix seconds) */
+const ANIM_EPOCH_START = Math.floor(Date.now() / 1000) - TRIPS_TIME_WINDOW_SECS
 
 interface OverviewMapProps {
   onNavigateIntent?: (intent: NavigationIntent) => void
@@ -138,9 +158,15 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const mapRef = useRef<maplibregl.Map | null>(null)
   const overlayRef = useRef<MapboxOverlay | null>(null)
   const didFitBoundsRef = useRef(false)
+  const animFrameRef = useRef<number | null>(null)
+  const animStartRef = useRef<number>(Date.now())
+
   const [tooltip, setTooltip] = useState<TooltipInfo | null>(null)
   const [selectedPoiId, setSelectedPoiId] = useState<string | null>(null)
   const [zoom, setZoom] = useState(INITIAL_VIEW.zoom)
+  const [tripsData, setTripsData] = useState<TripData[]>([])
+  const [animTime, setAnimTime] = useState(ANIM_EPOCH_START)
+  const [originsData, setOriginsData] = useState<OriginEntry[]>([])
 
   const locationsById = useOpsStore((state) => state.locationsById)
   const statusByLocationId = useOpsStore((state) => state.locationStatusesById)
@@ -150,6 +176,12 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const showHeatmap = useLogisticsStore((state) => state.showHeatmap)
   const showEtaWedge = useLogisticsStore((state) => state.showEtaWedge)
   const heatFilter = useLogisticsStore((state) => state.heatFilter)
+  const layerTrips = useLogisticsStore((state) => state.layerTrips)
+  const layerOriginArcs = useLogisticsStore((state) => state.layerOriginArcs)
+  const highlightedShipmentId = useLogisticsStore((state) => state.highlightedShipmentId)
+
+  // Phase 2-B: pipeline stage → map highlight sync
+  const activePipelineStage = useCasesStore((state) => state.activePipelineStage)
 
   const locations = useMemo(() => Object.values(locationsById), [locationsById])
   const geofenceGeojson = useMemo(() => createGeofenceGeojson(locations), [locations])
@@ -182,6 +214,7 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const showHeatmapLayer = showHeatmap && zoom < MAP_LAYER_ZOOM_THRESHOLDS.heatmapMax
   const showStatusLayer = zoom >= MAP_LAYER_ZOOM_THRESHOLDS.statusMin
   const showPoiLayer = zoom >= MAP_LAYER_ZOOM_THRESHOLDS.poiMin
+  const showOriginArcs = layerOriginArcs && zoom <= MAP_LAYER_ZOOM_THRESHOLDS.originArcMax
 
   const navigate = useCallback(
     (intent: NavigationIntent) => {
@@ -197,6 +230,20 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const handleHover = useCallback((info: PickingInfo) => {
     if (!info?.object) {
       setTooltip(null)
+      return
+    }
+
+    // Origin country arc hover
+    if (info.layer?.id === "origin-country-arcs") {
+      const obj = info.object as { country: string; count: number }
+      setTooltip({ kind: "arc", x: info.x, y: info.y, country: obj.country, count: obj.count })
+      return
+    }
+
+    // Active voyage trip hover
+    if (info.layer?.id === "active-voyages") {
+      const obj = info.object as { vendor: string | null; flowCode: number | null; etaUnix: number }
+      setTooltip({ kind: "trip", x: info.x, y: info.y, vendor: obj.vendor ?? null, flowCode: obj.flowCode ?? null, etaUnix: obj.etaUnix })
       return
     }
 
@@ -273,6 +320,44 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
     }
   }, [])
 
+  // Phase 2-A: Fetch in-transit trips on mount
+  useEffect(() => {
+    fetch('/api/shipments/trips')
+      .then((r) => r.json())
+      .then((j) => setTripsData(j.trips ?? []))
+      .catch(() => setTripsData([]))
+  }, [])
+
+  // Phase 3-A: Fetch origin country aggregates on mount
+  useEffect(() => {
+    fetch('/api/chain/summary')
+      .then((r) => r.json())
+      .then((j) => setOriginsData(j.origins ?? []))
+      .catch(() => setOriginsData([]))
+  }, [])
+
+  // Phase 2-A: Animation loop — cycles animTime at 30fps
+  useEffect(() => {
+    if (tripsData.length === 0) return  // no trips → skip animation loop
+
+    animStartRef.current = Date.now()
+
+    const tick = () => {
+      const elapsed = Date.now() - animStartRef.current
+      setAnimTime(computeAnimTime(ANIM_EPOCH_START, elapsed))
+      animFrameRef.current = requestAnimationFrame(tick)
+    }
+
+    animFrameRef.current = requestAnimationFrame(tick)
+
+    return () => {
+      if (animFrameRef.current !== null) {
+        cancelAnimationFrame(animFrameRef.current)
+        animFrameRef.current = null
+      }
+    }
+  }, [tripsData.length])
+
   // Update layers
   useEffect(() => {
     if (!overlayRef.current) return
@@ -300,7 +385,12 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
       onHover: handleHover,
     })
 
+    // Phase 2-B: pass activePipelineStage to status rings for highlight
+    const stageKey = activePipelineStage as string | null
+
     const layers = [
+      // Phase 3-A: global origin-country arcs (visible only when zoomed out ≤ 8)
+      createOriginArcLayer(originsData, showOriginArcs),
       createGeofenceLayer(locations, showGeofence),
       createHeatmapLayer(filteredEvents, {
         getWeight: geofenceWeight,
@@ -311,12 +401,15 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
       createLocationLayer(locations, statusByLocationId, handleHover, handleLocationClick, {
         visible: showStatusLayer,
       }),
-      createFlowArcLayer(showPoiLayer),
+      // Phase 2-A: animated shipment routes
+      createTripsLayer(tripsData, animTime, layerTrips, highlightedShipmentId),
+      // Status rings with optional stage highlight (Phase 2-B)
+      createStatusRingLayer(POI_LOCATIONS, showPoiLayer, stageKey),
       ...poiLayers,
     ]
       .filter((layer): layer is NonNullable<typeof layer> => layer != null)
 
-    overlayRef.current.setProps({ layers })
+    overlayRef.current.setProps({ layers, onHover: handleHover })
   }, [
     locations,
     statusByLocationId,
@@ -334,6 +427,14 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
     showHeatmapLayer,
     showPoiLayer,
     showStatusLayer,
+    tripsData,
+    animTime,
+    activePipelineStage,
+    originsData,
+    showOriginArcs,
+    layerTrips,
+    layerOriginArcs,
+    highlightedShipmentId,
   ])
 
   return (
@@ -346,6 +447,7 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
       />
 
       {showHeatmapLayer ? <HeatmapLegend /> : null}
+      <MapLegend showArcs={showOriginArcs} showTrips={tripsData.length > 0} />
 
       {/* Tooltip */}
       {tooltip && tooltip.kind === "location" && (
@@ -400,6 +502,35 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
           }}
         >
           <div className="font-semibold text-foreground">{tooltip.text}</div>
+        </div>
+      )}
+      {tooltip && tooltip.kind === "arc" && (
+        <div
+          className="absolute z-50 pointer-events-none bg-card/95 backdrop-blur-sm border border-border rounded-lg px-3 py-2 shadow-xl text-sm"
+          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+        >
+          <span className="font-semibold text-foreground">
+            {countryFlag(tooltip.country)} {tooltip.country}
+          </span>
+          <span className="text-muted-foreground ml-2">{tooltip.count.toLocaleString()}건</span>
+        </div>
+      )}
+      {tooltip && tooltip.kind === "trip" && (
+        <div
+          className="absolute z-50 pointer-events-none bg-card/95 backdrop-blur-sm border border-border rounded-lg px-3 py-2 shadow-xl text-sm space-y-0.5"
+          style={{ left: tooltip.x + 12, top: tooltip.y + 12, minWidth: 160 }}
+        >
+          {tooltip.vendor && (
+            <div className="font-semibold text-foreground">{tooltip.vendor}</div>
+          )}
+          <div className="text-muted-foreground text-xs">
+            {tooltip.flowCode !== null
+              ? `Flow ${tooltip.flowCode} · ${tooltip.flowCode >= 3 ? "MOSB route" : "Direct route"}`
+              : "In transit"}
+          </div>
+          <div className="text-muted-foreground text-xs">
+            ETA {new Date(tooltip.etaUnix * 1000).toLocaleDateString("en-AE", { month: "short", day: "numeric" })}
+          </div>
         </div>
       )}
     </div>
