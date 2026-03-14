@@ -161,6 +161,12 @@ export interface OverviewCockpitResponse {
     warehouseCases: number
     warehouseSqm: number
     mandatoryMosbMissingCount: number
+    openAnomalyCount: number
+    overdueEtaCount: number
+    dataFreshnessMinutes: number
+    agiRiskPercent: number
+    criticalPodValueAed: number   // v1: always 0, placeholder for AED value
+    criticalModeLabel: string     // v1: always 'SEA', placeholder
     lastUpdatedAt: string
   }
   routeSummary: OverviewRouteSummaryItem[]

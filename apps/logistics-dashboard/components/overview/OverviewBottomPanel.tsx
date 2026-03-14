@@ -1,3 +1,9 @@
+/**
+ * @deprecated Replaced by OpsSnapshot + OpenRadarTable in Overview 2.0.
+ * This file is preserved for reference. Do not use in new pages.
+ * @see components/overview/OpsSnapshot.tsx
+ * @see components/overview/OpenRadarTable.tsx
+ */
 'use client'
 
 import { PIPELINE_STAGE_META } from '@/lib/cases/pipelineStage'

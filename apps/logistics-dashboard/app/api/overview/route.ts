@@ -10,6 +10,8 @@ import type { OverviewAlert, OverviewCockpitResponse, OverviewLiveFeedItem, Over
 
 type ShipmentStagesResponse = {
   agi_das_no_mosb_alert: number
+  total: number
+  delivered: number
 }
 
 const SCHEMA_VERSION = '2026-03-13'
@@ -283,12 +285,13 @@ export async function GET(request: NextRequest) {
       fetchJson<Location[]>(request, '/api/locations', ontologyLocations),
       fetchJson<LocationStatus[]>(request, '/api/location-status', buildMockLocationStatuses(ontologyLocations)),
       fetchJson<Event[]>(request, '/api/events', []),
-      fetchJson<ShipmentStagesResponse>(request, '/api/shipments/stages', { agi_das_no_mosb_alert: 0 }),
+      fetchJson<ShipmentStagesResponse>(request, '/api/shipments/stages', { agi_das_no_mosb_alert: 0, total: 0, delivered: 0 }),
     ])
 
     const pipeline = buildPipeline(summary)
     const routeSummary = buildRouteSummary(summary)
     const siteReadiness = buildSiteReadiness(summary)
+    const agiReadiness = siteReadiness.find((item) => item.site === 'AGI')
     const warehousePressure = buildWarehousePressure(summary)
     const freshnessMinutes = getFreshnessMinutes(statuses, events)
     const alerts = buildAlerts(shipmentStages, siteReadiness, freshnessMinutes, warehousePressure)
@@ -296,51 +299,61 @@ export async function GET(request: NextRequest) {
     const prioritizedWorklist = sortWorklistByPriority(worklist.rows)
     const warehouseSqm = Object.values(summary.bySqmByLocation).reduce((sum, sqm) => sum + sqm, 0)
 
+    const openAnomalyCount = Math.max(0, summary.total - (summary.byStatus.site ?? 0))
+    const agiRiskPercent = agiReadiness?.readinessPercent ?? 0
+
     const payload: OverviewCockpitResponse = {
       schemaVersion: SCHEMA_VERSION,
       generatedAt: getDubaiTimestamp(),
       hero: {
         metrics: [
           {
-            id: 'total-cases',
-            label: '총 케이스',
-            value: summary.total.toLocaleString(),
-            sublabel: '전체 진행 기준',
+            id: 'total-shipments',
+            label: 'Total Shipments',
+            value: shipmentStages.total.toLocaleString(),
             navigationIntent: {
-              destinationId: 'hero-total',
-              page: 'pipeline',
-              params: {},
+              destinationId: 'hero-total-shipments',
+              page: 'cargo',
+              params: { tab: 'shipments' },
             },
           },
           {
-            id: 'site-arrived',
-            label: '현장 도착률',
-            value: `${toPercent(summary.byStatus.site, summary.total).toFixed(1)}%`,
-            sublabel: `${summary.byStatus.site.toLocaleString()}건 도착`,
+            id: 'final-delivered',
+            label: 'Final Delivered',
+            value: shipmentStages.delivered.toLocaleString(),
             navigationIntent: {
-              destinationId: 'hero-site-arrived',
+              destinationId: 'hero-final-delivered',
               page: 'pipeline',
               params: { stage: 'site' },
             },
           },
           {
-            id: 'warehouse-pressure',
-            label: '창고 압력',
-            value: summary.byStatus.warehouse.toLocaleString(),
-            sublabel: `${warehouseSqm.toLocaleString()} ㎡`,
-            tone: warehousePressure.length > 0 ? 'warning' : 'neutral',
+            id: 'open-anomaly',
+            label: 'Open / Anomaly',
+            value: openAnomalyCount.toLocaleString(),
+            tone: openAnomalyCount > 0 ? 'warning' : 'neutral',
             navigationIntent: {
-              destinationId: 'hero-warehouse-pressure',
+              destinationId: 'hero-open-anomaly',
               page: 'pipeline',
-              params: { stage: 'warehouse' },
+              params: {},
             },
           },
           {
-            id: 'mandatory-mosb-missing',
-            label: '필수 MOSB 경유 누락',
+            id: 'overdue-eta',
+            label: 'Overdue ETA',
+            value: worklist.kpis.overdueCount.toLocaleString(),
+            tone: worklist.kpis.overdueCount > 0 ? 'critical' : 'neutral',
+            navigationIntent: {
+              destinationId: 'hero-overdue-eta',
+              page: 'cargo',
+              params: { tab: 'shipments' },
+            },
+          },
+          {
+            id: 'critical-pod',
+            label: 'Critical POD',
             value: shipmentStages.agi_das_no_mosb_alert.toLocaleString(),
-            sublabel: 'DAS/AGI 대상',
-            tone: shipmentStages.agi_das_no_mosb_alert > 0 ? 'critical' : 'neutral',
+            tone: shipmentStages.agi_das_no_mosb_alert > 0 ? 'warning' : 'neutral',
             navigationIntent: {
               destinationId: 'hero-mandatory-mosb-missing',
               page: 'chain',
@@ -348,8 +361,30 @@ export async function GET(request: NextRequest) {
             },
           },
           {
-            id: 'freshness',
-            label: '데이터 최신성',
+            id: 'critical-mode',
+            label: 'Critical Mode',
+            value: worklist.kpis.redCount.toLocaleString(),
+            tone: worklist.kpis.redCount > 0 ? 'warning' : 'neutral',
+            navigationIntent: {
+              destinationId: 'hero-critical-mode',
+              page: 'pipeline',
+              params: {},
+            },
+          },
+          {
+            id: 'agi-risk',
+            label: 'AGI Risk',
+            value: `${agiRiskPercent.toFixed(1)}%`,
+            tone: agiRiskPercent < 50 ? 'critical' : agiRiskPercent < 80 ? 'warning' : 'neutral',
+            navigationIntent: {
+              destinationId: 'hero-agi-risk',
+              page: 'sites',
+              params: { site: 'AGI', tab: 'summary' },
+            },
+          },
+          {
+            id: 'data-freshness',
+            label: 'Data Freshness',
             value: freshnessMinutes > 0 ? `${freshnessMinutes}분` : '정상',
             sublabel: worklist.lastRefreshAt,
             tone: freshnessMinutes > 60 ? 'warning' : 'neutral',
@@ -366,6 +401,12 @@ export async function GET(request: NextRequest) {
         warehouseCases: summary.byStatus.warehouse,
         warehouseSqm,
         mandatoryMosbMissingCount: shipmentStages.agi_das_no_mosb_alert,
+        openAnomalyCount,
+        overdueEtaCount: worklist.kpis.overdueCount,
+        dataFreshnessMinutes: freshnessMinutes,
+        agiRiskPercent,
+        criticalPodValueAed: 0,
+        criticalModeLabel: 'SEA',
         lastUpdatedAt: worklist.lastRefreshAt,
       },
       routeSummary,
@@ -399,6 +440,12 @@ export async function GET(request: NextRequest) {
         warehouseCases: 0,
         warehouseSqm: 0,
         mandatoryMosbMissingCount: 0,
+        openAnomalyCount: 0,
+        overdueEtaCount: 0,
+        dataFreshnessMinutes: 0,
+        agiRiskPercent: 0,
+        criticalPodValueAed: 0,
+        criticalModeLabel: 'SEA',
         lastUpdatedAt: getDubaiTimestamp(),
       },
       routeSummary: [],

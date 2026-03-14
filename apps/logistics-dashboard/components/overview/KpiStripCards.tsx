@@ -10,38 +10,38 @@ interface KpiStripCardsProps {
 }
 
 function toneClass(tone?: OverviewHeroMetric['tone']): string {
-  if (tone === 'critical') return 'border-red-500/30 bg-red-500/10'
-  if (tone === 'warning') return 'border-amber-500/30 bg-amber-500/10'
-  return 'border-gray-800 bg-gray-900/80'
+  if (tone === 'critical') return 'border-t-2 border-t-[var(--ops-risk)] border border-[var(--ops-border)]'
+  if (tone === 'warning') return 'border-t-2 border-t-[var(--ops-warn)] border border-[var(--ops-border)]'
+  return 'border border-[var(--ops-border)]'
 }
 
 export function KpiStripCards({ metrics, loading = false, onNavigate }: KpiStripCardsProps) {
   if (loading && metrics.length === 0) {
     return (
-      <div className="grid grid-cols-2 gap-3 p-4 xl:grid-cols-5" aria-live="polite">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="h-24 animate-pulse rounded-2xl bg-gray-900/80" />
+      <div className="grid grid-cols-2 gap-2 px-4 py-3 lg:grid-cols-4 xl:grid-cols-8" aria-live="polite">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <div key={index} className="h-20 animate-pulse rounded-xl bg-[var(--ops-canvas)]" />
         ))}
       </div>
     )
   }
 
   return (
-    <section className="grid grid-cols-2 gap-3 p-4 xl:grid-cols-5" aria-label="Overview KPI rail" aria-live="polite">
+    <section className="grid grid-cols-2 gap-2 px-4 py-3 lg:grid-cols-4 xl:grid-cols-8 border-b border-[var(--ops-border)]" aria-label="Overview KPI rail" aria-live="polite">
       {metrics.map((metric) => (
         <button
           key={metric.id}
           type="button"
           onClick={() => metric.navigationIntent && onNavigate(metric.navigationIntent)}
           className={cn(
-            'rounded-2xl border px-4 py-3 text-left transition-colors hover:border-blue-400/40 hover:bg-gray-900',
+            'rounded-xl bg-[var(--ops-surface)] px-4 py-3 text-left transition-shadow duration-[140ms] hover:shadow-md',
             toneClass(metric.tone),
           )}
         >
-          <div className="text-[11px] uppercase tracking-[0.2em] text-gray-500">{metric.label}</div>
-          <div className="mt-2 text-3xl font-semibold text-white">{metric.value}</div>
+          <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--ops-text-muted)]">{metric.label}</div>
+          <div className="mt-1 text-[35px] font-bold leading-none text-[var(--ops-text-strong)]">{metric.value}</div>
           {metric.sublabel ? (
-            <div className="mt-1 text-xs text-gray-400">{metric.sublabel}</div>
+            <div className="mt-1 text-[11px] text-[var(--ops-text-muted)]">{metric.sublabel}</div>
           ) : null}
         </button>
       ))}

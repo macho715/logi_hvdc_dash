@@ -1,3 +1,8 @@
+/**
+ * @deprecated Replaced by MissionControl in Overview 2.0.
+ * This file is preserved for reference. Do not use in new pages.
+ * @see components/overview/MissionControl.tsx
+ */
 'use client'
 
 import { useState, useEffect } from 'react'

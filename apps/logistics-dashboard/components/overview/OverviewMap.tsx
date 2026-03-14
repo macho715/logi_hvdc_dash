@@ -43,7 +43,7 @@ type TooltipInfo =
   | { kind: "trip"; x: number; y: number; vendor: string | null; flowCode: number | null; etaUnix: number }
 
 const MAP_STYLE =
-  process.env.NEXT_PUBLIC_MAP_STYLE || "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+  process.env.NEXT_PUBLIC_MAP_STYLE || "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
 
 // Abu Dhabi region center
 const INITIAL_VIEW = {

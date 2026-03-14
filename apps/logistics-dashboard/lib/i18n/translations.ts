@@ -290,6 +290,76 @@ export interface Translations {
     typeSea: string
     typeUnknown: string
   }
+
+  // ── ProgramFilterBar ─────────────────────────────────────
+  programBar: {
+    title: string           // 'HVDC Overview 2.0' / 'HVDC 통합 현황'
+    modeProgram: string     // 'Program' / '프로그램'
+    modeOps: string         // 'Ops' / '운영'
+    filterSite: string      // 'Site' / '현장'
+    filterAll: string       // 'All' / '전체'
+    totalShipments: string  // 'Total Shipments' / '전체 항차'
+    finalDelivered: string  // 'Final Delivered' / '최종 납품'
+    openAnomaly: string     // 'Open / Anomaly' / '미결 / 이상'
+    overdueEta: string      // 'Overdue ETA' / 'ETA 초과'
+    criticalPod: string     // 'Critical POD' / '핵심 POD'
+    criticalMode: string    // 'Critical Mode' / '핵심 운송'
+    agiRisk: string         // 'AGI Risk' / 'AGI 위험'
+    dataFreshness: string   // 'Data Freshness' / '데이터 갱신'
+  }
+
+  // ── MissionControl ────────────────────────────────────────
+  missionControl: {
+    title: string           // 'Mission Control' / '미션 컨트롤'
+    critical: string        // 'Critical' / '긴급'
+    next72h: string         // 'Next 72h' / '72시간 내'
+    agiDasBlockers: string  // 'AGI / DAS Blockers' / 'AGI/DAS 차단'
+    actionQueue: string     // 'Action Queue' / '처리 대기'
+    noItems: string         // 'No items' / '항목 없음'
+  }
+
+  // ── SiteDeliveryMatrix ───────────────────────────────────
+  siteMatrix: {
+    title: string           // 'Site Delivery Matrix' / '현장 납품 현황'
+    assigned: string        // 'Assigned' / '배정'
+    delivered: string       // 'Delivered' / '납품'
+    pending: string         // 'Pending' / '대기'
+    mosbPending: string     // 'MOSB Pending' / 'MOSB 대기'
+    overdue: string         // 'Overdue' / '초과'
+    risk: string            // 'Risk' / '위험도'
+  }
+
+  // ── OpenRadarTable ───────────────────────────────────────
+  openRadar: {
+    title: string           // 'Open Radar' / '미결 레이더'
+    filterAll: string       // 'All' / '전체'
+    filterCritical: string  // 'Critical' / '긴급'
+    filterAmber: string     // 'Amber' / '주의'
+    filterOverdue: string   // 'Overdue' / '초과'
+    noItems: string         // 'No open items' / '미결 항목 없음'
+  }
+
+  // ── OpsSnapshot ──────────────────────────────────────────
+  opsSnapshot: {
+    title: string           // 'Operational Layer' / '운영 레이어'
+    whPressure: string      // 'WH Pressure' / '창고 압박'
+    worklist: string        // 'Worklist' / '작업 목록'
+    exceptions: string      // 'Exceptions' / '예외 항목'
+    recentFeed: string      // 'Recent Activity' / '최근 활동'
+  }
+
+  // ── ChainRibbon ──────────────────────────────────────────
+  chainRibbon: {
+    origin: string          // 'Origin' / '원산지'
+    portAir: string         // 'Port / Air' / '항구 / 공항'
+    customs: string         // 'Customs' / '통관'
+    warehouse: string       // 'Warehouse' / '창고'
+    mosb: string            // 'MOSB' / 'MOSB'
+    site: string            // 'Site' / '현장'
+    count: string           // 'count' / '건'
+    share: string           // 'share' / '비중'
+    risk: string            // 'risk' / '위험'
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -542,6 +612,64 @@ export const en: Translations = {
     typeSea: 'Sea · MOSB',
     typeUnknown: 'Unspecified',
   },
+  programBar: {
+    title: 'HVDC Overview 2.0',
+    modeProgram: 'Program',
+    modeOps: 'Ops',
+    filterSite: 'Site',
+    filterAll: 'All',
+    totalShipments: 'Total Shipments',
+    finalDelivered: 'Final Delivered',
+    openAnomaly: 'Open / Anomaly',
+    overdueEta: 'Overdue ETA',
+    criticalPod: 'Critical POD',
+    criticalMode: 'Critical Mode',
+    agiRisk: 'AGI Risk',
+    dataFreshness: 'Data Freshness',
+  },
+  missionControl: {
+    title: 'Mission Control',
+    critical: 'Critical',
+    next72h: 'Next 72h',
+    agiDasBlockers: 'AGI / DAS Blockers',
+    actionQueue: 'Action Queue',
+    noItems: 'No items',
+  },
+  siteMatrix: {
+    title: 'Site Delivery Matrix',
+    assigned: 'Assigned',
+    delivered: 'Delivered',
+    pending: 'Pending',
+    mosbPending: 'MOSB Pending',
+    overdue: 'Overdue',
+    risk: 'Risk',
+  },
+  openRadar: {
+    title: 'Open Radar',
+    filterAll: 'All',
+    filterCritical: 'Critical',
+    filterAmber: 'Amber',
+    filterOverdue: 'Overdue',
+    noItems: 'No open items',
+  },
+  opsSnapshot: {
+    title: 'Operational Layer',
+    whPressure: 'WH Pressure',
+    worklist: 'Worklist',
+    exceptions: 'Exceptions',
+    recentFeed: 'Recent Activity',
+  },
+  chainRibbon: {
+    origin: 'Origin',
+    portAir: 'Port / Air',
+    customs: 'Customs',
+    warehouse: 'Warehouse',
+    mosb: 'MOSB',
+    site: 'Site',
+    count: 'count',
+    share: 'share',
+    risk: 'risk',
+  },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -793,6 +921,64 @@ export const ko: Translations = {
     typeLand: '육상',
     typeSea: '해상 · MOSB',
     typeUnknown: '미지정',
+  },
+  programBar: {
+    title: 'HVDC 통합 현황',
+    modeProgram: '프로그램',
+    modeOps: '운영',
+    filterSite: '현장',
+    filterAll: '전체',
+    totalShipments: '전체 항차',
+    finalDelivered: '최종 납품',
+    openAnomaly: '미결 / 이상',
+    overdueEta: 'ETA 초과',
+    criticalPod: '핵심 POD',
+    criticalMode: '핵심 운송',
+    agiRisk: 'AGI 위험',
+    dataFreshness: '데이터 갱신',
+  },
+  missionControl: {
+    title: '미션 컨트롤',
+    critical: '긴급',
+    next72h: '72시간 내',
+    agiDasBlockers: 'AGI/DAS 차단',
+    actionQueue: '처리 대기',
+    noItems: '항목 없음',
+  },
+  siteMatrix: {
+    title: '현장 납품 현황',
+    assigned: '배정',
+    delivered: '납품',
+    pending: '대기',
+    mosbPending: 'MOSB 대기',
+    overdue: '초과',
+    risk: '위험도',
+  },
+  openRadar: {
+    title: '미결 레이더',
+    filterAll: '전체',
+    filterCritical: '긴급',
+    filterAmber: '주의',
+    filterOverdue: '초과',
+    noItems: '미결 항목 없음',
+  },
+  opsSnapshot: {
+    title: '운영 레이어',
+    whPressure: '창고 압박',
+    worklist: '작업 목록',
+    exceptions: '예외 항목',
+    recentFeed: '최근 활동',
+  },
+  chainRibbon: {
+    origin: '원산지',
+    portAir: '항구 / 공항',
+    customs: '통관',
+    warehouse: '창고',
+    mosb: 'MOSB',
+    site: '현장',
+    count: '건',
+    share: '비중',
+    risk: '위험',
   },
 }
 
