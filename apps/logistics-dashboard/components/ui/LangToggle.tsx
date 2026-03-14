@@ -12,7 +12,7 @@ export function LangToggle({ className }: { className?: string }) {
   const setLocale = useLogisticsStore((s) => s.setLocale)
 
   return (
-    <div className={cn('flex items-center rounded-full border border-slate-200 bg-white p-1 shadow-sm', className)}>
+    <div className={cn('flex items-center rounded-full border border-white/10 bg-white/5 p-1', className)}>
       <button
         type="button"
         onClick={() => setLocale('en')}
@@ -20,7 +20,7 @@ export function LangToggle({ className }: { className?: string }) {
           'rounded-full px-3 py-1 text-[12px] font-semibold transition-colors',
           locale === 'en'
             ? 'bg-blue-600 text-white'
-            : 'text-slate-500',
+            : 'text-slate-300',
         )}
         aria-pressed={locale === 'en'}
       >
@@ -33,7 +33,7 @@ export function LangToggle({ className }: { className?: string }) {
           'rounded-full px-3 py-1 text-[12px] font-semibold transition-colors',
           locale === 'ko'
             ? 'bg-blue-600 text-white'
-            : 'text-slate-500',
+            : 'text-slate-300',
         )}
         aria-pressed={locale === 'ko'}
       >

@@ -14,7 +14,7 @@ export function OverviewToolbar({ onShipmentSelect, onNewVoyageClick }: Overview
   const t = useT()
 
   return (
-    <div className="flex items-center justify-between border-b border-gray-800 bg-gray-950/80 px-4 py-2">
+    <div className="flex items-center justify-between border-b border-white/5 bg-[#09162b]/90 px-4 py-2 backdrop-blur-md">
       {/* Left: search */}
       <ShipmentSearchBar onSelect={onShipmentSelect} />
 

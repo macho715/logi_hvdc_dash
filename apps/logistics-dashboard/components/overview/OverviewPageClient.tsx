@@ -38,7 +38,7 @@ export function OverviewPageClient() {
   }
 
   return (
-    <div data-theme="light-ops" className="flex h-full flex-col overflow-auto bg-[var(--ops-canvas)] text-[var(--ops-text-strong)]">
+    <div className="flex h-full flex-col overflow-auto bg-[#071225] text-slate-100">
       {/* Row 1: Existing toolbar */}
       <OverviewToolbar
         onShipmentSelect={(sctShipNo) => setSelectedShipmentId(sctShipNo)}

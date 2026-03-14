@@ -21,11 +21,11 @@ export function DashboardHeader() {
   const title = PAGE_TITLES[pathname] ?? 'Dashboard'
 
   return (
-    <header className="flex items-center justify-between px-6 py-3 bg-gray-900 border-b border-gray-800">
-      <h1 className="text-lg font-semibold text-white">{title}</h1>
+    <header className="sticky top-0 z-20 flex items-center justify-between border-b border-white/5 bg-[#09162b]/90 px-6 py-4 backdrop-blur-md">
+      <h1 className="text-[20px] font-bold tracking-[-0.02em] text-white">{title}</h1>
       <div className="flex items-center">
         {lastRefreshAt && (
-          <span className="text-xs text-gray-500">
+          <span className="text-[12px] font-medium text-slate-400">
             {t.header.updated}: {new Date(lastRefreshAt).toLocaleTimeString('en-US', { hour12: false })}
           </span>
         )}

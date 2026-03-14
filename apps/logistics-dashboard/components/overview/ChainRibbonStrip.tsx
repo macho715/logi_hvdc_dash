@@ -71,20 +71,20 @@ export function ChainRibbonStrip({ site, onStageClick }: ChainRibbonStripProps) 
     stageKey: keyof ChainSummaryStages | null
     color: string
   }[] = [
-    { labelKey: 'origin',    stageKey: 'pre-arrival', color: 'bg-gray-50 border-gray-200' },
-    { labelKey: 'portAir',   stageKey: 'port',        color: 'bg-sky-50 border-sky-200' },
-    { labelKey: 'customs',   stageKey: 'port',        color: 'bg-blue-50 border-blue-200' },
-    { labelKey: 'warehouse', stageKey: 'warehouse',   color: 'bg-amber-50 border-amber-200' },
-    { labelKey: 'mosb',      stageKey: 'mosb',        color: 'bg-orange-50 border-orange-200' },
-    { labelKey: 'site',      stageKey: 'site',        color: 'bg-green-50 border-green-200' },
+    { labelKey: 'origin',    stageKey: 'pre-arrival', color: 'bg-white/5 border-white/8' },
+    { labelKey: 'portAir',   stageKey: 'port',        color: 'bg-sky-500/10 border-sky-400/20' },
+    { labelKey: 'customs',   stageKey: 'port',        color: 'bg-blue-500/10 border-blue-400/20' },
+    { labelKey: 'warehouse', stageKey: 'warehouse',   color: 'bg-amber-500/10 border-amber-400/20' },
+    { labelKey: 'mosb',      stageKey: 'mosb',        color: 'bg-orange-500/10 border-orange-400/20' },
+    { labelKey: 'site',      stageKey: 'site',        color: 'bg-emerald-500/10 border-emerald-400/20' },
   ]
 
   if (loading) {
     return (
-      <div className="relative border-b border-[var(--ops-border)] bg-[var(--ops-surface)] px-4 py-3">
+      <div className="relative border-b border-white/8 bg-[#0B1730] px-4 py-3">
         <div className="flex items-stretch justify-between gap-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex-1 animate-pulse rounded-lg bg-gray-100 h-16" />
+            <div key={i} className="flex-1 animate-pulse rounded-lg bg-white/5 h-16" />
           ))}
         </div>
       </div>
@@ -101,9 +101,9 @@ export function ChainRibbonStrip({ site, onStageClick }: ChainRibbonStripProps) 
     : 0
 
   return (
-    <div className="relative border-b border-[var(--ops-border)] bg-[var(--ops-surface)] px-4 py-3">
+    <div className="relative border-b border-white/8 bg-[#0B1730] px-4 py-3">
       {/* Ribbon connecting line behind nodes */}
-      <div className="absolute top-1/2 left-4 right-4 h-px bg-[var(--ops-border)] -z-0" />
+      <div className="absolute top-1/2 left-4 right-4 h-px bg-white/8 -z-0" />
 
       {/* Nodes wrapper */}
       <div className={cn('relative z-10 flex items-stretch justify-between gap-2 ribbon-trace')}>
@@ -138,15 +138,15 @@ export function ChainRibbonStrip({ site, onStageClick }: ChainRibbonStripProps) 
               )}
             >
               {/* Stage label */}
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--ops-text-muted)]">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
                 {t.chainRibbon[node.labelKey]}
               </div>
               {/* Count */}
-              <div className="text-lg font-bold text-[var(--ops-text-strong)]">
+              <div className="text-lg font-bold text-white">
                 {displayCount}
               </div>
               {/* Share */}
-              <div className="text-[10px] text-[var(--ops-text-muted)]">{share}</div>
+              <div className="text-[10px] text-slate-400">{share}</div>
             </div>
           )
         })}

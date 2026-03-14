@@ -27,7 +27,7 @@ export function FlowPipeline({ activeStage: controlledStage, onStageChange }: Fl
   const selectedStage = controlledStage ?? activePipelineStage
 
   return (
-    <div className="flex items-stretch gap-0 bg-gray-900 rounded-lg overflow-hidden border border-gray-700">
+    <div className="flex items-stretch gap-0 rounded-[24px] overflow-hidden border border-white/8 bg-[#0B1730]">
       {STAGES.map((stage, i) => {
         const meta = PIPELINE_STAGE_META[stage]
         const count = summary?.byStatus[meta.summaryKey] ?? 0
@@ -37,7 +37,7 @@ export function FlowPipeline({ activeStage: controlledStage, onStageChange }: Fl
         return (
           <div key={stage} className="flex items-center">
             {i > 0 && (
-              <div className="text-gray-600 text-xl px-1 select-none">→</div>
+              <div className="text-slate-600 text-xl px-1 select-none">→</div>
             )}
             <button
               onClick={() =>
@@ -51,13 +51,13 @@ export function FlowPipeline({ activeStage: controlledStage, onStageChange }: Fl
                 'flex min-w-[140px] flex-col items-center px-6 py-4 transition-colors text-center',
                 active
                   ? `${meta.activeClass} text-white`
-                  : 'text-gray-300 hover:bg-gray-800'
+                  : 'text-slate-300 hover:bg-white/5'
               )}
             >
               <span className="text-2xl font-bold">{count.toLocaleString()}</span>
               <span className="mt-1 text-xs">{meta.label}</span>
-              <span className="mt-1 text-[11px] text-gray-400">{meta.sublabel}</span>
-              <span className="text-xs text-gray-400 mt-0.5">{pct}%</span>
+              <span className="mt-1 text-[11px] text-slate-400">{meta.sublabel}</span>
+              <span className="text-xs text-slate-400 mt-0.5">{pct}%</span>
             </button>
           </div>
         )

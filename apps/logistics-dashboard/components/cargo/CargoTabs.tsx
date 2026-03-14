@@ -62,12 +62,12 @@ export function CargoTabs() {
   }, [])
 
   const tabs = [
-    { key: 'wh' as TabKey,        label: 'WH STATUS',  countNode: <span className="ml-2 text-gray-600 font-normal">8,680</span> },
+    { key: 'wh' as TabKey,        label: 'WH STATUS',  countNode: <span className="ml-2 text-slate-500 font-normal">8,680</span> },
     {
       key: 'shipments' as TabKey,
       label: 'SHIPMENTS',
       countNode: (
-        <span className="ml-2 text-gray-600 font-normal">
+        <span className="ml-2 text-slate-500 font-normal">
           {shipmentTotal !== null ? shipmentTotal.toLocaleString() : '…'}
         </span>
       ),
@@ -78,7 +78,7 @@ export function CargoTabs() {
   return (
     <div className="flex flex-col h-full">
       {/* Tab bar */}
-      <div className="flex border-b border-gray-800 bg-gray-900">
+      <div className="flex border-b border-white/8 bg-[#0B1730]">
         {tabs.map(t => (
           <button
             key={t.key}
@@ -86,8 +86,8 @@ export function CargoTabs() {
             className={cn(
               'px-5 py-2.5 text-xs font-medium transition-colors border-b-2',
               activeTab === t.key
-                ? 'border-blue-500 text-white'
-                : 'border-transparent text-gray-500 hover:text-gray-300'
+                ? 'border-[#3B82F6] text-white'
+                : 'border-transparent text-slate-500 hover:text-slate-300'
             )}
           >
             {t.label}

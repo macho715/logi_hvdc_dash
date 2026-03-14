@@ -14,11 +14,11 @@ type SelectProps = {
 function FilterSelect({ label, value, onChange, options }: SelectProps) {
   return (
     <div className="flex items-center gap-2">
-      <label className="text-xs text-gray-400 whitespace-nowrap">{label}</label>
+      <label className="text-xs text-slate-400 whitespace-nowrap">{label}</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="bg-gray-800 text-gray-200 text-xs rounded px-2 py-1 border border-gray-700 focus:outline-none focus:border-blue-500"
+        className="bg-[#0A1428] text-slate-200 text-xs rounded px-2 py-1 border border-white/8 focus:outline-none focus:border-[#2563EB]"
       >
         {options.map(o => (
           <option key={o.value} value={o.value}>{o.label}</option>
@@ -37,7 +37,7 @@ interface Props {
 export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
   const t = useT()
   return (
-    <div className="flex items-center gap-4 flex-wrap bg-gray-900 px-4 py-2 border-b border-gray-800">
+    <div className="flex items-center gap-4 flex-wrap bg-[#0D1A35] px-4 py-2 border-b border-white/8">
       <FilterSelect
         label={t.pipeline.siteFilter}
         value={String(filters.site)}
@@ -74,7 +74,7 @@ export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
       />
       <button
         onClick={resetFilters}
-        className="text-xs text-gray-500 hover:text-gray-300 ml-auto"
+        className="text-xs text-slate-500 hover:text-slate-300 ml-auto"
       >
         {t.pipeline.reset}
       </button>

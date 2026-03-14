@@ -83,16 +83,16 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
   const vendorData = Object.entries(vendorMap).map(([name, value]) => ({ name, value }))
 
   return (
-    <div className="mx-4 mb-4 flex flex-1 flex-col overflow-hidden rounded-lg bg-gray-900">
-      <div className="flex border-b border-gray-800">
+    <div className="mx-4 mb-4 flex flex-1 flex-col overflow-hidden rounded-[24px] bg-[#0B1730]">
+      <div className="flex border-b border-white/8">
         {tabs.map((entry) => (
           <button
             key={entry.key}
             onClick={() => onTabChange(entry.key)}
             className={`px-4 py-2 text-sm transition-colors ${
               tab === entry.key
-                ? 'border-b-2 border-blue-500 text-white'
-                : 'text-gray-500 hover:text-gray-300'
+                ? 'border-b-2 border-[#3B82F6] text-white'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             {entry.label}
@@ -101,7 +101,7 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
       </div>
 
       <div className="flex-1 overflow-auto p-4">
-        {loading ? <div className="text-sm text-gray-500">Loading...</div> : null}
+        {loading ? <div className="text-sm text-slate-400">Loading...</div> : null}
 
         {!loading && tab === 'summary' ? (
           <div className="space-y-4">
@@ -110,20 +110,20 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
                 <div className="text-3xl font-bold text-white">{rate.toFixed(1)}%</div>
                 <SiteTypeTag site={site} />
               </div>
-              <div className="text-sm text-gray-400">
+              <div className="text-sm text-slate-400">
                 {locale === 'ko'
                   ? `${arrived.toLocaleString()} / ${total.toLocaleString()}건 도착`
                   : `${arrived.toLocaleString()} / ${total.toLocaleString()} ${t.sites.arrivedOf}`}
               </div>
-              <div className="mt-4 h-3 w-full rounded-full bg-gray-700">
+              <div className="mt-4 h-3 w-full rounded-full bg-white/10">
                 <div className="h-3 rounded-full bg-blue-500" style={{ width: `${Math.min(rate, 100)}%` }} />
               </div>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
               {Object.entries(storageBreakdown).map(([label, value]) => (
-                <div key={label} className="rounded-lg border border-gray-800 bg-gray-950/60 p-3">
-                  <div className="text-xs text-gray-500">{label}</div>
+                <div key={label} className="rounded-lg border border-white/8 bg-gray-950/60 p-3">
+                  <div className="text-xs text-slate-400">{label}</div>
                   <div className="mt-1 text-xl font-semibold text-white">{value.toLocaleString()}</div>
                 </div>
               ))}
@@ -165,15 +165,15 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-sm text-gray-500">{t.sites.siteArrivalNoData}</div>
+            <div className="text-sm text-slate-400">{t.sites.siteArrivalNoData}</div>
           )
         ) : null}
 
         {!loading && tab === 'pending' ? (
           <div className="overflow-auto">
-            <table className="w-full text-xs text-gray-300">
+            <table className="w-full text-xs text-slate-300">
               <thead>
-                <tr className="border-b border-gray-700 text-gray-500">
+                <tr className="border-b border-white/8 text-slate-400">
                   <th className="py-1 text-left">Case No</th>
                   <th className="py-1 text-left">{t.sites.currentLocation}</th>
                   <th className="py-1 text-left">{t.sites.route}</th>
@@ -186,7 +186,7 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
                   return (
                     <tr
                       key={row.id}
-                      className="cursor-pointer border-b border-gray-800 transition-colors hover:bg-gray-800/70"
+                      className="cursor-pointer border-b border-white/8 transition-colors hover:bg-[#0D1A35]/70"
                       onClick={() =>
                         router.push(
                           buildDashboardLink({

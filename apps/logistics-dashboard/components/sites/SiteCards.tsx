@@ -34,9 +34,11 @@ export function SiteCards({ selectedSite, onSelect }: Props) {
             key={site}
             onClick={() => onSelect(site)}
             className={cn(
-              'bg-gray-800 rounded-lg p-4 text-left transition-all border-2',
-              isSelected ? 'border-blue-500' : 'border-transparent hover:border-gray-600',
-              isAlert ? 'ring-1 ring-red-500' : ''
+              'rounded-[20px] border-2 p-5 text-left transition-all duration-150',
+              isSelected
+                ? 'border-[#2563EB] bg-[#0D1A35] shadow-[0_0_0_1px_rgba(37,99,235,.25),0_12px_30px_rgba(0,0,0,.24)]'
+                : 'border-white/8 bg-[#0B1730] hover:border-white/15',
+              isAlert ? 'ring-1 ring-red-500/60' : ''
             )}
           >
             <div className="flex items-center justify-between mb-2">
@@ -48,7 +50,7 @@ export function SiteCards({ selectedSite, onSelect }: Props) {
               {isAlert && <span className="text-red-400 text-sm ml-2">⚠️</span>}
               {rate >= 99 && <span className="text-green-400 text-sm ml-2">✅</span>}
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-1.5 mb-2">
+            <div className="w-full bg-white/10 rounded-full h-2.5 mb-2">
               <div
                 className="h-1.5 rounded-full"
                 style={{
@@ -57,7 +59,7 @@ export function SiteCards({ selectedSite, onSelect }: Props) {
                 }}
               />
             </div>
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-slate-400">
               {arrived.toLocaleString()} / {total.toLocaleString()}{locale === 'ko' ? '건' : ''}
             </div>
           </button>

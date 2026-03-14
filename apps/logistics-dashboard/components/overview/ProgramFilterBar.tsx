@@ -26,22 +26,22 @@ export function ProgramFilterBar({
   const t = useT()
 
   return (
-    <div className="flex h-12 items-center justify-between gap-4 border-b border-[var(--ops-border)] bg-[var(--ops-surface)] px-4">
+    <div className="flex h-12 items-center justify-between gap-4 border-b border-white/8 bg-[#0B1730] px-4">
       {/* LEFT: Title */}
-      <span className="text-base font-bold text-[var(--ops-text-strong)]">
+      <span className="text-base font-bold text-white">
         {t.programBar.title}
       </span>
 
       {/* CENTER: Segmented control */}
-      <div className="flex rounded-full bg-[var(--ops-canvas)] p-0.5 gap-0.5">
+      <div className="flex rounded-full bg-white/5 p-0.5 gap-0.5">
         <button
           type="button"
           onClick={() => onModeChange('program')}
           className={cn(
             'px-3 py-1 rounded-full text-sm font-medium transition-colors duration-100',
             mode === 'program'
-              ? 'bg-[var(--ops-info)] text-white'
-              : 'text-[var(--ops-text-muted)] hover:text-[var(--ops-text-strong)]',
+              ? 'bg-[#2563EB] text-white'
+              : 'text-slate-400 hover:text-white',
           )}
         >
           {t.programBar.modeProgram}
@@ -52,8 +52,8 @@ export function ProgramFilterBar({
           className={cn(
             'px-3 py-1 rounded-full text-sm font-medium transition-colors duration-100',
             mode === 'ops'
-              ? 'bg-[var(--ops-info)] text-white'
-              : 'text-[var(--ops-text-muted)] hover:text-[var(--ops-text-strong)]',
+              ? 'bg-[#2563EB] text-white'
+              : 'text-slate-400 hover:text-white',
           )}
         >
           {t.programBar.modeOps}
@@ -69,8 +69,8 @@ export function ProgramFilterBar({
           className={cn(
             'px-2 py-0.5 rounded-full text-[11px] font-semibold border transition-colors duration-100',
             selectedSite === null
-              ? 'bg-[var(--ops-info)] text-white border-[var(--ops-info)]'
-              : 'text-[var(--ops-text-muted)] border-[var(--ops-border)] hover:border-[var(--ops-info)]',
+              ? 'bg-[#2563EB] text-white border-[#2563EB]'
+              : 'text-slate-400 border-white/8 hover:border-[#2563EB]',
           )}
         >
           {t.programBar.filterAll}
@@ -85,8 +85,8 @@ export function ProgramFilterBar({
             className={cn(
               'px-2 py-0.5 rounded-full text-[11px] font-semibold border transition-colors duration-100',
               selectedSite === site
-                ? 'bg-[var(--ops-info)] text-white border-[var(--ops-info)]'
-                : 'text-[var(--ops-text-muted)] border-[var(--ops-border)] hover:border-[var(--ops-info)]',
+                ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                : 'text-slate-400 border-white/8 hover:border-[#2563EB]',
             )}
           >
             {site}
@@ -94,7 +94,7 @@ export function ProgramFilterBar({
         ))}
 
         {/* Updated at timestamp */}
-        <span className="text-[11px] text-[var(--ops-text-muted)] ml-2">
+        <span className="text-[11px] text-slate-400 ml-2">
           Updated {updatedAt}
         </span>
       </div>

@@ -59,11 +59,11 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
 
   if (loading && !data) {
     return (
-      <div className="border-t border-[var(--ops-border)] bg-[var(--ops-surface)] px-4 py-4">
-        <div className="h-5 w-32 animate-pulse rounded bg-gray-200" />
+      <div className="border-t border-white/8 bg-[#071225] px-4 py-4">
+        <div className="h-5 w-32 animate-pulse rounded bg-white/10" />
         <div className="mt-3 space-y-2">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-14 w-full animate-pulse rounded-lg bg-gray-100" />
+            <div key={i} className="h-14 w-full animate-pulse rounded-lg bg-white/5" />
           ))}
         </div>
       </div>
@@ -71,8 +71,8 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
   }
 
   return (
-    <div className="border-t border-[var(--ops-border)] bg-[var(--ops-surface)] px-4 py-4">
-      <h2 className="text-[16px] font-semibold text-[var(--ops-text-strong)]">
+    <div className="border-t border-white/8 bg-[#071225] px-4 py-4">
+      <h2 className="text-[16px] font-semibold text-white">
         {t.openRadar.title}
       </h2>
 
@@ -87,7 +87,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
               'px-3 py-1 rounded-full text-[12px] font-semibold transition-colors duration-100',
               activeFilter === key
                 ? 'bg-blue-600 text-white shadow-sm border border-blue-600'
-                : 'border border-[var(--ops-border)] bg-[var(--ops-surface)] text-[var(--ops-text-muted)] hover:border-[var(--ops-info)]',
+                : 'border border-white/8 bg-white/5 text-slate-400 hover:border-[#2563EB]',
             )}
           >
             {label}
@@ -98,7 +98,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
       {/* List */}
       <div className="overflow-y-auto max-h-[540px] space-y-2">
         {filtered.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-[var(--ops-border)] bg-[var(--ops-canvas)] py-6 text-center text-sm text-[var(--ops-text-muted)]">
+          <div className="rounded-lg border border-dashed border-white/8 bg-white/[0.02] py-6 text-center text-sm text-slate-400">
             {t.openRadar.noItems}
           </div>
         ) : (
@@ -127,16 +127,16 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                 className={cn(
                   'w-full flex items-start gap-3 rounded-xl px-4 py-3.5 cursor-pointer transition-colors duration-150 text-left',
                   highlightedIdSet.has(row.id)
-                    ? 'border border-blue-200 bg-blue-50/40 ring-1 ring-blue-100'
-                    : 'border border-[var(--ops-border)] bg-[var(--ops-surface)] hover:bg-slate-50'
+                    ? 'border border-[#3B82F6]/40 bg-[#3B82F6]/10 ring-1 ring-[#3B82F6]/20'
+                    : 'border border-white/8 bg-white/[0.02] hover:bg-white/[0.04]'
                 )}
               >
                 {/* Left: title + subtitle */}
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-semibold text-[var(--ops-text-strong)] truncate">
+                  <div className="text-[15px] font-bold text-white truncate">
                     {row.title}
                   </div>
-                  <div className="text-[11px] text-[var(--ops-text-muted)] truncate">
+                  <div className="text-[11px] text-slate-400 truncate">
                     {row.subtitle ?? row.currentLocation ?? t.bottomPanel.noLocation}
                   </div>
                 </div>
@@ -144,12 +144,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                 {/* Right: chips */}
                 <div className="flex flex-wrap items-center gap-1 justify-end shrink-0">
                   {siteMeta ? (
-                    <span
-                      className={cn(
-                        'rounded-full border px-2 py-0.5 text-[11px] font-semibold',
-                        siteMeta.chipClass,
-                      )}
-                    >
+                    <span className={siteMeta.chipClass}>
                       {row.finalLocation}
                     </span>
                   ) : null}
@@ -170,7 +165,7 @@ export function OpenRadarTable({ worklist, data, loading, onNavigate }: OpenRada
                   </span>
 
                   {row.dueAt ? (
-                    <span className="text-[11px] text-[var(--ops-text-muted)] whitespace-nowrap">
+                    <span className="text-[11px] text-slate-400 whitespace-nowrap">
                       {t.bottomPanel.dueAt} {row.dueAt}
                     </span>
                   ) : null}

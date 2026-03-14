@@ -115,12 +115,12 @@ function ChainNode({
         'w-full rounded-2xl border px-4 py-4 text-left transition-colors',
         active
           ? 'border-blue-500 bg-blue-500/10'
-          : 'border-gray-800 bg-gray-900/80 hover:border-gray-700 hover:bg-gray-900',
+          : 'border-white/8 bg-[#0D1A35] hover:border-white/12 hover:bg-[#0D1A35]/80',
       )}
     >
-      <div className={cn('text-xs font-semibold uppercase tracking-wide text-gray-500', accentClass)}>{title}</div>
+      <div className={cn('text-xs font-semibold uppercase tracking-wide text-slate-400', accentClass)}>{title}</div>
       <div className="mt-2 text-2xl font-bold text-white">{count.toLocaleString()}</div>
-      <div className="mt-0.5 text-xs text-gray-400">{subtitle}</div>
+      <div className="mt-0.5 text-xs text-slate-400">{subtitle}</div>
       {voyageLabel !== undefined ? (
         <div className="mt-1.5 text-xs font-medium text-blue-400">{voyageLabel}</div>
       ) : null}
@@ -224,11 +224,11 @@ export function FlowChain({
     <div className="space-y-4">
       {!compact ? <OriginCountrySummary origins={summary.origins} /> : null}
 
-      <section className="rounded-2xl border border-gray-800 bg-[radial-gradient(circle_at_top,#1e3a8a22,transparent_45%),rgba(15,23,42,0.88)] p-4">
+      <section className="rounded-[24px] border border-white/8 bg-[#0B1730] p-4 shadow-[0_1px_0_rgba(255,255,255,.03),0_16px_40px_rgba(0,0,0,.28)]">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold text-white">{t.chain.title}</h2>
-            <p className="text-sm text-gray-400">{t.chain.subtitle}</p>
+            <p className="text-sm text-slate-400">{t.chain.subtitle}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <div className="rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs text-orange-300">
@@ -245,7 +245,7 @@ export function FlowChain({
         {loading ? (
           <div className="grid gap-3 md:grid-cols-5">
             {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="h-28 animate-pulse rounded-2xl bg-gray-800/70" />
+              <div key={index} className="h-28 animate-pulse rounded-2xl bg-white/5" />
             ))}
           </div>
         ) : (
@@ -264,27 +264,27 @@ export function FlowChain({
             </div>
 
             <div className="grid gap-3 lg:grid-cols-[1.3fr_1fr_1fr]">
-              <section className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
+              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
                 <div className="mb-3 text-sm font-semibold text-white">{t.chain.originPortTitle}</div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-gray-800 bg-gray-950/70 p-3">
-                    <div className="mb-2 text-xs text-gray-500">{t.chain.originTop5}</div>
-                    <div className="space-y-1 text-sm text-gray-300">
+                  <div className="rounded-xl border border-white/8 bg-[#0A1428] p-3">
+                    <div className="mb-2 text-xs text-slate-400">{t.chain.originTop5}</div>
+                    <div className="space-y-1 text-sm text-slate-300">
                       {summary.origins.slice(0, 5).map((origin) => (
                         <div key={origin.country} className="flex items-center justify-between">
                           <span>{origin.country}</span>
-                          <span className="text-gray-500">{origin.count.toLocaleString()}</span>
+                          <span className="text-slate-400">{origin.count.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="rounded-xl border border-gray-800 bg-gray-950/70 p-3">
-                    <div className="mb-2 text-xs text-gray-500">{t.chain.portAirport}</div>
-                    <div className="space-y-1 text-sm text-gray-300">
+                  <div className="rounded-xl border border-white/8 bg-[#0A1428] p-3">
+                    <div className="mb-2 text-xs text-slate-400">{t.chain.portAirport}</div>
+                    <div className="space-y-1 text-sm text-slate-300">
                       {summary.ports.map((port) => (
                         <div key={port.name} className="flex items-center justify-between">
                           <span>{port.name}</span>
-                          <span className="text-gray-500">{port.count.toLocaleString()}</span>
+                          <span className="text-slate-400">{port.count.toLocaleString()}</span>
                         </div>
                       ))}
                     </div>
@@ -292,7 +292,7 @@ export function FlowChain({
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
+              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
                 <div className="mb-3 text-sm font-semibold text-white">{t.chain.landSites}</div>
                 <div className="space-y-2">
                   {(['SHU', 'MIR'] as const).map((siteKey) => {
@@ -311,14 +311,14 @@ export function FlowChain({
                         onSiteChange?.(siteKey)
                       }}
                     >
-                      <div className="mt-1 text-xs text-gray-500">{t.chain.directDelivery}</div>
+                      <div className="mt-1 text-xs text-slate-400">{t.chain.directDelivery}</div>
                     </ChainNode>
                     )
                   })}
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
+              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
                 <div className="mb-3 text-sm font-semibold text-white">{t.chain.islandSites}</div>
                 <div className="space-y-2">
                   {(['DAS', 'AGI'] as const).map((siteKey) => {
@@ -351,7 +351,7 @@ export function FlowChain({
             </div>
 
             {!voyageLoading ? (
-              <section className="rounded-2xl border border-gray-800/60 bg-gray-900/60 p-4">
+              <section className="rounded-[20px] border border-white/8 bg-[#0D1A35] p-4">
                 <div className="mb-3 text-sm font-semibold text-white">{t.chain.voyageBySite}</div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {[
@@ -367,13 +367,13 @@ export function FlowChain({
                         changeStage('site')
                         onSiteChange?.(siteKey as 'SHU' | 'MIR' | 'DAS' | 'AGI')
                       }}
-                      className="flex flex-col gap-1 rounded-xl border border-gray-800 bg-gray-950/60 px-4 py-3 text-left"
+                      className="flex flex-col gap-1 rounded-xl border border-white/8 bg-white/[0.02] px-4 py-3 text-left hover:bg-white/[0.04] transition-colors duration-150"
                     >
                       <div className={`text-xs font-semibold uppercase tracking-wide ${SITE_META[siteKey as keyof typeof SITE_META].accentClass}`}>
                         {siteKey}
                       </div>
                       <div className="text-xl font-bold text-white">{count.toLocaleString()} {t.chain.voyageCount}</div>
-                      <div className="text-xs text-gray-500">{note}</div>
+                      <div className="text-xs text-slate-400">{note}</div>
                     </button>
                   ))}
                 </div>
