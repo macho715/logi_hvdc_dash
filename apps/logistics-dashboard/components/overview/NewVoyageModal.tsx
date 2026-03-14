@@ -119,10 +119,6 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(toPayload(form)),
       })
-      if (res.status === 409) {
-        setSubmitError('이미 존재하는 SCT SHIP NO입니다 (중복)')
-        return
-      }
       if (!res.ok) {
         const j = (await res.json().catch(() => ({}))) as { error?: string }
         setSubmitError(j.error ?? '오류가 발생했습니다')
@@ -149,12 +145,17 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
         className="w-full max-w-2xl rounded-2xl border border-gray-700 bg-gray-900 p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">신규 항차 등록</h2>
+        <div className="mb-1 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-white">항차 등록 / 수정</h2>
           <button onClick={onClose} className="text-xl text-gray-400 hover:text-gray-200">
             ×
           </button>
         </div>
+        <p className="mb-4 text-xs text-gray-500">
+          SCT SHIP NO만 필수입니다. 나머지는 아는 정보만 입력하세요.
+          <br />
+          이미 등록된 코드를 입력하면 <span className="text-blue-400">입력한 필드만 덮어씁니다</span> (업데이트).
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Row 1: SCT SHIP NO (required) + Vendor */}
@@ -376,7 +377,7 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
               disabled={submitting}
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
             >
-              {submitting ? '등록 중...' : '항차 등록'}
+              {submitting ? '저장 중...' : '저장'}
             </button>
           </div>
         </form>
