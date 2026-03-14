@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { getRouteTypeLabel } from '@/lib/overview/routeTypes'
@@ -11,6 +12,86 @@ interface OverviewRightPanelProps {
   data: OverviewCockpitResponse | null
   loading?: boolean
   onNavigate: (intent: NavigationIntent) => void
+  selectedShipmentId?: string | null
+  onClearSelection?: () => void
+}
+
+const VOYAGE_STAGE_LABELS: Record<string, string> = {
+  'pre-departure': '출발 전',
+  'in-transit': '운송 중',
+  'port-customs': '통관 중',
+  'inland': '내륙 운송',
+  'delivered': '납품 완료',
+}
+
+interface ShipmentDetailRow {
+  sct_ship_no: string
+  vendor: string
+  voyage_stage: string
+  eta: string | null
+  pol: string | null
+  pod: string | null
+}
+
+function ShipmentDetailCard({ sctShipNo, onClear }: { sctShipNo: string; onClear?: () => void }) {
+  const [detail, setDetail] = useState<ShipmentDetailRow | null>(null)
+  const [loadingDetail, setLoadingDetail] = useState(true)
+  const [fetchError, setFetchError] = useState(false)
+
+  useEffect(() => {
+    setLoadingDetail(true)
+    setFetchError(false)
+    fetch(`/api/shipments?sct_ship_no=${encodeURIComponent(sctShipNo)}&pageSize=1`)
+      .then((r) => r.json())
+      .then((j: { data: ShipmentDetailRow[] }) => {
+        setDetail(j.data[0] ?? null)
+      })
+      .catch(() => setFetchError(true))
+      .finally(() => setLoadingDetail(false))
+  }, [sctShipNo])
+
+  return (
+    <div className="mb-3 rounded-xl border border-blue-500/30 bg-blue-500/10 p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <span className="text-xs font-semibold text-blue-300">검색 결과</span>
+        {onClear && (
+          <button onClick={onClear} className="text-xs text-gray-400 hover:text-gray-200" aria-label="닫기">×</button>
+        )}
+      </div>
+      {loadingDetail && (
+        <div className="text-xs text-gray-400">로딩 중...</div>
+      )}
+      {!loadingDetail && fetchError && (
+        <div className="text-xs text-red-400">불러오기 실패</div>
+      )}
+      {!loadingDetail && !fetchError && detail == null && (
+        <div className="text-xs text-gray-400">결과 없음</div>
+      )}
+      {!loadingDetail && detail != null && (
+        <div className="space-y-1">
+          <div className="text-sm font-semibold text-white">{detail.sct_ship_no}</div>
+          <div className="text-xs text-gray-300">{detail.vendor}</div>
+          <div className="text-xs text-gray-400">
+            단계: {VOYAGE_STAGE_LABELS[detail.voyage_stage] ?? detail.voyage_stage}
+          </div>
+          {detail.eta && (
+            <div className="text-xs text-gray-400">ETA: {detail.eta}</div>
+          )}
+          {(detail.pol || detail.pod) && (
+            <div className="text-xs text-gray-400">
+              {detail.pol} → {detail.pod}
+            </div>
+          )}
+          <a
+            href={`/cargo?tab=shipments&sct_ship_no=${encodeURIComponent(detail.sct_ship_no)}`}
+            className="mt-1 inline-block text-xs text-blue-400 hover:underline"
+          >
+            상세 보기 →
+          </a>
+        </div>
+      )}
+    </div>
+  )
 }
 
 function severityClass(severity: 'critical' | 'warning' | 'info'): string {
@@ -23,6 +104,8 @@ export function OverviewRightPanel({
   data,
   loading = false,
   onNavigate,
+  selectedShipmentId,
+  onClearSelection,
 }: OverviewRightPanelProps) {
   if (loading && !data) {
     return <div className="w-full border-l border-gray-800 bg-gray-950/60 xl:w-[360px]" />
@@ -41,6 +124,9 @@ export function OverviewRightPanel({
   return (
     <aside className="w-full border-l border-gray-800 bg-gray-950/60 p-4 xl:w-[360px]">
       <div className="flex h-full flex-col gap-4 overflow-auto">
+        {selectedShipmentId != null && (
+          <ShipmentDetailCard sctShipNo={selectedShipmentId} onClear={onClearSelection} />
+        )}
         <section className="space-y-3">
           <div>
             <h2 className="text-sm font-semibold text-white">예외 보드</h2>

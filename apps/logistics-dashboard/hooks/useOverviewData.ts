@@ -7,7 +7,7 @@ import type { OverviewCockpitResponse, OverviewRuntimeState } from '@/types/over
 
 const POLL_INTERVAL_MS = 30_000
 
-export function useOverviewData(): OverviewRuntimeState {
+export function useOverviewData(options?: { refreshKey?: number }): OverviewRuntimeState {
   const actions = useOpsActions()
   const worklist = useOpsStore((state) => state.worklistRows)
   const shouldPrimeWorklist = worklist.length === 0
@@ -88,6 +88,11 @@ export function useOverviewData(): OverviewRuntimeState {
       window.removeEventListener('focus', handleFocus)
     }
   }, [loadOverview])
+
+  useEffect(() => {
+    if (!options?.refreshKey) return
+    void loadOverview()
+  }, [options?.refreshKey, loadOverview])
 
   return {
     data,
