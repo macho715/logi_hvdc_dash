@@ -6,6 +6,7 @@ import { KpiStripCards } from '@/components/overview/KpiStripCards'
 import { OverviewBottomPanel } from '@/components/overview/OverviewBottomPanel'
 import { OverviewMap } from '@/components/overview/OverviewMap'
 import { OverviewRightPanel } from '@/components/overview/OverviewRightPanel'
+import { NewVoyageModal } from './NewVoyageModal'
 import { OverviewToolbar } from './OverviewToolbar'
 import { useOverviewData } from '@/hooks/useOverviewData'
 import { buildDashboardLink } from '@/lib/navigation/contracts'
@@ -52,15 +53,14 @@ export function OverviewPageClient() {
           Overview 데이터를 새로고침하지 못했습니다: {error}
         </div>
       ) : null}
-      {/* NewVoyageModal will be wired here in Task 12 */}
-      {showNewVoyageModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="rounded-xl bg-gray-900 p-6 text-white">
-            <p>신규 항차 모달 (구현 중)</p>
-            <button onClick={() => setShowNewVoyageModal(false)} className="mt-4 text-sm text-gray-400">닫기</button>
-          </div>
-        </div>
-      )}
+      <NewVoyageModal
+        open={showNewVoyageModal}
+        onClose={() => setShowNewVoyageModal(false)}
+        onSuccess={() => {
+          setRefreshKey((k) => k + 1)
+          setShowNewVoyageModal(false)
+        }}
+      />
     </div>
   )
 }
