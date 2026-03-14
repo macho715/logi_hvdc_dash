@@ -15,6 +15,10 @@ export const useLogisticsStore = create<LogisticsState>((set, get) => ({
   showGeofence: false,
   showHeatmap: false,
   showEtaWedge: false,
+  // Map layer toggles (default ON for arcs and trips)
+  layerOriginArcs: true,
+  layerTrips: true,
+  highlightedShipmentId: null,
 
   // Connection state
   isConnected: false,
@@ -72,6 +76,9 @@ export const useLogisticsStore = create<LogisticsState>((set, get) => ({
   toggleGeofence: () => set((state) => ({ showGeofence: !state.showGeofence })),
   toggleHeatmap: () => set((state) => ({ showHeatmap: !state.showHeatmap })),
   toggleEtaWedge: () => set((state) => ({ showEtaWedge: !state.showEtaWedge })),
+  toggleLayerOriginArcs: () => set((state) => ({ layerOriginArcs: !state.layerOriginArcs })),
+  toggleLayerTrips: () => set((state) => ({ layerTrips: !state.layerTrips })),
+  setHighlightedShipmentId: (id) => set({ highlightedShipmentId: id }),
   setConnected: (connected: boolean) => set({ isConnected: connected }),
   setLoading: (loading: boolean) => set({ isLoading: loading }),
 }))

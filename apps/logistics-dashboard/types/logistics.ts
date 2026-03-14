@@ -30,6 +30,11 @@ export interface LogisticsState {
   showGeofence: boolean
   showHeatmap: boolean
   showEtaWedge: boolean
+  // Map layer visibility toggles (user-controlled)
+  layerOriginArcs: boolean
+  layerTrips: boolean
+  // Highlight a specific shipment trip on the map (null = none)
+  highlightedShipmentId: string | null
 
   // Connection state
   isConnected: boolean
@@ -45,6 +50,9 @@ export interface LogisticsState {
   toggleGeofence: () => void
   toggleHeatmap: () => void
   toggleEtaWedge: () => void
+  toggleLayerOriginArcs: () => void
+  toggleLayerTrips: () => void
+  setHighlightedShipmentId: (id: string | null) => void
   setConnected: (connected: boolean) => void
   setLoading: (loading: boolean) => void
 }
