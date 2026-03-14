@@ -160,6 +160,32 @@ Overview deep-link query vocabulary:
 
 ---
 
+## Screen Gallery
+
+Captured from the local dashboard runtime on `http://localhost:3001`.
+
+### Overview
+
+![Overview cockpit](apps/logistics-dashboard/public/readme/overview.png)
+
+### Pipeline
+
+![Pipeline page](apps/logistics-dashboard/public/readme/pipeline.png)
+
+### Sites
+
+![Sites page](apps/logistics-dashboard/public/readme/sites.png)
+
+### Cargo
+
+![Cargo page](apps/logistics-dashboard/public/readme/cargo.png)
+
+### Chain
+
+![Chain page](apps/logistics-dashboard/public/readme/chain.png)
+
+---
+
 ## Workspace Commands
 
 From the repository root:
