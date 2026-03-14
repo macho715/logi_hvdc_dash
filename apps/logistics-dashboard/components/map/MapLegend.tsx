@@ -2,6 +2,7 @@
 
 import { REGION_COLORS } from "@/components/map/layers/createOriginArcLayer"
 import type { Region } from "@/components/map/layers/createOriginArcLayer"
+import { useT } from '@/hooks/useT'
 
 interface MapLegendProps {
   /** When true, show the origin arc color legend section */
@@ -22,19 +23,21 @@ const REGION_LABELS: Record<Region, string> = {
   Unknown:  "Other",
 }
 
-const RING_LEGEND = [
-  { label: "HVDC Site",  color: "rgb(34,197,94)",   desc: "SHU · MIR · DAS · AGI" },
-  { label: "MOSB Yard",  color: "rgb(249,115,22)",   desc: "Das Island staging" },
-  { label: "Port",       color: "rgb(59,130,246)",   desc: "Khalifa · MZD · JAFZ" },
-  { label: "Warehouse",  color: "rgb(234,179,8)",    desc: "DSV · JDN · AAA" },
-]
-
-const TRIP_LEGEND = [
-  { label: "Flow 1-2 (Direct / WH)", color: "rgb(56,189,248)",  desc: "SHU · MIR route" },
-  { label: "Flow 3-4 (MOSB)",         color: "rgb(249,115,22)",  desc: "DAS · AGI via MOSB" },
-]
-
 export function MapLegend({ showArcs = false, showTrips = false }: MapLegendProps) {
+  const t = useT()
+
+  const RING_LEGEND = [
+    { label: t.legend.hvdcSite,  color: "rgb(34,197,94)",   desc: "SHU · MIR · DAS · AGI" },
+    { label: t.legend.mosbYard,  color: "rgb(249,115,22)",   desc: "Das Island staging" },
+    { label: t.legend.port,      color: "rgb(59,130,246)",   desc: "Khalifa · MZD · JAFZ" },
+    { label: t.legend.warehouse, color: "rgb(234,179,8)",    desc: "DSV · JDN · AAA" },
+  ]
+
+  const TRIP_LEGEND = [
+    { label: "Flow 1-2 (Direct / WH)", color: "rgb(56,189,248)",  desc: "SHU · MIR route" },
+    { label: "Flow 3-4 (MOSB)",         color: "rgb(249,115,22)",  desc: "DAS · AGI via MOSB" },
+  ]
+
   const regions = (Object.entries(REGION_COLORS) as [Region, [number, number, number]][])
     .filter(([r]) => r !== "Unknown")
 
@@ -47,7 +50,7 @@ export function MapLegend({ showArcs = false, showTrips = false }: MapLegendProp
     >
       {/* POI rings */}
       <div>
-        <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">Node type</p>
+        <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">{t.legend.nodeType}</p>
         <div className="space-y-1">
           {RING_LEGEND.map(({ label, color }) => (
             <div key={label} className="flex items-center gap-2">
@@ -64,7 +67,7 @@ export function MapLegend({ showArcs = false, showTrips = false }: MapLegendProp
       {/* Origin arc colors — only when zoomed out */}
       {showArcs && (
         <div>
-          <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">Origin region</p>
+          <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">{t.legend.originRegion}</p>
           <div className="space-y-1">
             {regions.map(([region, [r, g, b]]) => (
               <div key={region} className="flex items-center gap-2">
@@ -82,7 +85,7 @@ export function MapLegend({ showArcs = false, showTrips = false }: MapLegendProp
       {/* Trip animation colors */}
       {showTrips && (
         <div>
-          <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">Active voyage</p>
+          <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">{t.legend.activeVoyage}</p>
           <div className="space-y-1">
             {TRIP_LEGEND.map(({ label, color }) => (
               <div key={label} className="flex items-center gap-2">

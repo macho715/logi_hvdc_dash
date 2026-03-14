@@ -2,8 +2,10 @@
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useCasesStore } from '@/store/casesStore'
+import { useT } from '@/hooks/useT'
 
 export function WarehouseSqmBar() {
+  const t = useT()
   const { summary } = useCasesStore()
   if (!summary) return <div className="h-32 bg-gray-800 animate-pulse rounded" />
 
@@ -14,7 +16,7 @@ export function WarehouseSqmBar() {
 
   return (
     <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-2">창고 SQM</h4>
+      <h4 className="text-xs font-semibold text-gray-400 mb-2">{t.pipeline.warehouseSqm}</h4>
       <ResponsiveContainer width="100%" height={120}>
         <BarChart data={data} layout="vertical" margin={{ left: 10 }}>
           <XAxis type="number" hide />

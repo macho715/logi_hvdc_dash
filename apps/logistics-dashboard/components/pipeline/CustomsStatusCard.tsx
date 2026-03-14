@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useT } from '@/hooks/useT'
 
 interface CustomsStats { cleared: number; in_progress: number; pending: number }
 
 export function CustomsStatusCard() {
+  const t = useT()
   const [stats, setStats] = useState<CustomsStats>({ cleared: 0, in_progress: 0, pending: 0 })
   const [loading, setLoading] = useState(true)
 
@@ -23,19 +25,19 @@ export function CustomsStatusCard() {
 
   return (
     <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-2">통관 현황 <span className="text-gray-600 font-normal">(BL 기준)</span></h4>
+      <h4 className="text-xs font-semibold text-gray-400 mb-2">{t.pipeline.customsStatus} <span className="text-gray-600 font-normal">{t.pipeline.customsStatusDesc}</span></h4>
       <div className="grid grid-cols-3 gap-2 text-center">
         <div>
           <div className="text-lg font-bold text-green-400">{stats.cleared}</div>
-          <div className="text-xs text-gray-500">완료</div>
+          <div className="text-xs text-gray-500">{t.pipeline.cleared}</div>
         </div>
         <div>
           <div className="text-lg font-bold text-yellow-400">{stats.in_progress}</div>
-          <div className="text-xs text-gray-500">진행중</div>
+          <div className="text-xs text-gray-500">{t.pipeline.inProgress}</div>
         </div>
         <div>
           <div className="text-lg font-bold text-gray-400">{stats.pending}</div>
-          <div className="text-xs text-gray-500">대기</div>
+          <div className="text-xs text-gray-500">{t.pipeline.pending}</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 'use client'
 
 import { useCasesStore } from '@/store/casesStore'
+import { useLogisticsStore } from '@/store/logisticsStore'
+import { useT } from '@/hooks/useT'
 import { SiteTypeTag } from '@/components/sites/SiteTypeTag'
 import { SITE_META } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
@@ -14,6 +16,8 @@ interface Props {
 
 export function SiteCards({ selectedSite, onSelect }: Props) {
   const { summary } = useCasesStore()
+  const locale = useLogisticsStore((s) => s.locale)
+  const t = useT()
   const sites = Object.keys(SITE_META) as SiteKey[]
 
   return (
@@ -54,7 +58,7 @@ export function SiteCards({ selectedSite, onSelect }: Props) {
               />
             </div>
             <div className="text-xs text-gray-400">
-              {arrived.toLocaleString()} / {total.toLocaleString()}건
+              {arrived.toLocaleString()} / {total.toLocaleString()}{locale === 'ko' ? '건' : ''}
             </div>
           </button>
         )

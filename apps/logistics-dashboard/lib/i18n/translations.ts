@@ -8,6 +8,26 @@
 export type Locale = 'en' | 'ko'
 
 export interface Translations {
+  // ── Common (shared across pages) ─────────────────────────
+  common: {
+    unit: string        // '' (EN) | '건' (KO) — count suffix
+    all: string         // 'All' / '전체'
+    reset: string       // 'Reset' / '초기화'
+    noData: string      // 'No data' / '데이터 없음'
+    vendor: string      // 'Vendor' / '벤더'
+    site: string        // 'Site' / '현장'
+    route: string       // 'Route' / '운송 경로'
+    location: string    // 'Location' / '현재위치'
+    cases: string       // 'cases' / '건'
+    voyages: string     // 'voyages' / '항차'
+    previous: string    // 'Previous' / '이전'
+    next: string        // 'Next' / '다음'
+    total: string       // 'Total' / '총'
+    cleared: string     // 'Cleared' / '완료'
+    inProgress: string  // 'In Progress' / '진행중'
+    pending: string     // 'Pending' / '대기'
+  }
+
   // ── Navigation ───────────────────────────────────────────
   nav: {
     overview: string
@@ -76,9 +96,19 @@ export interface Translations {
     stage: string
     viewDetail: string
     alerts: string
+    alertsDesc: string
     noAlerts: string
     routeSummary: string
+    routeSummaryDesc: string
     noData: string
+    siteReadiness: string
+    siteReadinessDesc: string
+    arrived: string
+    warehouse: string
+    recentActivity: string
+    recentActivityDesc: string
+    loadError: string
+    dueAt: string
   }
 
   // ── OverviewBottomPanel ──────────────────────────────────
@@ -89,11 +119,22 @@ export interface Translations {
     priorityWorklistDesc: string
     noLocation: string
     noWorklist: string
+    dueAt: string
+  }
+
+  // ── OverviewMap tooltip ──────────────────────────────────
+  overviewMap: {
+    refreshError: string
+    countSuffix: string
+    directRoute: string
+    mosbRoute: string
   }
 
   // ── NewVoyageModal ───────────────────────────────────────
   modal: {
     title: string
+    subtitle: string
+    updateNote: string
     sctShipNo: string
     sctShipNoPlaceholder: string
     sctShipNoRequired: string
@@ -138,12 +179,141 @@ export interface Translations {
     originRegion: string
     activeVoyage: string
   }
+
+  // ── HeatmapLegend ────────────────────────────────────────
+  heatmap: {
+    labels: [string, string, string, string, string, string]
+  }
+
+  // ── Cargo page ───────────────────────────────────────────
+  cargo: {
+    basicInfo: string
+    site: string
+    vendor: string
+    route: string
+    currentLocation: string
+    storageType: string
+    logisticsTimeline: string
+    etdLabel: string
+    atdLabel: string
+    etaLabel: string
+    ataLabel: string
+    siteArrival: string
+    noShipmentNo: string
+    noData: string
+    voyageStageLabel: string
+    nominatedSite: string
+    customs: string
+    totalCount: string   // '{n} total' / '총 {n}건'
+    receivedDate: string
+    previous: string
+    next: string
+    all: string
+    cleared: string
+    inProgress: string
+    pending: string
+    // voyage stage badge labels
+    badgePreDeparture: string
+    badgeInTransit: string
+    badgePortCustoms: string
+    badgeInland: string
+    badgeDelivered: string
+    dsvStock: string
+  }
+
+  // ── Chain page ───────────────────────────────────────────
+  chain: {
+    title: string
+    subtitle: string
+    mosbVia: string
+    mosbAlert: string
+    caseCount: string
+    originPortTitle: string
+    originTop5: string
+    portAirport: string
+    landSites: string
+    directDelivery: string
+    islandSites: string
+    managedViaMosb: string
+    missingMosb: string
+    voyageBySite: string
+    directLand: string
+    mosbManaged: string
+    voyageCount: string
+    originSummaryTitle: string
+    originSummaryDesc: string
+    noOriginData: string
+    chainStageCases: string
+  }
+
+  // ── Pipeline page ────────────────────────────────────────
+  pipeline: {
+    customsStatus: string
+    customsStatusDesc: string
+    cleared: string
+    inProgress: string
+    pending: string
+    routeDistribution: string
+    currentLocation: string
+    route: string
+    noMatchingCases: string
+    stageCases: string
+    selectStageHint: string
+    rowClickHint: string
+    siteFilter: string
+    vendorFilter: string
+    categoryFilter: string
+    all: string
+    reset: string
+    transportMode: string
+    transportModeDesc: string
+    byVendor: string
+    warehouseSqm: string
+  }
+
+  // ── Sites page ───────────────────────────────────────────
+  sites: {
+    agiAlertTitle: string
+    agiAlertRate: string
+    agiAlertDetail: string
+    arrivedOf: string
+    siteArrivalNoData: string
+    currentLocation: string
+    route: string
+    vendor: string
+    tabSummary: string
+    tabRoute: string
+    tabMonthly: string
+    tabPending: string
+    tabVendor: string
+    typeLand: string
+    typeSea: string
+    typeUnknown: string
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // English
 // ─────────────────────────────────────────────────────────────────────────────
 export const en: Translations = {
+  common: {
+    unit: '',
+    all: 'All',
+    reset: 'Reset',
+    noData: 'No data',
+    vendor: 'Vendor',
+    site: 'Site',
+    route: 'Route',
+    location: 'Current Location',
+    cases: 'cases',
+    voyages: 'voyages',
+    previous: 'Previous',
+    next: 'Next',
+    total: 'Total',
+    cleared: 'Cleared',
+    inProgress: 'In Progress',
+    pending: 'Pending',
+  },
   nav: {
     overview: 'Overview',
     chain: 'Logistics Chain',
@@ -196,10 +366,20 @@ export const en: Translations = {
     noResult: 'No result',
     stage: 'Stage',
     viewDetail: 'View detail →',
-    alerts: 'Alerts',
+    alerts: 'Exception Board',
+    alertsDesc: 'High-priority operations pinned at top.',
     noAlerts: 'No active alerts',
     routeSummary: 'Route Summary',
+    routeSummaryDesc: 'Route meaning without numeric codes.',
     noData: 'No data available',
+    siteReadiness: 'Site Readiness',
+    siteReadinessDesc: 'Arrival rate and pending items by site.',
+    arrived: 'Arrived',
+    warehouse: 'WH',
+    recentActivity: 'Recent Activity',
+    recentActivityDesc: 'Recent event-driven changes linked to Cargo.',
+    loadError: 'Failed to load overview data.',
+    dueAt: 'Due',
   },
   bottomPanel: {
     stagePipeline: 'Stage Pipeline',
@@ -208,9 +388,18 @@ export const en: Translations = {
     priorityWorklistDesc: 'Reuses the shared HVDC worklist store.',
     noLocation: 'Location unknown',
     noWorklist: 'No priority items',
+    dueAt: 'Due',
+  },
+  overviewMap: {
+    refreshError: 'Failed to refresh overview data:',
+    countSuffix: '',
+    directRoute: 'Direct route',
+    mosbRoute: 'MOSB route',
   },
   modal: {
     title: 'Register New Voyage',
+    subtitle: 'Only SCT SHIP NO is required. Fill in as much as you know.',
+    updateNote: 'If the code already exists, only the filled fields will be overwritten (update).',
     sctShipNo: 'SCT SHIP NO',
     sctShipNoPlaceholder: 'HVDC-ADOPT-SCT-0001',
     sctShipNoRequired: 'SCT SHIP NO is required',
@@ -253,12 +442,130 @@ export const en: Translations = {
     originRegion: 'ORIGIN REGION',
     activeVoyage: 'ACTIVE VOYAGE',
   },
+  heatmap: {
+    labels: ['Low', 'Somewhat Low', 'Medium', 'Somewhat High', 'High', 'Very High'],
+  },
+  cargo: {
+    basicInfo: 'Basic Info',
+    site: 'Site',
+    vendor: 'Vendor',
+    route: 'Route',
+    currentLocation: 'Current Location',
+    storageType: 'Storage Type',
+    logisticsTimeline: 'Logistics Timeline',
+    etdLabel: 'ETD (Est. Departure)',
+    atdLabel: 'ATD (Act. Departure)',
+    etaLabel: 'ETA (Est. Arrival)',
+    ataLabel: 'ATA (Act. Arrival)',
+    siteArrival: 'Site Arrival',
+    noShipmentNo: 'No shipment number — timeline unavailable',
+    noData: 'No data',
+    voyageStageLabel: 'Voyage Stage',
+    nominatedSite: 'Nominated Site',
+    customs: 'Customs',
+    totalCount: 'Total',
+    receivedDate: 'Received Date',
+    previous: 'Previous',
+    next: 'Next',
+    all: 'All',
+    cleared: 'Cleared',
+    inProgress: 'In Progress',
+    pending: 'Pending',
+    badgePreDeparture: 'Pre-departure',
+    badgeInTransit: 'In Transit',
+    badgePortCustoms: 'Port/Customs',
+    badgeInland: 'Inland/WH',
+    badgeDelivered: 'Delivered',
+    dsvStock: 'DSV Warehouse Stock',
+  },
+  chain: {
+    title: 'Full Logistics Chain',
+    subtitle: 'Condensed view: Origin → Port/Customs → Warehouse → MOSB → Site.',
+    mosbVia: 'via MOSB',
+    mosbAlert: 'missing required MOSB',
+    caseCount: 'cases',
+    originPortTitle: 'Origin / Port Status',
+    originTop5: 'Top 5 Origins',
+    portAirport: 'Port / Airport',
+    landSites: 'Land Sites',
+    directDelivery: 'Direct delivery',
+    islandSites: 'Island Sites',
+    managedViaMosb: 'Managed via MOSB',
+    missingMosb: 'missing MOSB',
+    voyageBySite: 'Voyage by Nominated Site',
+    directLand: 'Direct (Land)',
+    mosbManaged: 'Managed via MOSB',
+    voyageCount: 'voyages',
+    originSummaryTitle: 'Origin Summary',
+    originSummaryDesc: 'Top countries by POL',
+    noOriginData: 'No origin data',
+    chainStageCases: 'Chain Stage Cases',
+  },
+  pipeline: {
+    customsStatus: 'Customs Status',
+    customsStatusDesc: '(by BL)',
+    cleared: 'Cleared',
+    inProgress: 'In Progress',
+    pending: 'Pending',
+    routeDistribution: 'Route Distribution',
+    currentLocation: 'Current Location',
+    route: 'Route',
+    noMatchingCases: 'No matching cases.',
+    stageCases: 'Stage Cases',
+    selectStageHint: 'Select a pipeline stage to see cases here.',
+    rowClickHint: 'Click a row to open the Cargo drawer.',
+    siteFilter: 'Site',
+    vendorFilter: 'Vendor',
+    categoryFilter: 'Category',
+    all: 'All',
+    reset: 'Reset',
+    transportMode: 'Transport Mode',
+    transportModeDesc: '(by BL)',
+    byVendor: 'By Vendor',
+    warehouseSqm: 'Warehouse SQM',
+  },
+  sites: {
+    agiAlertTitle: 'AGI Delivery Alert',
+    agiAlertRate: 'Rate',
+    agiAlertDetail: 'WH · MOSB · Pre-shipment',
+    arrivedOf: 'arrived',
+    siteArrivalNoData: 'No arrival date data',
+    currentLocation: 'Current Location',
+    route: 'Route',
+    vendor: 'Vendor',
+    tabSummary: 'Summary',
+    tabRoute: 'Route',
+    tabMonthly: 'Monthly',
+    tabPending: 'Pending',
+    tabVendor: 'Vendor',
+    typeLand: 'Land',
+    typeSea: 'Sea · MOSB',
+    typeUnknown: 'Unspecified',
+  },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Korean
 // ─────────────────────────────────────────────────────────────────────────────
 export const ko: Translations = {
+  common: {
+    unit: '건',
+    all: '전체',
+    reset: '초기화',
+    noData: '데이터 없음',
+    vendor: '벤더',
+    site: '현장',
+    route: '운송 경로',
+    location: '현재위치',
+    cases: '건',
+    voyages: '항차',
+    previous: '이전',
+    next: '다음',
+    total: '총',
+    cleared: '완료',
+    inProgress: '진행중',
+    pending: '대기',
+  },
   nav: {
     overview: '개요',
     chain: '물류 체인',
@@ -311,10 +618,20 @@ export const ko: Translations = {
     noResult: '결과 없음',
     stage: '단계',
     viewDetail: '상세 보기 →',
-    alerts: '알림',
+    alerts: '예외 보드',
+    alertsDesc: '운영 우선순위가 높은 항목만 위쪽에 고정합니다.',
     noAlerts: '활성 알림 없음',
-    routeSummary: '경로 요약',
+    routeSummary: '운송 경로 요약',
+    routeSummaryDesc: '숫자 코드를 숨기고 경로 의미만 남겼습니다.',
     noData: '데이터 없음',
+    siteReadiness: '현장 준비도',
+    siteReadinessDesc: '현장 단위 도착률과 대기 잔량을 같이 보여줍니다.',
+    arrived: '도착',
+    warehouse: '창고',
+    recentActivity: '최근 활동',
+    recentActivityDesc: '이벤트 기반 최근 변화를 Cargo로 바로 넘깁니다.',
+    loadError: 'Overview 데이터를 불러오지 못했습니다.',
+    dueAt: '예정',
   },
   bottomPanel: {
     stagePipeline: '단계 파이프라인',
@@ -323,9 +640,18 @@ export const ko: Translations = {
     priorityWorklistDesc: '공유 store의 HVDC worklist를 그대로 재사용합니다.',
     noLocation: '상세 위치 없음',
     noWorklist: '우선순위 항목 없음',
+    dueAt: '예정',
+  },
+  overviewMap: {
+    refreshError: 'Overview 데이터를 새로고침하지 못했습니다:',
+    countSuffix: '건',
+    directRoute: 'Direct route',
+    mosbRoute: 'MOSB route',
   },
   modal: {
     title: '신규 항차 등록',
+    subtitle: 'SCT SHIP NO만 필수입니다. 나머지는 아는 정보만 입력하세요.',
+    updateNote: '이미 등록된 코드를 입력하면 입력한 필드만 덮어씁니다 (업데이트).',
     sctShipNo: 'SCT SHIP NO',
     sctShipNoPlaceholder: 'HVDC-ADOPT-SCT-0001',
     sctShipNoRequired: 'SCT SHIP NO는 필수입니다',
@@ -367,6 +693,106 @@ export const ko: Translations = {
     warehouse: '창고',
     originRegion: '출발 지역',
     activeVoyage: '진행 중 항차',
+  },
+  heatmap: {
+    labels: ['낮음', '다소 낮음', '중간', '다소 높음', '높음', '매우 높음'],
+  },
+  cargo: {
+    basicInfo: '기본정보',
+    site: '현장',
+    vendor: '벤더',
+    route: '운송 경로',
+    currentLocation: '현재위치',
+    storageType: '보관유형',
+    logisticsTimeline: '물류 타임라인',
+    etdLabel: 'ETD (출발예정)',
+    atdLabel: 'ATD (실제출발)',
+    etaLabel: 'ETA (도착예정)',
+    ataLabel: 'ATA (실제도착)',
+    siteArrival: '현장 도착',
+    noShipmentNo: '선적번호 없음 — 타임라인 불가',
+    noData: '데이터 없음',
+    voyageStageLabel: '항차단계',
+    nominatedSite: '노미현장',
+    customs: '통관',
+    totalCount: '총',
+    receivedDate: '입고일',
+    previous: '이전',
+    next: '다음',
+    all: '전체',
+    cleared: '통관완료',
+    inProgress: '진행중',
+    pending: '대기',
+    badgePreDeparture: '출항 전',
+    badgeInTransit: '항해 중',
+    badgePortCustoms: '항만/통관',
+    badgeInland: '내륙/창고',
+    badgeDelivered: '납품완료',
+    dsvStock: 'DSV 창고 재고',
+  },
+  chain: {
+    title: '전체 물류 체인',
+    subtitle: '원산지 → 항만/통관 → 창고 → MOSB → 현장 흐름을 단계별로 압축 표시합니다.',
+    mosbVia: 'MOSB 경유',
+    mosbAlert: '필수 MOSB 경유 누락',
+    caseCount: '건',
+    originPortTitle: '원산지 / 항만 현황',
+    originTop5: '원산지 Top 5',
+    portAirport: '항만 / 공항',
+    landSites: '육상 현장',
+    directDelivery: '직접 배송 중심',
+    islandSites: '도서 현장',
+    managedViaMosb: 'MOSB 경유 기준 관리',
+    missingMosb: '필수 MOSB 경유 누락',
+    voyageBySite: '노미현장별 항차 현황',
+    directLand: '육상 직배',
+    mosbManaged: 'MOSB 기준 관리',
+    voyageCount: '항차',
+    originSummaryTitle: '원산지 집계',
+    originSummaryDesc: 'POL 기준 상위 국가',
+    noOriginData: '원산지 데이터가 없습니다.',
+    chainStageCases: '체인 선택 단계 케이스',
+  },
+  pipeline: {
+    customsStatus: '통관 현황',
+    customsStatusDesc: '(BL 기준)',
+    cleared: '완료',
+    inProgress: '진행중',
+    pending: '대기',
+    routeDistribution: '운송 경로 분포',
+    currentLocation: '현재 위치',
+    route: '운송 경로',
+    noMatchingCases: '일치하는 케이스가 없습니다.',
+    stageCases: '선택 단계 케이스',
+    selectStageHint: '파이프라인 단계를 선택하면 해당 케이스가 여기에 표시됩니다.',
+    rowClickHint: '행 클릭 시 Cargo drawer로 이동합니다.',
+    siteFilter: '사이트',
+    vendorFilter: '벤더',
+    categoryFilter: '카테고리',
+    all: '전체',
+    reset: '초기화',
+    transportMode: '운송 모드',
+    transportModeDesc: '(BL 기준)',
+    byVendor: '벤더별',
+    warehouseSqm: '창고 SQM',
+  },
+  sites: {
+    agiAlertTitle: 'AGI 납품 경보',
+    agiAlertRate: '달성률',
+    agiAlertDetail: '창고 · MOSB · 선적 전',
+    arrivedOf: '도착',
+    siteArrivalNoData: 'site_arrival_date 데이터 없음',
+    currentLocation: '현재 위치',
+    route: '운송 경로',
+    vendor: '벤더',
+    tabSummary: '요약',
+    tabRoute: '운송 경로',
+    tabMonthly: '월별 추이',
+    tabPending: '대기 화물',
+    tabVendor: '벤더',
+    typeLand: '육상',
+    typeSea: '해상 · MOSB',
+    typeUnknown: '미지정',
   },
 }
 

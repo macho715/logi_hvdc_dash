@@ -2,6 +2,7 @@
 
 import type { CasesFilter } from '@/types/cases'
 import type { PipelineTableFilters } from '@/components/pipeline/PipelineCasesTable'
+import { useT } from '@/hooks/useT'
 
 type SelectProps = {
   label: string
@@ -34,14 +35,15 @@ interface Props {
 }
 
 export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
+  const t = useT()
   return (
     <div className="flex items-center gap-4 flex-wrap bg-gray-900 px-4 py-2 border-b border-gray-800">
       <FilterSelect
-        label="사이트"
+        label={t.pipeline.siteFilter}
         value={String(filters.site)}
         onChange={v => setFilter('site', v as CasesFilter['site'])}
         options={[
-          { value: 'all', label: '전체' },
+          { value: 'all', label: t.pipeline.all },
           { value: 'SHU', label: 'SHU' },
           { value: 'MIR', label: 'MIR' },
           { value: 'DAS', label: 'DAS' },
@@ -49,22 +51,22 @@ export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
         ]}
       />
       <FilterSelect
-        label="벤더"
+        label={t.pipeline.vendorFilter}
         value={String(filters.vendor)}
         onChange={v => setFilter('vendor', v as CasesFilter['vendor'])}
         options={[
-          { value: 'all', label: '전체' },
+          { value: 'all', label: t.pipeline.all },
           { value: 'Hitachi', label: 'Hitachi' },
           { value: 'Siemens', label: 'Siemens' },
           { value: 'Other', label: 'Other' },
         ]}
       />
       <FilterSelect
-        label="카테고리"
+        label={t.pipeline.categoryFilter}
         value={String(filters.category)}
         onChange={v => setFilter('category', v as CasesFilter['category'])}
         options={[
-          { value: 'all', label: '전체' },
+          { value: 'all', label: t.pipeline.all },
           { value: 'Elec', label: 'Elec' },
           { value: 'Mech', label: 'Mech' },
           { value: 'Inst.', label: 'Inst.' },
@@ -74,7 +76,7 @@ export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
         onClick={resetFilters}
         className="text-xs text-gray-500 hover:text-gray-300 ml-auto"
       >
-        초기화
+        {t.pipeline.reset}
       </button>
     </div>
   )

@@ -6,6 +6,7 @@ import { X } from 'lucide-react'
 import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
 import { buildDashboardLink, parseCargoQuery } from '@/lib/navigation/contracts'
 import { useCasesStore } from '@/store/casesStore'
+import { useT } from '@/hooks/useT'
 import type { CaseRow, ShipmentRow } from '@/types/cases'
 
 function TimelineItem({ label, date }: { label: string; date: string | null }) {
@@ -26,6 +27,7 @@ export function CargoDrawer() {
   const { isDrawerOpen, selectedCaseId, cases, closeDrawer } = useCasesStore()
   const [fetchedCase, setFetchedCase] = useState<CaseRow | null>(null)
   const [shipment, setShipment] = useState<ShipmentRow | null>(null)
+  const t = useT()
 
   const caseRow = cases.find(c => c.id === selectedCaseId) ?? fetchedCase ?? null
 
@@ -81,14 +83,14 @@ export function CargoDrawer() {
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
         {/* Basic info */}
         <section>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">기본정보</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">{t.cargo.basicInfo}</h3>
           <dl className="space-y-1.5">
             {([
-              ['현장', caseRow.site],
-              ['벤더', caseRow.source_vendor],
-              ['운송 경로', getRouteTypeLabel(routeTypeId)],
-              ['현재위치', caseRow.status_location || caseRow.status_current],
-              ['보관유형', caseRow.storage_type],
+              [t.cargo.site, caseRow.site],
+              [t.cargo.vendor, caseRow.source_vendor],
+              [t.cargo.route, getRouteTypeLabel(routeTypeId)],
+              [t.cargo.currentLocation, caseRow.status_location || caseRow.status_current],
+              [t.cargo.storageType, caseRow.storage_type],
               ['SQM', caseRow.sqm ? `${caseRow.sqm} ㎡` : '–'],
             ] as [string, string | number | null | undefined][]).map(([k, v]) => (
               <div key={k} className="flex justify-between text-xs">
@@ -102,19 +104,19 @@ export function CargoDrawer() {
         {/* Timeline */}
         {shipment && (
           <section>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">물류 타임라인</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">{t.cargo.logisticsTimeline}</h3>
             <div className="space-y-2 pl-1 border-l border-gray-700 ml-1">
-              <TimelineItem label="ETD (출발예정)" date={shipment.etd} />
-              <TimelineItem label="ATD (실제출발)" date={shipment.atd} />
-              <TimelineItem label="ETA (도착예정)" date={shipment.eta} />
-              <TimelineItem label="ATA (실제도착)" date={shipment.ata} />
-              <TimelineItem label="현장 도착" date={caseRow.site_arrival_date} />
+              <TimelineItem label={t.cargo.etdLabel} date={shipment.etd} />
+              <TimelineItem label={t.cargo.atdLabel} date={shipment.atd} />
+              <TimelineItem label={t.cargo.etaLabel} date={shipment.eta} />
+              <TimelineItem label={t.cargo.ataLabel} date={shipment.ata} />
+              <TimelineItem label={t.cargo.siteArrival} date={caseRow.site_arrival_date} />
             </div>
           </section>
         )}
 
         {!caseRow.sct_ship_no && (
-          <p className="text-xs text-gray-600">선적번호 없음 — 타임라인 불가</p>
+          <p className="text-xs text-gray-600">{t.cargo.noShipmentNo}</p>
         )}
       </div>
     </div>

@@ -120,7 +120,7 @@ export function OverviewBottomPanel({
                     ) : null}
                     {row.dueAt ? (
                       <span className="rounded-full border border-gray-700 px-2 py-1 text-gray-400">
-                        예정 {row.dueAt}
+                        {t.bottomPanel.dueAt} {row.dueAt}
                       </span>
                     ) : null}
                   </div>

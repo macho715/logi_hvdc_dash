@@ -3,9 +3,11 @@
 import { Building2, Waves } from 'lucide-react'
 
 import { getSiteKind } from '@/lib/logistics/normalizers'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 
 export function SiteTypeTag({ site }: { site: string | null | undefined }) {
+  const t = useT()
   const kind = getSiteKind(site)
 
   if (kind === 'land') {
@@ -17,7 +19,7 @@ export function SiteTypeTag({ site }: { site: string | null | undefined }) {
         )}
       >
         <Building2 size={12} />
-        육상
+        {t.sites.typeLand}
       </span>
     )
   }
@@ -31,14 +33,14 @@ export function SiteTypeTag({ site }: { site: string | null | undefined }) {
         )}
       >
         <Waves size={12} />
-        해상 · MOSB
+        {t.sites.typeSea}
       </span>
     )
   }
 
   return (
     <span className="inline-flex items-center rounded-full border border-gray-700 bg-gray-800 px-2 py-0.5 text-[11px] font-medium text-gray-400">
-      미지정
+      {t.sites.typeUnknown}
     </span>
   )
 }

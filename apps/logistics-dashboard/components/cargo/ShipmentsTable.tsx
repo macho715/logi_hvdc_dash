@@ -5,26 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { buildDashboardLink, parseCargoQuery } from '@/lib/navigation/contracts'
 import { getRouteTypeLabel } from '@/lib/overview/routeTypes'
 import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
+import { useT } from '@/hooks/useT'
 import type { ShipmentRow, VoyageStage } from '@/types/cases'
 import type { OverviewRouteTypeId } from '@/types/overview'
-
-const VOYAGE_STAGE_META: Record<VoyageStage, { label: string; className: string }> = {
-  'pre-departure': { label: '출항 전', className: 'bg-gray-700 text-gray-300' },
-  'in-transit': { label: '항해 중', className: 'bg-blue-900/60 text-blue-300' },
-  'port-customs': { label: '항만/통관', className: 'bg-yellow-900/60 text-yellow-300' },
-  inland: { label: '내륙/창고', className: 'bg-orange-900/60 text-orange-300' },
-  delivered: { label: '납품완료', className: 'bg-green-900/60 text-green-400' },
-}
-
-const VOYAGE_STAGE_OPTIONS: { value: VoyageStage; label: string }[] = [
-  { value: 'pre-departure', label: '출항 전' },
-  { value: 'in-transit', label: '항해 중' },
-  { value: 'port-customs', label: '항만/통관' },
-  { value: 'inland', label: '내륙/창고' },
-  { value: 'delivered', label: '납품완료' },
-]
-
-const SITE_OPTIONS = ['SHU', 'MIR', 'DAS', 'AGI'] as const
 
 function FilterPill({
   label,
@@ -50,8 +33,17 @@ function FilterPill({
   )
 }
 
-function VoyageStageBadge({ stage }: { stage: VoyageStage | undefined | null }) {
+function VoyageStageBadge({ stage, t }: { stage: VoyageStage | undefined | null; t: ReturnType<typeof useT> }) {
   if (!stage) return <span className="text-gray-600">–</span>
+
+  const VOYAGE_STAGE_META: Record<VoyageStage, { label: string; className: string }> = {
+    'pre-departure': { label: t.cargo.badgePreDeparture, className: 'bg-gray-700 text-gray-300' },
+    'in-transit': { label: t.cargo.badgeInTransit, className: 'bg-blue-900/60 text-blue-300' },
+    'port-customs': { label: t.cargo.badgePortCustoms, className: 'bg-yellow-900/60 text-yellow-300' },
+    inland: { label: t.cargo.badgeInland, className: 'bg-orange-900/60 text-orange-300' },
+    delivered: { label: t.cargo.badgeDelivered, className: 'bg-green-900/60 text-green-400' },
+  }
+
   const meta = VOYAGE_STAGE_META[stage]
   return (
     <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${meta.className}`}>
@@ -60,16 +52,29 @@ function VoyageStageBadge({ stage }: { stage: VoyageStage | undefined | null }) 
   )
 }
 
+const SITE_OPTIONS = ['SHU', 'MIR', 'DAS', 'AGI'] as const
+
 export function ShipmentsTable() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const query = parseCargoQuery(searchParams)
+  const t = useT()
   const [data, setData] = useState<ShipmentRow[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [vendors, setVendors] = useState<{ vendor: string; count: number }[]>([])
   const [customsStatus, setCustomsStatus] = useState<'all' | 'cleared' | 'in_progress' | 'pending'>('all')
+
+  const unitSuffix = t.cargo.totalCount === '총' ? '건' : ''
+
+  const VOYAGE_STAGE_OPTIONS: { value: VoyageStage; label: string }[] = [
+    { value: 'pre-departure', label: t.cargo.badgePreDeparture },
+    { value: 'in-transit', label: t.cargo.badgeInTransit },
+    { value: 'port-customs', label: t.cargo.badgePortCustoms },
+    { value: 'inland', label: t.cargo.badgeInland },
+    { value: 'delivered', label: t.cargo.badgeDelivered },
+  ]
 
   useEffect(() => {
     fetch('/api/shipments/vendors')
@@ -128,7 +133,7 @@ export function ShipmentsTable() {
   return (
     <div className="flex h-full flex-col overflow-auto">
       <div className="flex flex-wrap gap-1.5 border-b border-gray-800 bg-gray-900/80 px-3 py-2">
-        <span className="mr-1 self-center text-xs text-gray-500">항차단계</span>
+        <span className="mr-1 self-center text-xs text-gray-500">{t.cargo.voyageStageLabel}</span>
         {VOYAGE_STAGE_OPTIONS.map((option) => (
           <FilterPill
             key={option.value}
@@ -140,7 +145,7 @@ export function ShipmentsTable() {
       </div>
 
       <div className="flex flex-wrap gap-1.5 border-b border-gray-800 bg-gray-900/80 px-3 py-2">
-        <span className="mr-1 self-center text-xs text-gray-500">노미현장</span>
+        <span className="mr-1 self-center text-xs text-gray-500">{t.cargo.nominatedSite}</span>
         {SITE_OPTIONS.map((site) => (
           <FilterPill
             key={site}
@@ -162,10 +167,10 @@ export function ShipmentsTable() {
 
       {vendors.length > 0 ? (
         <div className="flex items-center gap-0 border-b border-gray-800 bg-gray-900/80">
-          <span className="shrink-0 px-3 py-2 text-xs text-gray-500">벤더</span>
+          <span className="shrink-0 px-3 py-2 text-xs text-gray-500">{t.cargo.vendor}</span>
           <div className="flex gap-1.5 overflow-x-auto py-2 pr-3" style={{ scrollbarWidth: 'thin' }}>
             <FilterPill
-              label="전체"
+              label={t.cargo.all}
               active={!query.vendor}
               onClick={() => replaceCargoQuery({ vendor: undefined })}
             />
@@ -191,24 +196,24 @@ export function ShipmentsTable() {
               customsStatus === status ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400'
             }`}
           >
-            {status === 'cleared' ? '통관완료' : status === 'in_progress' ? '진행중' : '대기'}
+            {status === 'cleared' ? t.cargo.cleared : status === 'in_progress' ? t.cargo.inProgress : t.cargo.pending}
           </button>
         ))}
-        <span className="ml-auto text-gray-600">총 {total.toLocaleString()}건</span>
+        <span className="ml-auto text-gray-600">{t.cargo.totalCount} {total.toLocaleString()}{unitSuffix}</span>
       </div>
 
       <table className="w-full border-collapse text-xs text-gray-300">
         <thead className="sticky top-0 z-10 bg-gray-900">
           <tr className="border-b border-gray-700 text-gray-500">
             <th className="whitespace-nowrap py-2 px-3 text-left">SCT SHIP NO</th>
-            <th className="py-2 px-3 text-left">벤더</th>
+            <th className="py-2 px-3 text-left">{t.cargo.vendor}</th>
             <th className="whitespace-nowrap py-2 px-3 text-left">POL→POD</th>
             <th className="py-2 px-3 text-left">ETD</th>
             <th className="py-2 px-3 text-left">ATA</th>
-            <th className="py-2 px-3 text-left">항차단계</th>
-            <th className="py-2 px-3 text-left">운송 경로</th>
-            <th className="py-2 px-3 text-left">노미현장</th>
-            <th className="py-2 px-3 text-left">통관</th>
+            <th className="py-2 px-3 text-left">{t.cargo.voyageStageLabel}</th>
+            <th className="py-2 px-3 text-left">{t.cargo.route}</th>
+            <th className="py-2 px-3 text-left">{t.cargo.nominatedSite}</th>
+            <th className="py-2 px-3 text-left">{t.cargo.customs}</th>
           </tr>
         </thead>
         <tbody>
@@ -224,7 +229,7 @@ export function ShipmentsTable() {
               <td className="whitespace-nowrap py-1.5 px-3">{shipment.pol} → {shipment.pod}</td>
               <td className="py-1.5 px-3 tabular-nums">{shipment.etd ?? '–'}</td>
               <td className="py-1.5 px-3 tabular-nums">{shipment.ata ?? '–'}</td>
-              <td className="py-1.5 px-3"><VoyageStageBadge stage={shipment.voyage_stage} /></td>
+              <td className="py-1.5 px-3"><VoyageStageBadge stage={shipment.voyage_stage} t={t} /></td>
               <td className="py-1.5 px-3">
                 {shipment.route_type ? (
                   <span className={`rounded-full border px-2 py-1 text-[11px] ${getRouteTypeBadgeClass(shipment.route_type)}`}>
@@ -260,14 +265,14 @@ export function ShipmentsTable() {
                     ? 'text-yellow-400'
                     : 'text-gray-500'
                 }>
-                  {shipment.customs_status === 'cleared' ? '완료' : shipment.customs_status === 'in_progress' ? '진행중' : '대기'}
+                  {shipment.customs_status === 'cleared' ? t.cargo.cleared : shipment.customs_status === 'in_progress' ? t.cargo.inProgress : t.cargo.pending}
                 </span>
               </td>
             </tr>
           ))}
           {!loading && data.length === 0 ? (
             <tr>
-              <td colSpan={9} className="py-8 text-center text-gray-600">데이터 없음</td>
+              <td colSpan={9} className="py-8 text-center text-gray-600">{t.cargo.noData}</td>
             </tr>
           ) : null}
         </tbody>
@@ -280,7 +285,7 @@ export function ShipmentsTable() {
           onClick={() => setPage((current) => current - 1)}
           className="rounded bg-gray-800 px-2 py-1 hover:bg-gray-700 disabled:opacity-30"
         >
-          이전
+          {t.cargo.previous}
         </button>
         <span className="py-1 text-gray-500">Page {page}</span>
         <button
@@ -289,7 +294,7 @@ export function ShipmentsTable() {
           onClick={() => setPage((current) => current + 1)}
           className="rounded bg-gray-800 px-2 py-1 hover:bg-gray-700 disabled:opacity-30"
         >
-          다음
+          {t.cargo.next}
         </button>
       </div>
     </div>

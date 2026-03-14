@@ -154,9 +154,9 @@ export function NewVoyageModal({ open, onClose, onSuccess }: Props) {
           </button>
         </div>
         <p className="mb-4 text-xs text-gray-500">
-          SCT SHIP NO만 필수입니다. 나머지는 아는 정보만 입력하세요.
+          {t.modal.subtitle}
           <br />
-          이미 등록된 코드를 입력하면 <span className="text-blue-400">입력한 필드만 덮어씁니다</span> (업데이트).
+          {t.modal.updateNote}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">

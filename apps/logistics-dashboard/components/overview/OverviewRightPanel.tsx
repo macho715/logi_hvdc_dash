@@ -101,6 +101,8 @@ export function OverviewRightPanel({
   selectedShipmentId,
   onClearSelection,
 }: OverviewRightPanelProps) {
+  const t = useT()
+
   if (loading && !data) {
     return <div className="w-full border-l border-gray-800 bg-gray-950/60 xl:w-[360px]" />
   }
@@ -109,7 +111,7 @@ export function OverviewRightPanel({
     return (
       <aside className="w-full border-l border-gray-800 bg-gray-950/60 p-4 xl:w-[360px]">
         <div className="rounded-2xl border border-dashed border-gray-800 bg-gray-900/60 p-4 text-sm text-gray-500">
-          Overview 데이터를 불러오지 못했습니다.
+          {t.rightPanel.loadError}
         </div>
       </aside>
     )
@@ -123,8 +125,8 @@ export function OverviewRightPanel({
         )}
         <section className="space-y-3">
           <div>
-            <h2 className="text-sm font-semibold text-white">예외 보드</h2>
-            <p className="text-xs text-gray-500">운영 우선순위가 높은 항목만 위쪽에 고정합니다.</p>
+            <h2 className="text-sm font-semibold text-white">{t.rightPanel.alerts}</h2>
+            <p className="text-xs text-gray-500">{t.rightPanel.alertsDesc}</p>
           </div>
           <div className="space-y-2">
             {data.alerts.map((alert) => (
@@ -151,8 +153,8 @@ export function OverviewRightPanel({
 
         <section className="space-y-3">
           <div>
-            <h2 className="text-sm font-semibold text-white">운송 경로 요약</h2>
-            <p className="text-xs text-gray-500">숫자 코드를 숨기고 경로 의미만 남겼습니다.</p>
+            <h2 className="text-sm font-semibold text-white">{t.rightPanel.routeSummary}</h2>
+            <p className="text-xs text-gray-500">{t.rightPanel.routeSummaryDesc}</p>
           </div>
           <div className="space-y-2">
             {data.routeSummary.map((item) => (
@@ -182,8 +184,8 @@ export function OverviewRightPanel({
 
         <section className="space-y-3">
           <div>
-            <h2 className="text-sm font-semibold text-white">현장 준비도</h2>
-            <p className="text-xs text-gray-500">현장 단위 도착률과 대기 잔량을 같이 보여줍니다.</p>
+            <h2 className="text-sm font-semibold text-white">{t.rightPanel.siteReadiness}</h2>
+            <p className="text-xs text-gray-500">{t.rightPanel.siteReadinessDesc}</p>
           </div>
           <div className="space-y-2">
             {data.siteReadiness.map((item) => (
@@ -200,10 +202,10 @@ export function OverviewRightPanel({
                   <span className="text-sm font-semibold text-white">{item.readinessPercent.toFixed(1)}%</span>
                 </div>
                 <div className="mt-2 grid grid-cols-4 gap-2 text-[11px] text-gray-400">
-                  <span>도착 {item.arrived}</span>
-                  <span>창고 {item.warehouse}</span>
+                  <span>{t.rightPanel.arrived} {item.arrived}</span>
+                  <span>{t.rightPanel.warehouse} {item.warehouse}</span>
                   <span>MOSB {item.mosb}</span>
-                  <span>대기 {item.preArrival}</span>
+                  <span>{t.common.pending} {item.preArrival}</span>
                 </div>
               </button>
             ))}
@@ -212,8 +214,8 @@ export function OverviewRightPanel({
 
         <section className="space-y-3">
           <div>
-            <h2 className="text-sm font-semibold text-white">최근 활동</h2>
-            <p className="text-xs text-gray-500">이벤트 기반 최근 변화를 Cargo로 바로 넘깁니다.</p>
+            <h2 className="text-sm font-semibold text-white">{t.rightPanel.recentActivity}</h2>
+            <p className="text-xs text-gray-500">{t.rightPanel.recentActivityDesc}</p>
           </div>
           <div className="space-y-2">
             {data.liveFeed.map((item) => (

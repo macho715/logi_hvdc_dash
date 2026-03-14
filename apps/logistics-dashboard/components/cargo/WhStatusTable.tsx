@@ -6,6 +6,7 @@ import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/ro
 import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
 import { parseCargoQuery } from '@/lib/navigation/contracts'
 import { useCasesStore } from '@/store/casesStore'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 
 export function WhStatusTable() {
@@ -13,6 +14,7 @@ export function WhStatusTable() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { cases, fetchCases, setFilter, isLoading, openDrawer } = useCasesStore()
+  const t = useT()
 
   useEffect(() => {
     const query = parseCargoQuery(searchParams)
@@ -39,11 +41,11 @@ export function WhStatusTable() {
             <th className="py-2 px-3 text-left w-12">#</th>
             <th className="py-2 px-3 text-left">Case No</th>
             <th className="py-2 px-3 text-left w-14">Site</th>
-            <th className="py-2 px-3 text-left">현재위치</th>
-            <th className="py-2 px-3 text-left w-40">운송 경로</th>
+            <th className="py-2 px-3 text-left">{t.cargo.currentLocation}</th>
+            <th className="py-2 px-3 text-left w-40">{t.cargo.route}</th>
             <th className="py-2 px-3 text-left w-16">SQM</th>
             <th className="py-2 px-3 text-left w-20">Status</th>
-            <th className="py-2 px-3 text-left">벤더</th>
+            <th className="py-2 px-3 text-left">{t.cargo.vendor}</th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +53,7 @@ export function WhStatusTable() {
             <tr><td colSpan={8} className="py-8 text-center text-gray-600">Loading...</td></tr>
           )}
           {!isLoading && cases.length === 0 && (
-            <tr><td colSpan={8} className="py-8 text-center text-gray-600">데이터 없음</td></tr>
+            <tr><td colSpan={8} className="py-8 text-center text-gray-600">{t.cargo.noData}</td></tr>
           )}
           {cases.map((c, i) => (
             <tr

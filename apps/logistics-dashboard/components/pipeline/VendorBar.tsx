@@ -2,8 +2,10 @@
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { useCasesStore } from '@/store/casesStore'
+import { useT } from '@/hooks/useT'
 
 export function VendorBar() {
+  const t = useT()
   const { summary } = useCasesStore()
   if (!summary) return <div className="h-32 bg-gray-800 animate-pulse rounded" />
 
@@ -11,7 +13,7 @@ export function VendorBar() {
 
   return (
     <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-2">벤더별</h4>
+      <h4 className="text-xs font-semibold text-gray-400 mb-2">{t.pipeline.byVendor}</h4>
       <ResponsiveContainer width="100%" height={120}>
         <BarChart data={data} layout="vertical" margin={{ left: 10 }}>
           <XAxis type="number" hide />

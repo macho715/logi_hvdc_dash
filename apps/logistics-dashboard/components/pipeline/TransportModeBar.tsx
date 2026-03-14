@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { useT } from '@/hooks/useT'
 
 interface ModeCount { name: string; value: number }
 
 export function TransportModeBar() {
+  const t = useT()
   const [data, setData] = useState<ModeCount[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -28,7 +30,7 @@ export function TransportModeBar() {
 
   return (
     <div className="bg-gray-900 rounded-lg p-3">
-      <h4 className="text-xs font-semibold text-gray-400 mb-1">운송 모드 <span className="text-gray-600 font-normal">(BL 기준)</span></h4>
+      <h4 className="text-xs font-semibold text-gray-400 mb-1">{t.pipeline.transportMode} <span className="text-gray-600 font-normal">{t.pipeline.transportModeDesc}</span></h4>
       <ResponsiveContainer width="100%" height={120}>
         <BarChart data={data} layout="vertical" margin={{ left: 10 }}>
           <XAxis type="number" hide />

@@ -7,6 +7,8 @@ import { buildDashboardLink } from '@/lib/navigation/contracts'
 import { OVERVIEW_ROUTE_TYPES, getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
 import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
 import { useCasesStore } from '@/store/casesStore'
+import { useLogisticsStore } from '@/store/logisticsStore'
+import { useT } from '@/hooks/useT'
 import { SiteTypeTag } from '@/components/sites/SiteTypeTag'
 import type { CaseRow } from '@/types/cases'
 import type { SitePageTab } from '@/types/overview'
@@ -23,6 +25,8 @@ interface Props {
 export function SiteDetail({ site, tab, onTabChange }: Props) {
   const router = useRouter()
   const summary = useCasesStore((state) => state.summary)
+  const locale = useLogisticsStore((s) => s.locale)
+  const t = useT()
   const [cases, setCases] = useState<CaseRow[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -38,11 +42,11 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
   }, [site])
 
   const tabs: { key: SitePageTab; label: string }[] = [
-    { key: 'summary', label: '요약' },
-    { key: 'route', label: '운송 경로' },
-    { key: 'monthly', label: '월별 추이' },
-    { key: 'pending', label: '대기 화물' },
-    { key: 'vendor', label: '벤더' },
+    { key: 'summary', label: t.sites.tabSummary },
+    { key: 'route', label: t.sites.tabRoute },
+    { key: 'monthly', label: t.sites.tabMonthly },
+    { key: 'pending', label: t.sites.tabPending },
+    { key: 'vendor', label: t.sites.tabVendor },
   ]
 
   const arrived = cases.filter((row) => row.status_current === 'site').length
@@ -107,7 +111,9 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
                 <SiteTypeTag site={site} />
               </div>
               <div className="text-sm text-gray-400">
-                {arrived.toLocaleString()} / {total.toLocaleString()}건 도착
+                {locale === 'ko'
+                  ? `${arrived.toLocaleString()} / ${total.toLocaleString()}건 도착`
+                  : `${arrived.toLocaleString()} / ${total.toLocaleString()} ${t.sites.arrivedOf}`}
               </div>
               <div className="mt-4 h-3 w-full rounded-full bg-gray-700">
                 <div className="h-3 rounded-full bg-blue-500" style={{ width: `${Math.min(rate, 100)}%` }} />
@@ -159,7 +165,7 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-sm text-gray-500">site_arrival_date 데이터 없음</div>
+            <div className="text-sm text-gray-500">{t.sites.siteArrivalNoData}</div>
           )
         ) : null}
 
@@ -169,9 +175,9 @@ export function SiteDetail({ site, tab, onTabChange }: Props) {
               <thead>
                 <tr className="border-b border-gray-700 text-gray-500">
                   <th className="py-1 text-left">Case No</th>
-                  <th className="py-1 text-left">현재 위치</th>
-                  <th className="py-1 text-left">운송 경로</th>
-                  <th className="py-1 text-left">벤더</th>
+                  <th className="py-1 text-left">{t.sites.currentLocation}</th>
+                  <th className="py-1 text-left">{t.sites.route}</th>
+                  <th className="py-1 text-left">{t.sites.vendor}</th>
                 </tr>
               </thead>
               <tbody>

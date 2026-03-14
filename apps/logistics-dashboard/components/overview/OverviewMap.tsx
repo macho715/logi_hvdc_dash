@@ -23,6 +23,7 @@ import type { OriginEntry } from "@/components/map/layers/createOriginArcLayer"
 import { POI_LOCATIONS } from "@/lib/map/poiLocations"
 import { buildDashboardLink } from "@/lib/navigation/contracts"
 import { formatInDubaiTimezone } from "@/lib/time"
+import { useT } from "@/hooks/useT"
 import type { Event, Location, LocationStatus } from "@repo/shared"
 import type { NavigationIntent } from "@/types/overview"
 import type { PoiLocation } from "@/lib/map/poiTypes"
@@ -154,6 +155,7 @@ function buildPoiIntent(poi: PoiLocation): NavigationIntent {
 }
 
 function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
+  const t = useT()
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
   const overlayRef = useRef<MapboxOverlay | null>(null)
@@ -512,7 +514,7 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
           <span className="font-semibold text-foreground">
             {countryFlag(tooltip.country)} {tooltip.country}
           </span>
-          <span className="text-muted-foreground ml-2">{tooltip.count.toLocaleString()}건</span>
+          <span className="text-muted-foreground ml-2">{tooltip.count.toLocaleString()}{t.overviewMap.countSuffix}</span>
         </div>
       )}
       {tooltip && tooltip.kind === "trip" && (
@@ -525,7 +527,7 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
           )}
           <div className="text-muted-foreground text-xs">
             {tooltip.flowCode !== null
-              ? `Flow ${tooltip.flowCode} · ${tooltip.flowCode >= 3 ? "MOSB route" : "Direct route"}`
+              ? `Flow ${tooltip.flowCode} · ${tooltip.flowCode >= 3 ? t.overviewMap.mosbRoute : t.overviewMap.directRoute}`
               : "In transit"}
           </div>
           <div className="text-muted-foreground text-xs">

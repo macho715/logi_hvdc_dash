@@ -9,6 +9,7 @@ import { PipelineCasesTable } from '@/components/pipeline/PipelineCasesTable'
 import { OriginCountrySummary } from '@/components/chain/OriginCountrySummary'
 import { SITE_META } from '@/lib/overview/ui'
 import { cn } from '@/lib/utils'
+import { useT } from '@/hooks/useT'
 
 interface ShipmentStages {
   pre_departure: number
@@ -91,7 +92,7 @@ function ChainNode({
   title,
   subtitle,
   count,
-  voyageCount,
+  voyageLabel,
   active = false,
   accentClass,
   onClick,
@@ -100,7 +101,7 @@ function ChainNode({
   title: string
   subtitle: string
   count: number
-  voyageCount?: number
+  voyageLabel?: string
   active?: boolean
   accentClass?: string
   onClick?: () => void
@@ -120,8 +121,8 @@ function ChainNode({
       <div className={cn('text-xs font-semibold uppercase tracking-wide text-gray-500', accentClass)}>{title}</div>
       <div className="mt-2 text-2xl font-bold text-white">{count.toLocaleString()}</div>
       <div className="mt-0.5 text-xs text-gray-400">{subtitle}</div>
-      {voyageCount !== undefined ? (
-        <div className="mt-1.5 text-xs font-medium text-blue-400">항차 {voyageCount.toLocaleString()}건</div>
+      {voyageLabel !== undefined ? (
+        <div className="mt-1.5 text-xs font-medium text-blue-400">{voyageLabel}</div>
       ) : null}
       {children}
     </button>
@@ -145,6 +146,7 @@ export function FlowChain({
   onFocusChange,
   onSiteChange,
 }: FlowChainProps) {
+  const t = useT()
   const [summary, setSummary] = useState<ChainSummary>(EMPTY_SUMMARY)
   const [loading, setLoading] = useState(true)
   const [selectedStage, setSelectedStage] = useState<PipelineStage>(getStageForFocus(focus))
@@ -225,18 +227,16 @@ export function FlowChain({
       <section className="rounded-2xl border border-gray-800 bg-[radial-gradient(circle_at_top,#1e3a8a22,transparent_45%),rgba(15,23,42,0.88)] p-4">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-white">전체 물류 체인</h2>
-            <p className="text-sm text-gray-400">
-              원산지 → 항만/통관 → 창고 → MOSB → 현장 흐름을 단계별로 압축 표시합니다.
-            </p>
+            <h2 className="text-lg font-semibold text-white">{t.chain.title}</h2>
+            <p className="text-sm text-gray-400">{t.chain.subtitle}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <div className="rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs text-orange-300">
-              MOSB 경유 경로 {summary.mosbTransit.toLocaleString()}건
+              {t.chain.mosbVia} {summary.mosbTransit.toLocaleString()}{t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}
             </div>
             {!voyageLoading && voyageStages.agi_das_no_mosb_alert > 0 ? (
               <div className="rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-300">
-                필수 MOSB 경유 누락 {voyageStages.agi_das_no_mosb_alert.toLocaleString()}건
+                {t.chain.mosbAlert} {voyageStages.agi_das_no_mosb_alert.toLocaleString()}{t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}
               </div>
             ) : null}
           </div>
@@ -255,7 +255,7 @@ export function FlowChain({
                 <ChainNode
                   key={card.stage}
                   title={card.label}
-                  subtitle={`케이스 ${card.count.toLocaleString()}건`}
+                  subtitle={`${card.count.toLocaleString()}${t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}`}
                   count={card.count}
                   active={selectedStage === card.stage}
                   onClick={() => changeStage(card.stage)}
@@ -265,10 +265,10 @@ export function FlowChain({
 
             <div className="grid gap-3 lg:grid-cols-[1.3fr_1fr_1fr]">
               <section className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
-                <div className="mb-3 text-sm font-semibold text-white">원산지 / 항만 현황</div>
+                <div className="mb-3 text-sm font-semibold text-white">{t.chain.originPortTitle}</div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="rounded-xl border border-gray-800 bg-gray-950/70 p-3">
-                    <div className="mb-2 text-xs text-gray-500">원산지 Top 5</div>
+                    <div className="mb-2 text-xs text-gray-500">{t.chain.originTop5}</div>
                     <div className="space-y-1 text-sm text-gray-300">
                       {summary.origins.slice(0, 5).map((origin) => (
                         <div key={origin.country} className="flex items-center justify-between">
@@ -279,7 +279,7 @@ export function FlowChain({
                     </div>
                   </div>
                   <div className="rounded-xl border border-gray-800 bg-gray-950/70 p-3">
-                    <div className="mb-2 text-xs text-gray-500">항만 / 공항</div>
+                    <div className="mb-2 text-xs text-gray-500">{t.chain.portAirport}</div>
                     <div className="space-y-1 text-sm text-gray-300">
                       {summary.ports.map((port) => (
                         <div key={port.name} className="flex items-center justify-between">
@@ -293,15 +293,17 @@ export function FlowChain({
               </section>
 
               <section className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
-                <div className="mb-3 text-sm font-semibold text-white">육상 현장</div>
+                <div className="mb-3 text-sm font-semibold text-white">{t.chain.landSites}</div>
                 <div className="space-y-2">
-                  {(['SHU', 'MIR'] as const).map((siteKey) => (
+                  {(['SHU', 'MIR'] as const).map((siteKey) => {
+                    const vc = siteKey === 'SHU' ? voyageStages.nominated_shu : voyageStages.nominated_mir
+                    return (
                     <ChainNode
                       key={siteKey}
                       title={siteKey}
-                      subtitle={`케이스 ${summary.sites.land[siteKey].toLocaleString()}건`}
+                      subtitle={`${summary.sites.land[siteKey].toLocaleString()}${t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}`}
                       count={summary.sites.land[siteKey]}
-                      voyageCount={siteKey === 'SHU' ? voyageStages.nominated_shu : voyageStages.nominated_mir}
+                      voyageLabel={`${vc.toLocaleString()} ${t.chain.voyageCount}`}
                       active={site === siteKey || selectedStage === 'site'}
                       accentClass={SITE_META[siteKey].accentClass}
                       onClick={() => {
@@ -309,22 +311,25 @@ export function FlowChain({
                         onSiteChange?.(siteKey)
                       }}
                     >
-                      <div className="mt-1 text-xs text-gray-500">직접 배송 중심</div>
+                      <div className="mt-1 text-xs text-gray-500">{t.chain.directDelivery}</div>
                     </ChainNode>
-                  ))}
+                    )
+                  })}
                 </div>
               </section>
 
               <section className="rounded-2xl border border-gray-800 bg-gray-900/80 p-4">
-                <div className="mb-3 text-sm font-semibold text-white">도서 현장</div>
+                <div className="mb-3 text-sm font-semibold text-white">{t.chain.islandSites}</div>
                 <div className="space-y-2">
-                  {(['DAS', 'AGI'] as const).map((siteKey) => (
+                  {(['DAS', 'AGI'] as const).map((siteKey) => {
+                    const vc = siteKey === 'DAS' ? voyageStages.nominated_das : voyageStages.nominated_agi
+                    return (
                     <ChainNode
                       key={siteKey}
                       title={siteKey}
-                      subtitle={`케이스 ${summary.sites.island[siteKey].toLocaleString()}건`}
+                      subtitle={`${summary.sites.island[siteKey].toLocaleString()}${t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}`}
                       count={summary.sites.island[siteKey]}
-                      voyageCount={siteKey === 'DAS' ? voyageStages.nominated_das : voyageStages.nominated_agi}
+                      voyageLabel={`${vc.toLocaleString()} ${t.chain.voyageCount}`}
                       active={site === siteKey || selectedStage === 'site'}
                       accentClass={SITE_META[siteKey].accentClass}
                       onClick={() => {
@@ -332,27 +337,28 @@ export function FlowChain({
                         onSiteChange?.(siteKey)
                       }}
                     >
-                      <div className="mt-1 text-xs text-orange-400/80">MOSB 경유 기준 관리</div>
+                      <div className="mt-1 text-xs text-orange-400/80">{t.chain.managedViaMosb}</div>
                       {siteKey === 'AGI' && !voyageLoading && voyageStages.agi_das_no_mosb_alert > 0 ? (
                         <div className="mt-1.5 inline-block rounded-full border border-red-500/40 bg-red-500/10 px-2 py-0.5 text-xs font-medium text-red-300">
-                          필수 MOSB 경유 누락 {voyageStages.agi_das_no_mosb_alert}건
+                          {t.chain.missingMosb} {voyageStages.agi_das_no_mosb_alert.toLocaleString()}{t.chain.caseCount === 'cases' ? ` ${t.chain.caseCount}` : t.chain.caseCount}
                         </div>
                       ) : null}
                     </ChainNode>
-                  ))}
+                    )
+                  })}
                 </div>
               </section>
             </div>
 
             {!voyageLoading ? (
               <section className="rounded-2xl border border-gray-800/60 bg-gray-900/60 p-4">
-                <div className="mb-3 text-sm font-semibold text-white">노미현장별 항차 현황</div>
+                <div className="mb-3 text-sm font-semibold text-white">{t.chain.voyageBySite}</div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {[
-                    { site: 'SHU', count: voyageStages.nominated_shu, note: '육상 직배' },
-                    { site: 'MIR', count: voyageStages.nominated_mir, note: '육상 직배' },
-                    { site: 'DAS', count: voyageStages.nominated_das, note: 'MOSB 기준 관리' },
-                    { site: 'AGI', count: voyageStages.nominated_agi, note: 'MOSB 기준 관리' },
+                    { site: 'SHU', count: voyageStages.nominated_shu, note: t.chain.directLand },
+                    { site: 'MIR', count: voyageStages.nominated_mir, note: t.chain.directLand },
+                    { site: 'DAS', count: voyageStages.nominated_das, note: t.chain.mosbManaged },
+                    { site: 'AGI', count: voyageStages.nominated_agi, note: t.chain.mosbManaged },
                   ].map(({ site: siteKey, count, note }) => (
                     <button
                       key={siteKey}
@@ -366,7 +372,7 @@ export function FlowChain({
                       <div className={`text-xs font-semibold uppercase tracking-wide ${SITE_META[siteKey as keyof typeof SITE_META].accentClass}`}>
                         {siteKey}
                       </div>
-                      <div className="text-xl font-bold text-white">{count.toLocaleString()}건</div>
+                      <div className="text-xl font-bold text-white">{count.toLocaleString()} {t.chain.voyageCount}</div>
                       <div className="text-xs text-gray-500">{note}</div>
                     </button>
                   ))}
@@ -386,7 +392,7 @@ export function FlowChain({
             vendor: 'all',
             category: 'all',
           }}
-          title="체인 선택 단계 케이스"
+          title={t.chain.chainStageCases}
         />
       ) : null}
     </div>

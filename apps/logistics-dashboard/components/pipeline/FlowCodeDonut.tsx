@@ -5,6 +5,7 @@ import { useCasesStore } from '@/store/casesStore'
 import { OVERVIEW_ROUTE_TYPES } from '@/lib/overview/routeTypes'
 import { getRouteTypeBadgeClass } from '@/lib/overview/ui'
 import type { OverviewRouteTypeId } from '@/types/overview'
+import { useT } from '@/hooks/useT'
 
 const ROUTE_COLORS: Record<OverviewRouteTypeId, string> = {
   'pre-arrival': '#64748b',
@@ -21,6 +22,7 @@ interface FlowCodeDonutProps {
 }
 
 export function FlowCodeDonut({ selectedRouteType, onRouteTypeSelect }: FlowCodeDonutProps) {
+  const t = useT()
   const { summary } = useCasesStore()
   if (!summary) return <div className="h-48 bg-gray-800 animate-pulse rounded" />
 
@@ -35,7 +37,7 @@ export function FlowCodeDonut({ selectedRouteType, onRouteTypeSelect }: FlowCode
   return (
     <div className="bg-gray-900 rounded-lg p-3">
       <div className="mb-2 flex items-center justify-between gap-2">
-        <h4 className="text-xs font-semibold text-gray-400">운송 경로 분포</h4>
+        <h4 className="text-xs font-semibold text-gray-400">{t.pipeline.routeDistribution}</h4>
         {selectedRouteType ? (
           <button
             type="button"

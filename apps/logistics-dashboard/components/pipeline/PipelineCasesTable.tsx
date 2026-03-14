@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useT } from '@/hooks/useT'
 
 import { buildDashboardLink } from '@/lib/navigation/contracts'
 import { getRouteTypeIdFromFlowCode, getRouteTypeLabel } from '@/lib/overview/routeTypes'
@@ -31,8 +32,10 @@ export function PipelineCasesTable({
   stage,
   filters = DEFAULT_FILTERS,
   routeType,
-  title = '선택 단계 케이스',
+  title,
 }: Props) {
+  const t = useT()
+  const displayTitle = title ?? t.pipeline.stageCases
   const router = useRouter()
   const [rows, setRows] = useState<CaseRow[]>([])
   const [loading, setLoading] = useState(false)
@@ -79,7 +82,7 @@ export function PipelineCasesTable({
   if (!stage) {
     return (
       <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/70 p-6 text-sm text-gray-400">
-        파이프라인 단계를 선택하면 해당 케이스가 여기에 표시됩니다.
+        {t.pipeline.selectStageHint}
       </div>
     )
   }
@@ -88,8 +91,8 @@ export function PipelineCasesTable({
     <section className="rounded-xl border border-gray-800 bg-gray-900/80">
       <div className="flex items-center justify-between border-b border-gray-800 px-4 py-3">
         <div>
-          <h3 className="text-sm font-semibold text-white">{title}</h3>
-          <p className="text-xs text-gray-500">행 클릭 시 Cargo drawer로 이동합니다.</p>
+          <h3 className="text-sm font-semibold text-white">{displayTitle}</h3>
+          <p className="text-xs text-gray-500">{t.pipeline.rowClickHint}</p>
         </div>
         <span className="text-xs text-gray-500">{rows.length.toLocaleString()} rows</span>
       </div>
@@ -100,8 +103,8 @@ export function PipelineCasesTable({
             <tr className="border-b border-gray-800 text-gray-500">
               <th className="px-3 py-2 text-left">Case No</th>
               <th className="px-3 py-2 text-left">Site</th>
-              <th className="px-3 py-2 text-left">현재 위치</th>
-              <th className="px-3 py-2 text-left">운송 경로</th>
+              <th className="px-3 py-2 text-left">{t.pipeline.currentLocation}</th>
+              <th className="px-3 py-2 text-left">{t.pipeline.route}</th>
               <th className="px-3 py-2 text-left">Storage</th>
               <th className="px-3 py-2 text-left">Vendor</th>
             </tr>
@@ -117,7 +120,7 @@ export function PipelineCasesTable({
             {!loading && rows.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-3 py-8 text-center text-gray-600">
-                  일치하는 케이스가 없습니다.
+                  {t.pipeline.noMatchingCases}
                 </td>
               </tr>
             )}
