@@ -120,13 +120,23 @@ export interface Translations {
     noLocation: string
     noWorklist: string
     dueAt: string
+    siteMatrix: string
+    voyageRadar: string
   }
 
   // ── OverviewMap tooltip ──────────────────────────────────
   overviewMap: {
     refreshError: string
     countSuffix: string
+    mapMode: string
+    mapModeHint: string
+    globalTrack: string
+    uaeOpsTrack: string
     directRoute: string
+    warehouseRoute: string
+    customsClearance: string
+    customsToMosb: string
+    siteDelivery: string
     mosbRoute: string
   }
 
@@ -175,8 +185,11 @@ export interface Translations {
     hvdcSite: string
     mosbYard: string
     port: string
+    customs: string
     warehouse: string
     originRegion: string
+    routeMeaning: string
+    portTransit: string
     activeVoyage: string
   }
 
@@ -360,6 +373,14 @@ export interface Translations {
     share: string           // 'share' / '비중'
     risk: string            // 'risk' / '위험'
   }
+  voyageRadar: {
+    title: string
+    tabAll: string
+    tabCritical: string
+    tabWarning: string
+    tabOverdue: string
+    noItems: string
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -385,7 +406,7 @@ export const en: Translations = {
     pending: 'Pending',
   },
   nav: {
-    overview: 'Overview',
+    overview: 'HVDC CONTROL TOWER',
     chain: 'Logistics Chain',
     pipeline: 'Pipeline',
     sites: 'Sites',
@@ -459,11 +480,21 @@ export const en: Translations = {
     noLocation: 'Location unknown',
     noWorklist: 'No priority items',
     dueAt: 'Due',
+    siteMatrix: 'Site Matrix',
+    voyageRadar: 'Voyage Radar',
   },
   overviewMap: {
     refreshError: 'Failed to refresh overview data:',
     countSuffix: '',
+    mapMode: 'Map Mode',
+    mapModeHint: 'Switch between the global supply chain and UAE operations network.',
+    globalTrack: 'Global',
+    uaeOpsTrack: 'UAE Ops',
     directRoute: 'Direct route',
+    warehouseRoute: 'Warehouse route',
+    customsClearance: 'Customs clearance',
+    customsToMosb: 'Customs to MOSB',
+    siteDelivery: 'Site delivery',
     mosbRoute: 'MOSB route',
   },
   modal: {
@@ -508,8 +539,11 @@ export const en: Translations = {
     hvdcSite: 'HVDC Site',
     mosbYard: 'MOSB Yard',
     port: 'Port',
+    customs: 'Customs',
     warehouse: 'Warehouse',
     originRegion: 'ORIGIN REGION',
+    routeMeaning: 'ROUTE MEANING',
+    portTransit: 'Port / Transit',
     activeVoyage: 'ACTIVE VOYAGE',
   },
   heatmap: {
@@ -631,7 +665,7 @@ export const en: Translations = {
     title: 'Mission Control',
     critical: 'Critical',
     next72h: 'Next 72h',
-    agiDasBlockers: 'AGI / DAS Blockers',
+    agiDasBlockers: 'Voyage Blockers',
     actionQueue: 'Action Queue',
     noItems: 'No items',
   },
@@ -670,6 +704,14 @@ export const en: Translations = {
     share: 'share',
     risk: 'risk',
   },
+  voyageRadar: {
+    title: 'Voyage Exception Radar',
+    tabAll: 'All',
+    tabCritical: 'Critical',
+    tabWarning: 'Warning',
+    tabOverdue: 'Overdue',
+    noItems: 'No exceptions',
+  },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -695,7 +737,7 @@ export const ko: Translations = {
     pending: '대기',
   },
   nav: {
-    overview: '개요',
+    overview: 'HVDC CONTROL TOWER',
     chain: '물류 체인',
     pipeline: '파이프라인',
     sites: '현장',
@@ -769,12 +811,22 @@ export const ko: Translations = {
     noLocation: '상세 위치 없음',
     noWorklist: '우선순위 항목 없음',
     dueAt: '예정',
+    siteMatrix: '현장 매트릭스',
+    voyageRadar: '항차 레이더',
   },
   overviewMap: {
     refreshError: 'Overview 데이터를 새로고침하지 못했습니다:',
     countSuffix: '건',
-    directRoute: 'Direct route',
-    mosbRoute: 'MOSB route',
+    mapMode: '맵 모드',
+    mapModeHint: 'Global 공급망과 UAE 운영 네트워크를 전환합니다.',
+    globalTrack: 'Global',
+    uaeOpsTrack: 'UAE Ops',
+    directRoute: '직송 경로',
+    warehouseRoute: '창고 경유',
+    customsClearance: '통관 구간',
+    customsToMosb: '통관 후 MOSB 이동',
+    siteDelivery: '현장 납품',
+    mosbRoute: 'MOSB 경유',
   },
   modal: {
     title: '신규 항차 등록',
@@ -818,8 +870,11 @@ export const ko: Translations = {
     hvdcSite: 'HVDC 현장',
     mosbYard: 'MOSB 야드',
     port: '항구',
+    customs: '통관',
     warehouse: '창고',
     originRegion: '출발 지역',
+    routeMeaning: '경로 의미',
+    portTransit: '항만 / 환적',
     activeVoyage: '진행 중 항차',
   },
   heatmap: {
@@ -941,12 +996,12 @@ export const ko: Translations = {
     title: '미션 컨트롤',
     critical: '긴급',
     next72h: '72시간 내',
-    agiDasBlockers: 'AGI/DAS 차단',
+    agiDasBlockers: '항로 차단',
     actionQueue: '처리 대기',
     noItems: '항목 없음',
   },
   siteMatrix: {
-    title: '현장 납품 현황',
+    title: 'Site Delivery Matrix',
     assigned: '배정',
     delivered: '납품',
     pending: '대기',
@@ -979,6 +1034,14 @@ export const ko: Translations = {
     count: '건',
     share: '비중',
     risk: '위험',
+  },
+  voyageRadar: {
+    title: '항차 예외 레이더',
+    tabAll: '전체',
+    tabCritical: '긴급',
+    tabWarning: '경고',
+    tabOverdue: '기한초과',
+    noItems: '예외 없음',
   },
 }
 
