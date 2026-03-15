@@ -51,15 +51,14 @@ Entry component:
 
 - `components/overview/OverviewPageClient.tsx`
 
-7-row layout order:
+Map First + Bottom Collapse layout order:
 
-1. `OverviewToolbar`
-2. `ProgramFilterBar`
-3. `KpiStripCards`
-4. `ChainRibbonStrip`
-5. `OverviewMap` + `MissionControl`
-6. `SiteDeliveryMatrix`
-7. `OpenRadarTable` + `OpsSnapshot`
+1. `OverviewToolbar` + `ProgramFilterBar`
+2. `KpiStripCards` (slim)
+3. `ChainRibbonStrip` (slim, relabeled: Origin / Port-Air / Customs / Warehouse / MOSB / Site)
+4. `OverviewMap` (full-width, 520–680px) + `MissionControlFloat` (absolute overlay, top-right)
+5. `BottomCollapsePanel` (default: closed) — tabs: Site Matrix | Voyage Radar
+6. Bottom nav — Logistics Chain / Pipeline / Sites / Cargo
 
 Key children and roles:
 
@@ -74,17 +73,26 @@ Key children and roles:
   - renders maplibre + deck.gl overlay
   - reads locations, statuses, and events from shared ops state
   - shows `HeatmapLegend` only when heatmap is enabled and within zoom threshold
-- `MissionControl`
-  - alert stack
-  - route summary
-  - site readiness
-  - selected shipment card
-- `SiteDeliveryMatrix`
-  - site readiness drilldown
-- `OpenRadarTable`
-  - prioritized radar list
-- `OpsSnapshot`
-  - operational pressure and feed summaries
+  - root container has `position: relative` for the floating MC overlay
+- `MissionControlFloat`
+  - wraps `MissionControl` in a `position: absolute top-4 right-4 z-20` card
+  - frosted-glass overlay (`backdrop-blur-md`)
+  - collapsible via chevron toggle
+  - width: 72 (expanded) / 44 (collapsed) in rem-based Tailwind units
+- `BottomCollapsePanel`
+  - tab bar always visible (h-12)
+  - tabs: `site-matrix` and `voyage-radar`
+  - default state: closed (`activeTab = null`)
+  - clicking an active tab closes the panel
+  - accepts `renderSiteMatrix` and `renderVoyageRadar` render props
+- `SiteDeliveryMatrix` (rendered via `BottomCollapsePanel` render prop)
+  - 4 equal-width site cards (`xl:grid-cols-4`)
+  - AGI uses gold gradient
+  - MOSB Pending label applies to both DAS and AGI
+- `VoyageExceptionRadar` (rendered via `BottomCollapsePanel` render prop)
+  - voyage-grain alert panel (replaces `OpenRadarTable`)
+  - consumes `OverviewAlert[]` — not `WorklistRow[]`
+  - filter tabs: All / Critical / Warning / Overdue
 
 Overview data ownership:
 
@@ -96,6 +104,8 @@ Preserved but inactive files:
 
 - `OverviewRightPanel.tsx`
 - `OverviewBottomPanel.tsx`
+- `OpenRadarTable.tsx` (replaced by `VoyageExceptionRadar`)
+- `OpsSnapshot.tsx` (moved into `BottomCollapsePanel`)
 
 These files are not part of the active overview contract.
 
@@ -206,6 +216,55 @@ Contract:
 - overview route summary and infrastructure clicks land here
 
 ## Shared Interaction Components
+
+### ChainRibbonStrip
+
+File:
+
+- `components/overview/ChainRibbonStrip.tsx`
+
+Purpose:
+
+- render voyage stage chain with slim height
+- labels use `t.chainRibbon.*` i18n keys: Origin / Port-Air / Customs / Warehouse / MOSB / Site
+- FC0–FC5 labels removed from user-facing output (internal stage keys still used)
+
+### VoyageExceptionRadar
+
+File:
+
+- `components/overview/VoyageExceptionRadar.tsx`
+
+Purpose:
+
+- display voyage-grain exception alerts
+- consumes `OverviewAlert[]` from `/api/overview`
+- filter tabs: All / Critical / Warning / Overdue
+- grain: shipment/voyage — not case/worklist
+
+### MissionControlFloat
+
+File:
+
+- `components/overview/MissionControlFloat.tsx`
+
+Purpose:
+
+- position `MissionControl` as a floating card inside the map container
+- wraps existing `MissionControl` without rewriting internals
+- collapsible state managed by local `useState`
+
+### BottomCollapsePanel
+
+File:
+
+- `components/overview/BottomCollapsePanel.tsx`
+
+Purpose:
+
+- host Site Matrix and Voyage Radar in a tabbed collapse panel
+- closed by default — reduces viewport consumption of detail panels
+- accepts render props (`renderSiteMatrix`, `renderVoyageRadar`) for lazy rendering
 
 ### PageContextBanner
 

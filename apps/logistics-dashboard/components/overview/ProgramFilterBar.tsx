@@ -70,8 +70,8 @@ export function ProgramFilterBar({
           className={cn(
             'px-2 py-0.5 rounded-full text-[11px] font-semibold border transition-colors duration-100',
             selectedSite === null
-              ? 'border-hvdc-brand bg-hvdc-brand text-white shadow-hvdc-active'
-              : 'border-hvdc-border-soft text-hvdc-text-secondary hover:border-hvdc-brand',
+              ? 'border-[#2F76FF]/40 bg-hvdc-brand text-white shadow-hvdc-active'
+              : 'border-white/12 text-hvdc-text-secondary hover:border-[#2F76FF]/40',
           )}
         >
           {t.programBar.filterAll}
@@ -86,8 +86,8 @@ export function ProgramFilterBar({
             className={cn(
               'px-2 py-0.5 rounded-full text-[11px] font-semibold border transition-colors duration-100',
               selectedSite === site
-                ? 'border-hvdc-brand bg-hvdc-brand text-white shadow-hvdc-active'
-                : 'border-hvdc-border-soft text-hvdc-text-secondary hover:border-hvdc-brand',
+                ? 'border-[#2F76FF]/40 bg-hvdc-brand text-white shadow-hvdc-active'
+                : 'border-white/12 text-hvdc-text-secondary hover:border-[#2F76FF]/40',
             )}
           >
             {site}

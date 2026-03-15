@@ -1,346 +1,498 @@
-# AGENTS.md — HVDC + Logistics Integrated Dashboard & Supabase↔Foundry Integration
+# AGENTS.md
 
-Last updated: 2026-01-23
+You are an AI coding agent working on the HVDC Dashboard repository.
 
-You are an AI coding assistant working on this repository.
-Follow these project rules precisely. If any rule conflicts with a user request, **the user request wins**.
+This project has one critical data-contract rule:
 
----
+- `hvdc all status` is for **Overview only**
+- `wh status + Flow Code` is for **WH detail / case drilldown only**
 
-## 0) Mission / Scope
-
-- Deliver a **single web application** that unifies:
-  - **Logistics** (map: locations/statuses/events/occupancy)
-  - **HVDC** (KPI strip + worklist + detail drawer)
-- **Supabase is the SSOT** for operational data (Postgres + RLS + Data APIs + Realtime/Webhooks).
-- Preserve **HVDC JSON → RDF(Turtle)** pipeline; additionally **normalize operational tables** in Supabase for frontend/API usage.
-- Optimize for **desktop + mobile (PWA)** and meet **WCAG 2.2 AA**.
-
-Non-goals (unless explicitly requested):
-
-- Introducing a second operational database besides Supabase.
-- Replacing RDF/Ontology/SHACL approach.
-- Large UI redesign (reuse existing components first).
+Do not mix these roles.
 
 ---
 
-## 1) Definition of Done & Gates
+## 0) Core Principle
 
-A change is “done” only if:
+The purpose of `hvdc all status` is to represent:
 
-- Integrated layout stays intact: **MapView (left) + RightPanel (right) + HVDC Panel (bottom)**.
-- Mobile interactions do not regress (bottom panel drag, drawer open/close, one-hand operation).
-- Accessibility baseline is met (contrast, keyboard, ARIA, focus/ESC).
-- No secrets exposed; no RLS weakening; no client usage of elevated keys.
-- Tests are added/updated for changed logic; migrations/docs updated for schema/contract changes.
+- full voyage visibility
+- planning status
+- customs status
+- operational progress status
 
-Decision gates:
+The document-level end-to-end flow must be understood as:
 
-- **Gate 1 (Data Model):** Supabase schema + mapping approved.
-- **Gate 2 (UI/UX):** ≥80% positive user test feedback.
-- **Gate 3 (Performance):** avg < 1s, p95 < 3s for critical flows.
+`Shipping -> Customs Clearance -> Port Handling -> Storage -> LCT -> Site Offloading`
 
-Hard KPIs (integration/validation):
+By contrast, `Flow Code` is not a voyage-level overview key.
+It is a **material handling / routing pattern classifier**.
+It is better suited for:
 
-- Sync lag **p95 ≤ 300s**
-- Validation latency **p95 < 5s**
-- OCR gate: **MeanConf≥0.92 / TableAcc≥0.98 / NumericIntegrity=1.00**
-  - If gate fails: **ZERO-fail-safe** (stop downstream automation + ticket)
+- operational rule checks
+- detailed warehouse routing interpretation
+- MOSB enforcement logic for AGI / DAS
+- case/package-level drilldown
 
----
+Therefore the required contract is:
 
-## 2) Expected Stack (Follow repo reality if different)
+- `Overview = hvdc all status only`
+- `WH detail / case drilldown = wh status + Flow Code`
 
-- Frontend: Next.js 15 + TypeScript + React
-- Maps: maplibre-gl + deck.gl
-- Backend integration: Supabase (Postgres, Auth, RLS, Data APIs, Realtime, Edge Functions)
-- Testing: jest + testing-library (or repo standard)
-- Deploy: Vercel
+This separation is mandatory.
 
 ---
 
-## 3) Repo Layout (Target)
+## 1) Mission
 
-Monorepo (recommended):
+Build the dashboard so that the Overview page reflects the **program-level voyage view**, not warehouse-first routing logic.
 
-- /apps/logistics-dashboard
-- /apps/hvdc-dashboard
-- /packages/ui-components (shared UI)
-- /scripts (setup + pipelines)
-- /configs (column mapping specs; SSOT)
-- /supabase or /migrations (schema + RLS)
+The Overview page is a **voyage map**.
 
-Rule discovery:
+It must answer:
 
-- **Nearest nested AGENTS.md** (closest to edited code) overrides the root file.
+- where shipments are coming from
+- which UAE entry point they use
+- whether customs has started or closed
+- whether cargo is staged in warehouse
+- whether MOSB staging is involved
+- which site is planned or actually reached
 
----
-
-## 4) Setup / Commands (SSOT = package.json scripts)
-
-- Detect package manager by lockfile: pnpm / npm / yarn.
-- Prefer repo scripts; do not invent commands.
-- Prefer **file-scoped** lint/test/typecheck over full builds when possible.
-
-Typical:
-
-```bash
-<pm> install
-<pm> run dev
-<pm> run lint
-<pm> run typecheck
-<pm> test
-```
-
-If Turbo/Turborepo exists, prefer root scripts (they usually wrap filters).
+It must **not** answer case/package routing patterns through `Flow Code`.
 
 ---
 
-## 5) Supabase Data Model (SSOT)
+## 2) Data Source Roles
 
-Expected domain tables:
+### A. `hvdc all status`
 
-- locations
-- location_statuses
-- events
-- hvdc_kpis
-- hvdc_worklist
-- logs (pipeline/audit, used columns logs)
+This is the **Overview master**.
 
-Integration-friendly baseline (recommended for Foundry/Ontology ingest):
+Use it for:
 
-- core_entity
-- core_entity_key
-- log_transport_event (raw_payload jsonb 포함)
-- doc_registry (doc_hash + OCR metrics)
+- shipment/voyage-level records
+- Origin / COE
+- POL / POD
+- ETD / ATD / ETA / ATA
+- customs start / customs close
+- nomination fields
+- stage milestone logic
+- vendor / category / CIF / GWT
+- planned site vs actual site logic
+- overview map aggregation
+- voyage-level stage calculation
+
+This dataset is for **voyage-level map master** logic.
+
+### B. `wh status`
+
+This is the **detail operations master**.
+
+Use it for:
+
+- case/package-level records
+- actual final location
+- actual warehouse stop
+- detailed warehouse / MOSB / site route
+- FLOW_CODE
+- detailed ops status
+- drilldown-level tooltip / panel data
+
+This dataset is for **detail/drilldown master** logic.
+
+---
+
+## 3) Forbidden Legacy Pattern
+
+Never use this pattern:
+
+`hvdc all status -> infer Flow Code -> build Overview map`
+
+This is wrong.
+
+Use this pattern instead:
+
+`hvdc all status -> Overview voyage map`
+`wh status -> detailed ops / case route / Flow Code`
+
+---
+
+## 4) Overview Must Not Use Flow Code as Main Logic
+
+Do not use `Flow Code` as:
+
+- overview main path key
+- overview shipment classifier
+- overview stage driver
+- overview vendor grouping key
+- overview site clustering key
+
+Reason:
+
+- In `hvdc all status`, fields like `DOC_AGI` are planned nominations, not guaranteed final single routes
+- A single shipment can branch to multiple sites
+- Assigning one shipment to one Flow Code at overview level creates distortion
+- Flow Code describes handling/routing patterns, not the primary voyage-view identity
+
+Overview must show only the high-level chain:
+
+- Origin
+- POD
+- Customs status
+- WH staging 여부
+- MOSB 여부
+- Site nomination / actual arrival
+
+Flow 1 / 2 / 3 / 4 must not become the main Overview language.
+
+---
+
+## 5) Page-Level Grain Rules
+
+### Overview
+
+Grain = shipment / voyage
+
+Main metrics:
+
+- stage
+- vendor
+- origin
+- POL / POD
+- ETA / ATA
+- customs progress
+- warehouse staging hint
+- MOSB hint
+- planned site
+- actual site
+
+### WH Detail / Cargo Drilldown / Site Detail
+
+Grain = case / package
+
+Main metrics:
+
+- FLOW_CODE
+- final location
+- actual route
+- warehouse stop
+- operational case status
+
+Never combine these grains inside one main-path transform.
+
+---
+
+## 6) Overview Algorithm Standard
+
+### Step 1. Build shipment master from `hvdc all status`
+
+Primary key:
+
+- `SCT SHIP NO.` or equivalent shipment/voyage key
+
+Recommended normalized fields:
+
+- shipment_id
+- vendor
+- category
+- origin_region / COE
+- pol
+- pod
+- etd / atd / eta / ata
+- customs_start / customs_close
+- planned_sites
+- actual_sites
+- warehouse_hints
+- mosb_hint
+- final_delivery
+
+Do not fabricate fields that do not exist.
+
+### Step 2. Split planned vs actual site
+
+Planned site inputs:
+
+- DOC_SHU
+- DOC_MIR
+- DOC_DAS
+- DOC_AGI
+
+Actual site inputs:
+
+- SHU actual date
+- MIR actual date
+- DAS actual date
+- AGI actual date
+
+Rule:
+
+- if actual exists, actual wins
+- otherwise planned nomination is used
+
+Always preserve:
+
+- `site_basis = actual | planned`
+
+### Step 3. Calculate Overview stage
+
+Use stage, not Flow Code.
+
+Canonical stage list:
+
+- `pre_arrival`
+- `in_transit`
+- `arrived_port`
+- `customs_in_progress`
+- `customs_cleared`
+- `warehouse_staging`
+- `mosb_staging`
+- `at_site`
+- `delivered`
+
+Recommended order:
+
+1. `delivered` if final delivery exists
+2. `at_site` if actual site exists
+3. `mosb_staging` if MOSB hint exists
+4. `warehouse_staging` if warehouse milestone exists
+5. `customs_cleared` if customs close exists
+6. `customs_in_progress` if customs start exists
+7. `arrived_port` if ATA exists
+8. `in_transit` if ETA or ATD exists
+9. else `pre_arrival`
+
+### Step 4. Build global map path
+
+Without Flow Code:
+
+`origin_region -> pol -> pod -> site_cluster`
+
+Where:
+
+- actual site mix has priority
+- if no actual site, use planned nomination
+
+Example:
+
+- `Europe -> Antwerp -> Khalifa Port -> SHU`
+- `Korea -> Busan -> Mina Zayed -> DAS`
+
+### Step 5. Build UAE Ops map path
+
+UAE Ops map rendering rule:
+
+- Never reuse Global arc/trip visual profiles in UAE Ops.
+
+- UAE Ops must use a separate line profile with lower arc height, lower width, and reduced opacity.
+
+- If a change keeps the same visual profile for both modes, the task is incomplete.
+
+
+
+Without Flow Code:
+
+`POD -> Customs -> WH(optional) -> MOSB(optional) -> Site`
 
 Rules:
 
-- Any table exposed via Data APIs must have **RLS enabled + explicit policies**.
-- Store **normalized columns + raw JSONB** for audit/reprocessing.
-- Add indexes on cursor fields (updated_at, event_ts, id) for incremental pulls.
-- Realtime: filtered channels, minimal payload, merge/debounce, UI virtualization.
+- AGI / DAS planned or actual should strongly imply MOSB pathing
+- SHU / MIR may be direct or WH-mediated
+- WH is optional
+- Port/Air -> Customs -> Site is the main backbone
 
 ---
 
-## 6) HVDC JSON → RDF(Turtle) Pipeline (Must preserve)
+## 7) Flow Code Usage Rules
 
-- Script: scripts/core/json_to_ttl.py
-- Mapping SSOT: configs/columns.hvdc_status.json
-- Script must:
-  - parse dates consistently
-  - output TTL
-  - output used-columns audit log (*.used_cols.json)
-- Upload used-columns logs to logs table (or object storage) for analyst verification.
+`Flow Code` remains valid, but only in detail contexts.
 
-Never:
+Allowed:
 
-- silently drop unmapped columns
-- change mapping semantics without updating config + audit
+- Open Radar detail
+- Cargo drilldown
+- WH Pressure
+- Site detail page
+- Flow Code distribution panel
+- case/package tooltip
+- pipeline flow summary
+- warehouse detail page
 
----
+Optional:
 
-## 7) Supabase ↔ Foundry/Ontology Integration (4 patterns)
+- overview tooltip secondary detail only
 
-Supabase capabilities map cleanly to these operational patterns:
-A) **DB Pull** (Postgres direct/pool)
-B) **API Pull** (Supabase Data APIs / REST; RLS-aware)
-C) **CDC** (Logical Replication)
-D) **Webhook Push** (Database Webhooks)
+Not allowed:
 
-Default recommendation:
-
-- **(A)+(D)** or **(B)+(D)**: event trigger + deterministic pull for replay/backfill.
-
-### A) DB Pull (bulk/backfill)
-
-Use for: bulk loads, reprocessing, analytics-grade extract.
-
-- Create a **read-only DB role** for Foundry ingestion.
-- Incremental loads must be cursor-based + indexed (updated_at/event_ts).
-- Consumers must be idempotent (dedupe keys).
-
-### B) API Pull (policy-heavy / network constrained)
-
-Use for: strict network constraints, RLS-based access control.
-
-- Standardize pagination: updated_at cursor + deterministic sort.
-- Prefer signed JWT + RLS policies over bypass mechanisms.
-- Never use elevated keys from client code.
-
-### C) CDC (ops-mature only)
-
-Use for: near-real-time sync at scale (higher ops complexity).
-
-- Prefer **Outbox table** (stable change envelopes).
-- Consumer must be idempotent + checkpointed.
-- Define replay strategy + monitoring runbook (slots/lag/errors).
-
-### D) Webhook Push (trigger-only)
-
-Use for: event-driven pipeline triggers.
-
-- Payload must be thin: {table, pk, operation, occurred_at}
-- Receiver re-fetches full data via (A) or (B) (**thin webhook, fat pull**).
-- Must implement retry/backoff + dead-letter; log failures.
+- overview main path generation
+- overview stage computation
+- overview voyage clustering
+- overview primary map edges
+- overview shipment identity logic
 
 ---
 
-## 8) Foundry/Ontology Validation (SHACL / Trust)
+## 8) AGI / DAS MOSB Rule
 
-Minimum validation constraints:
+Because `Flow Code` is suitable for operational rule confirmation, it is especially valid for:
 
-- flow_code ∈ [0..5] + domain routing rules cross-check
-- invoice math integrity:
-  - EA×Rate = Amount (±0.01)
-  - ΣLine = InvoiceTotal (±2.00%)
-- Persist validation outcomes (pass/fail, reasons, timestamps, offending rows/triples).
+- AGI MOSB-required pattern confirmation
+- DAS MOSB-required pattern confirmation
+- offshore staging path validation
+- warehouse-to-MOSB-to-site detail tracking
 
-Human-in-the-loop required for:
+This logic belongs in:
 
-- high-value / regulatory cases
-- missing critical documents
-- unresolved mismatches after automated retries
+- `wh status`
+- detail routing transforms
+- drilldown and ops validation panels
 
----
-
-## 9) UI/UX Invariants (Do not break)
-
-Layout:
-
-- MapView left; RightPanel right; HVDC Panel bottom (KpiStrip + Worklist + DetailDrawer)
-
-Theme:
-
-- Dark mode default; panels semi-transparent.
-
-Status colors (consistent everywhere):
-
-- OK green / WARNING amber / CRITICAL red
-
-Signature interactions:
-
-- Bottom panel drag (mobile-first)
-- CRITICAL/WARNING glow (brief, non-distracting)
-
-Loading & scale:
-
-- skeletons + incremental loading
-- virtualize large lists (events/worklist)
-- avoid UI jank on realtime updates
+Do not lift MOSB detail-routing logic into the overview backbone unless it is already represented as a voyage-level milestone in `hvdc all status`.
 
 ---
 
-## 10) Accessibility (WCAG 2.2 AA baseline)
+## 9) Vendor Rule
 
-Global:
+Never hardcode a single vendor such as `Hitachi`.
 
-- Contrast ≥ 4.5:1
-- All interactive elements reachable by keyboard
-- ESC closes drawers/modals
+Overview vendor logic must use the distinct vendor set from `hvdc all status`.
 
-Component specifics:
+Required behavior:
 
-- MapView: do not hijack focus (tabindex -1 where appropriate)
-- RightPanel: rows act as buttons with aria-label
-- KpiStrip: aria-live="polite" for updates
-- Charts: always provide textual summary/table alternative
-- DetailDrawer: trap focus; ESC closes; prevent background scroll
+- default filter: `All Vendors`
+- vendor values: dynamic distinct values from source data
+- support all actual vendors
+
+Do not build overview around one fixed vendor.
 
 ---
 
-## 11) Security / Compliance (Non-negotiable)
+## 10) Output Contract
 
-Keys:
+### Overview outputs
 
-- **NEVER expose service_role (or any secret/admin key)** to browser/mobile/public repo/docs/URLs.
-- Elevated keys allowed only on server/edge; sanitize logs.
+Preferred outputs:
 
-RLS:
+- `overview_master.json`
+- `global_map.json`
+- `uae_ops_map.json`
 
-- Treat RLS policies as product contracts; do not weaken without approval.
-- Prefer negative tests for policy boundaries when feasible.
+Overview output grain:
 
-Document integrity (UAE/HVDC posture):
+- shipment / voyage
 
-- Store original doc in secure storage + doc_hash + strict access control.
-- Keep immutable audit logs (who/when/why) for validation decisions.
+### Detail outputs
 
-AGENTS.md is security-critical:
+Preferred outputs may include:
 
-- Treat edits like CI/workflow changes; require codeowner review.
+- `wh_detail.json`
+- `cargo_drilldown.json`
+- `flow_code_summary.json`
 
----
+Detail output grain:
 
-## 12) Testing / QA
+- case / package
 
-Before merging:
-
-- typecheck + lint pass
-- tests pass for touched areas
-- add/update stories (Storybook/MDX) if repo uses them
-
-Always validate:
-
-- Location pin → tooltip → RightPanel selection
-- Worklist filter/search → DetailDrawer
-- Failure recovery (retry, cached data, offline/connectivity fail)
-- Realtime merge/dedupe (no duplicates, no UI jank)
+If the repo uses different filenames, preserve the same logic and contract.
 
 ---
 
-## 13) Agent Safety & Permissions
+## 11) WH Role in Overview
 
-Allowed without asking:
+WH is not the universal center of the Overview map.
 
-- read/search files; run lint/typecheck/tests
-- small, non-destructive refactors; add tests/docs
-- add non-breaking migrations (clearly documented)
+WH is an **optional staging node**.
 
-Ask first:
+That means:
 
-- dependency installs/upgrades
-- breaking schema changes; disabling/weakening RLS
-- deleting files; large refactors across apps/packages
-- enabling CDC in production
-- changes to deploy/CI configuration
+- some shipments may go through WH
+- some may proceed direct
+- some offshore cases may require MOSB
+- Overview must not visually force all cargo through WH
 
----
-
-## 14) PR / Change Management
-
-PR title:
-
-- `[dashboard] <imperative summary>`
-
-Include:
-
-- rationale + screenshots (desktop + mobile) for UI changes
-- migration notes + rollback plan for DB/API changes
-- testing evidence (commands + results)
-- risk notes for realtime/CDC/webhooks
-
-Traceability:
-
-- update CHANGELOG.md for user-visible changes
-- link issues to Gate 1/2/3 where applicable
+The Overview should remain voyage-first, not warehouse-first.
 
 ---
 
-## 15) Optional Nested / Override Files
+## 12) Required Language for Maintainers
 
-- Add /apps/hvdc-dashboard/AGENTS.md and /apps/logistics-dashboard/AGENTS.md for app-specific commands.
-- If supported by your tooling, AGENTS.override.md is **temporary-only** (release freeze / incident). Remove after use.
+When editing Overview logic, always think in this sequence:
+
+`Shipping -> Customs Clearance -> Port Handling -> Storage -> LCT -> Site Offloading`
+
+When editing detail logic, always think in this sequence:
+
+`case/package -> warehouse handling -> Flow Code -> MOSB/site routing`
+
+These are different problem spaces and must stay separated.
 
 ---
 
-## References (keep short; prefer links over duplication)
+## 13) Safety Rules
 
-Supabase docs:
+Do not:
 
-- Connect to Postgres: https://supabase.com/docs/guides/database/connecting-to-postgres
-- RLS: https://supabase.com/docs/guides/database/postgres/row-level-security
-- Securing Data APIs (RLS): https://supabase.com/docs/guides/api/securing-your-api
-- Replication (Logical Replication): https://supabase.com/docs/guides/database/replication
-- Database Webhooks: https://supabase.com/docs/guides/database/webhooks
-- API keys (service_role / BYPASSRLS): https://supabase.com/docs/guides/api/api-keys
+- infer overview from Flow Code
+- flatten multi-site shipments into one fake route
+- hardcode one vendor
+- force WH into all routes
+- mix shipment grain and case grain
+- overwrite detail routing logic to satisfy overview visuals
+- invent missing fields or milestones
+
+Do:
+
+- keep overview and detail contracts separated
+- keep actual vs planned distinction explicit
+- keep MOSB logic where it belongs
+- keep WH optional in overview
+- use deterministic milestone-based stage logic
+- add assumption markers if repo evidence is missing
+
+---
+
+## 14) Completion Criteria
+
+A change is complete only if all conditions below are true:
+
+- Overview uses `hvdc all status` only
+- WH detail / case drilldown uses `wh status + Flow Code`
+- Overview stage is milestone-based, not Flow Code-based
+- Overview main path is voyage-based
+- Planned and actual site are separated
+- Actual overrides planned when present
+- Vendor filter is dynamic
+- WH is optional in Overview
+- AGI / DAS MOSB enforcement remains valid in detail logic
+- No shipment-level Flow Code dependency remains in Overview
+
+---
+
+## 15) Assumption Handling
+
+If repo file paths, commands, schemas, or component names are unclear:
+
+- do not fabricate
+- add `[ASSUMPTION]` note
+- wait for repo evidence before destructive refactor
+
+Example:
+
+`[ASSUMPTION] exact overview transform module path is not confirmed. Verify actual repo tree before changing imports.`
+
+---
+
+## 16) Human Review Required
+
+Request explicit review before:
+
+- changing schema keys already consumed by frontend
+- deleting old transform files
+- renaming shared JSON contracts
+- changing vendor normalization logic
+- changing site milestone semantics
+- changing AGI/DAS MOSB routing semantics
+
+Default safe approach:
+
+- add new overview-safe transforms first
+- preserve existing detail behavior unless directly instructed otherwise
+

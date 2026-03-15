@@ -352,6 +352,15 @@
 - **2026-02-05**: **히트맵 강도 범례 추가** - 히트맵 토글 활성 시 강도 범례(낮음~매우 높음) 표시, 지오펜스 영역 가중치 적용, POI 라벨 강조(MOSB yard), DSV 창고 라벨링, MOSB-SCT 오피스 상태 필터링, 타이포그래피 대비 개선
 - **2026-02-06**: **줌 기반 레이어 가시성 구현** - 히트맵/상태/POI 레이어 동적 표시, POI 라벨 컴팩트/상세 모드 전환, 히트맵 반경 줌 스케일링, RightPanel 탭 UI(Status/Occupancy/Distribution) 및 접근성 포커스 처리, 타이포그래피 스케일 개선
 - **2026-02-07**: **레이아웃 및 워크리스트 개선** - KPI 요약 스트립 헤더 고정, 레이아웃 간격 조정(HVDC 패널 겹침 방지), HVDC 워크리스트 간소화(핵심 컬럼만, 상세는 DetailDrawer), RightPanel 중복 요약 제거
+- **2026-03-15**: **Overview 3.0 — Map First + Bottom Collapse 구현 완료**
+  - `OverviewMap` 전체 폭 확장 (520–680px, 뷰포트 55–65% 차지)
+  - `MissionControlFloat` 신규 — 맵 컨테이너 내 우상단 floating card (접을 수 있음, frosted-glass)
+  - `BottomCollapsePanel` 신규 — Site Matrix + Voyage Radar 탭 (기본: 닫힘)
+  - `VoyageExceptionRadar` 신규 — 항차(voyage) 단위 예외 레이더 (`OpenRadarTable` 대체)
+  - `SiteDeliveryMatrix` 수정 — 4열 동등 그리드, AGI 골드 그라디언트, DAS+AGI MOSB Pending 라벨
+  - `ChainRibbonStrip` 수정 — 스테이지 라벨 변경 (Origin/Port-Air/Customs/Warehouse/MOSB/Site), FC0–FC5 UI 노출 제거, 높이 축소
+  - `KpiStripCards` 수정 — 패딩/폰트 축소로 slim KPI 스트립 달성
+  - AGENTS.md 계약 유지: Overview = hvdc all status only, Flow Code UI 노출 없음
 
 ---
 

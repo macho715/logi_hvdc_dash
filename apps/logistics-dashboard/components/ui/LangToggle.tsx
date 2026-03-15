@@ -12,16 +12,20 @@ export function LangToggle({ className }: { className?: string }) {
   const setLocale = useLogisticsStore((s) => s.setLocale)
 
   return (
-    <div className={cn('flex items-center rounded-full border border-hvdc-border-soft bg-hvdc-surface-subtle p-1', className)}>
+    <div
+      className={cn('flex items-center rounded-full border border-white/6 p-1', className)}
+      style={{ background: 'linear-gradient(180deg, rgba(12,18,34,.96), rgba(8,13,26,.98))' }}
+    >
       <button
         type="button"
         onClick={() => setLocale('en')}
         className={cn(
           'rounded-full px-3 py-1 text-[12px] font-semibold transition-colors',
           locale === 'en'
-            ? 'bg-hvdc-brand text-white shadow-hvdc-active'
-            : 'text-hvdc-text-secondary',
+            ? 'text-white shadow-hvdc-glow-blue'
+            : 'text-hvdc-text-muted',
         )}
+        style={locale === 'en' ? { background: 'linear-gradient(180deg, rgba(47,118,255,.92), rgba(56,125,255,.8))' } : undefined}
         aria-pressed={locale === 'en'}
       >
         ENG
@@ -32,9 +36,10 @@ export function LangToggle({ className }: { className?: string }) {
         className={cn(
           'rounded-full px-3 py-1 text-[12px] font-semibold transition-colors',
           locale === 'ko'
-            ? 'bg-hvdc-brand text-white shadow-hvdc-active'
-            : 'text-hvdc-text-secondary',
+            ? 'text-white shadow-hvdc-glow-blue'
+            : 'text-hvdc-text-muted',
         )}
+        style={locale === 'ko' ? { background: 'linear-gradient(180deg, rgba(47,118,255,.92), rgba(56,125,255,.8))' } : undefined}
         aria-pressed={locale === 'ko'}
       >
         한국어

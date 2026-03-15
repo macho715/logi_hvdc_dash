@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed (2026-03-15)
+
+- logistics-dashboard/overview: **Overview 3.0 — Map First + Bottom Collapse** layout implemented
+  - `OverviewMap` now full-width (520–680px); occupies 55–65% of viewport height
+  - `MissionControlFloat` replaces fixed side panel — wraps `MissionControl` as absolute floating card (top-right of map container, collapsible, frosted-glass)
+  - `BottomCollapsePanel` created — tabbed collapse for Site Matrix and Voyage Radar (closed by default)
+  - `VoyageExceptionRadar` created — voyage-grain alert panel replacing `OpenRadarTable` (worklist grain)
+  - `SiteDeliveryMatrix` updated — equal 4-column grid (`xl:grid-cols-4`); AGI uses gold gradient; MOSB Pending label applies to DAS and AGI
+  - `ChainRibbonStrip` relabeled — stage labels now `Origin / Port-Air / Customs / Warehouse / MOSB / Site`; FC0–FC5 labels removed from UI; height slimmed
+  - `KpiStripCards` height slimmed — padding and font size reduced for compact KPI strip
+  - Row 5 bottom nav added — links to Logistics Chain / Pipeline / Sites / Cargo
+  - i18n: `voyageRadar.*` keys added; `bottomPanel.siteMatrix` and `bottomPanel.voyageRadar` merged into existing `bottomPanel` block
+  - AGENTS.md contract: Overview remains `hvdc all status` only; no Flow Code in primary UI; WH = optional staging node
+
 ### Changed (2026-02-09)
 - logistics-dashboard: adjusted UnifiedLayout min-height sizing to allow body scrolling while keeping panel-local scroll
 

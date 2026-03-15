@@ -28,24 +28,24 @@ Route:
 
 - `/overview`
 
-The active overview keeps the 7-row layout.
+The active overview uses the Map First + Bottom Collapse layout.
 
 ### Row order
 
-1. `OverviewToolbar`
-2. `ProgramFilterBar`
-3. `KpiStripCards`
-4. `ChainRibbonStrip`
-5. `OverviewMap` + `MissionControl`
-6. `SiteDeliveryMatrix`
-7. `OpenRadarTable` + `OpsSnapshot`
+1. `OverviewToolbar` + `ProgramFilterBar` (header / filter bar)
+2. `KpiStripCards` (slim KPI strip — 96–110px)
+3. `ChainRibbonStrip` (slim stage chain — 72–88px)
+4. `OverviewMap` with `MissionControlFloat` as absolute overlay (dominant map — 520–680px)
+5. `BottomCollapsePanel` — tabbed collapse containing `SiteDeliveryMatrix` and `VoyageExceptionRadar` (closed by default — 40–56px; open — 220–320px)
+6. Bottom nav — links to Logistics Chain / Pipeline / Sites / Cargo
 
 ### Intent
 
-- top rows establish mode, filters, and KPI posture
-- row 5 keeps the map as the dominant surface
-- the right side of row 5 is persistent mission control
-- lower rows expose site readiness and worklist-heavy operational context
+- map occupies 55–65% of viewport height and is the dominant surface
+- KPI and stage chain rows are kept slim (visible without scrolling at 1440px)
+- Mission Control is a floating card (absolute top-right inside the map container) — collapsible
+- Site Matrix and Voyage Radar are hidden by default in the bottom collapse panel
+- bottom nav provides drilldown entry points
 
 ### Map layout contract
 
@@ -57,6 +57,8 @@ It includes:
 - deck.gl layers for locations, status rings, trips, origin arcs, geofence, ETA wedge, and heatmap
 - `MapLegend`
 - `HeatmapLegend` when the heatmap is active and within zoom threshold
+
+The map container uses `position: relative`. `MissionControlFloat` is rendered as `position: absolute top-4 right-4 z-20` inside this container.
 
 The heatmap layer is visible only when:
 
@@ -260,5 +262,6 @@ These files still exist but are not part of the active layout:
 
 The active overview uses:
 
-- `MissionControl` instead of `OverviewRightPanel`
-- `OpsSnapshot` instead of `OverviewBottomPanel`
+- `MissionControlFloat` (floating overlay) instead of a fixed right panel
+- `BottomCollapsePanel` (default-closed) instead of always-visible bottom rows
+- `VoyageExceptionRadar` (voyage-grain) instead of `OpenRadarTable` (worklist-grain)

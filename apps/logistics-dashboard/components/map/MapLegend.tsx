@@ -2,103 +2,181 @@
 
 import { REGION_COLORS } from "@/components/map/layers/createOriginArcLayer"
 import type { Region } from "@/components/map/layers/createOriginArcLayer"
-import { useT } from '@/hooks/useT'
+import { useT } from "@/hooks/useT"
+import { UAE_OPS_LEGEND_COPY } from "@/lib/map/uaeOpsCopy"
 
 interface MapLegendProps {
-  /** When true, show the origin arc color legend section */
   showArcs?: boolean
-  /** When true, show the trip animation legend section */
   showTrips?: boolean
+  className?: string
+  track?: "global" | "uae-ops"
 }
 
-function rgbToHex(r: number, g: number, b: number): string {
-  return `rgb(${r},${g},${b})`
+function rgbToCss(color: [number, number, number] | [number, number, number, number]) {
+  return `rgb(${color[0]},${color[1]},${color[2]})`
 }
 
 const REGION_LABELS: Record<Region, string> = {
-  EU:       "Europe",
-  Asia:     "East / SE Asia",
-  ME:       "Middle East",
+  EU: "Europe",
+  Asia: "East / SE Asia",
+  ME: "Middle East",
   Americas: "Americas",
-  Unknown:  "Other",
+  Unknown: "Other",
 }
 
-export function MapLegend({ showArcs = false, showTrips = false }: MapLegendProps) {
+export function MapLegend({
+  showArcs = false,
+  showTrips = false,
+  className = "",
+  track = "global",
+}: MapLegendProps) {
   const t = useT()
 
-  const RING_LEGEND = [
-    { label: t.legend.hvdcSite,  color: "rgb(34,197,94)",   desc: "SHU · MIR · DAS · AGI" },
-    { label: t.legend.mosbYard,  color: "rgb(249,115,22)",   desc: "Das Island staging" },
-    { label: t.legend.port,      color: "rgb(59,130,246)",   desc: "Khalifa · MZD · JAFZ" },
-    { label: t.legend.warehouse, color: "rgb(234,179,8)",    desc: "DSV · JDN · AAA" },
+  const globalNodeLegend = [
+    { label: t.legend.hvdcSite, color: "rgb(34,197,94)", desc: "SHU · MIR · DAS · AGI" },
+    { label: t.legend.mosbYard, color: "rgb(249,115,22)", desc: "MOSB staging" },
+    { label: t.legend.port, color: "rgb(59,130,246)", desc: "Khalifa · Zayed · JAFZ · AUH" },
+    { label: t.legend.warehouse, color: "rgb(234,179,8)", desc: "DSV inland warehouse" },
   ]
 
-  const TRIP_LEGEND = [
-    { label: "Flow 1-2 (Direct / WH)", color: "rgb(56,189,248)",  desc: "SHU · MIR route" },
-    { label: "Flow 3-4 (MOSB)",         color: "rgb(249,115,22)",  desc: "DAS · AGI via MOSB" },
+  const opsNodeLegend = [
+    { label: "Port / Airport", color: "rgb(59,130,246)", desc: "UAE entry point" },
+    { label: "Customs Stage", color: "rgb(53,214,255)", desc: "Clearance progress at entry point" },
+    { label: "Warehouse", color: "rgb(234,179,8)", desc: "Optional inland staging" },
+    { label: "MOSB Hub", color: "rgb(249,115,22)", desc: "Offshore staging / dispatch" },
+    { label: "HVDC Site", color: "rgb(34,197,94)", desc: "SHU · MIR · DAS · AGI" },
   ]
 
-  const regions = (Object.entries(REGION_COLORS) as [Region, [number, number, number]][])
-    .filter(([r]) => r !== "Unknown")
+  const tripLegend = [
+    { label: "Voyage path", color: "rgb(120,170,255)", desc: "Subdued semantic voyage motion" },
+    { label: "Selected shipment", color: "rgb(255,255,255)", desc: "Highlighted path focus" },
+  ]
+
+  const routeLegend = [
+    { label: "Entry → Customs", color: "rgb(53,214,255)", desc: "Port / airport to customs" },
+    { label: "Customs → Warehouse", color: "rgb(47,107,255)", desc: "Optional inland staging" },
+    { label: "Customs → Site", color: "rgb(120,170,255)", desc: "Direct land-site path" },
+    { label: "Warehouse → MOSB", color: "rgb(139,108,255)", desc: "Offshore staging transfer" },
+    { label: "Warehouse → Site", color: "rgb(120,170,255)", desc: "Land-site dispatch" },
+    { label: "MOSB → DAS / AGI", color: "rgb(46,212,122)", desc: "Offshore delivery leg" },
+  ]
+
+  const regions = (Object.entries(REGION_COLORS) as [Region, [number, number, number]][]).filter(
+    ([region]) => region !== "Unknown",
+  )
+
+  const nodeLegend = track === "uae-ops" ? opsNodeLegend : globalNodeLegend
 
   return (
     <div
-      className="absolute bottom-10 right-2 z-40 pointer-events-none
-                 bg-black/70 backdrop-blur-sm border border-white/10
-                 rounded-lg p-3 text-xs text-white/90 w-48 space-y-3 select-none"
+      className={[
+        "pointer-events-none absolute z-40 w-56 select-none space-y-3 rounded-hvdc-lg border border-[#24314E] bg-hvdc-bg-overlay p-3 text-xs text-hvdc-text-primary shadow-hvdc-card backdrop-blur-md",
+        className,
+      ].join(" ")}
       aria-label="Map legend"
     >
-      {/* POI rings */}
-      <div>
-        <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">{t.legend.nodeType}</p>
+      {track === "uae-ops" ? (
+        <div className="rounded-lg border border-white/10 p-2">
+          <p className="text-[11px] font-semibold tracking-[0.12em] text-hvdc-text-primary">
+            {UAE_OPS_LEGEND_COPY.title}
+          </p>
+          <p className="mt-1 text-[10px] text-hvdc-text-secondary">
+            {UAE_OPS_LEGEND_COPY.subtitle}
+          </p>
+        </div>
+      ) : null}
+
+      <div className="rounded-lg border border-white/10 p-2">
+        <p className="mb-1.5 text-[10px] uppercase tracking-wide text-hvdc-text-muted">
+          {track === "uae-ops" ? UAE_OPS_LEGEND_COPY.nodesTitle : t.legend.nodeType}
+        </p>
         <div className="space-y-1">
-          {RING_LEGEND.map(({ label, color }) => (
-            <div key={label} className="flex items-center gap-2">
+          {nodeLegend.map(({ label, color, desc }) => (
+            <div key={label} className="flex items-start gap-2">
               <span
-                className="inline-block w-3 h-3 rounded-full border-2 flex-shrink-0"
+                className="inline-block h-3 w-3 flex-shrink-0 rounded-full border-2"
                 style={{ borderColor: color, backgroundColor: "transparent" }}
               />
-              <span>{label}</span>
+              <span className="leading-tight">
+                <span className="block">{label}</span>
+                <span className="block text-[10px] text-hvdc-text-secondary">{desc}</span>
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Origin arc colors — only when zoomed out */}
-      {showArcs && (
-        <div>
-          <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">{t.legend.originRegion}</p>
+      {track === "global" && showArcs ? (
+        <div className="rounded-lg border border-white/10 p-2">
+          <p className="mb-1.5 text-[10px] uppercase tracking-wide text-hvdc-text-muted">{t.legend.originRegion}</p>
           <div className="space-y-1">
-            {regions.map(([region, [r, g, b]]) => (
+            {regions.map(([region, color]) => (
               <div key={region} className="flex items-center gap-2">
                 <span
-                  className="inline-block w-6 h-0.5 rounded flex-shrink-0"
-                  style={{ backgroundColor: rgbToHex(r, g, b) }}
+                  className="inline-block h-0.5 w-6 flex-shrink-0 rounded"
+                  style={{ backgroundColor: rgbToCss(color) }}
                 />
                 <span>{REGION_LABELS[region]}</span>
               </div>
             ))}
           </div>
         </div>
-      )}
+      ) : null}
 
-      {/* Trip animation colors */}
-      {showTrips && (
-        <div>
-          <p className="text-white/50 uppercase tracking-wide text-[10px] mb-1.5">{t.legend.activeVoyage}</p>
+      {track === "uae-ops" ? (
+        <>
+          <div className="rounded-lg border border-white/10 p-2">
+            <p className="mb-1.5 text-[10px] uppercase tracking-wide text-hvdc-text-muted">
+              {UAE_OPS_LEGEND_COPY.routesTitle}
+            </p>
+            <div className="space-y-1">
+              {routeLegend.map(({ label, color, desc }) => (
+                <div key={label} className="flex items-start gap-2">
+                  <span
+                    className="inline-block h-0.5 w-6 flex-shrink-0 rounded"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="leading-tight">
+                    <span className="block">{label}</span>
+                    <span className="block text-[10px] text-hvdc-text-secondary">{desc}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-white/10 p-2">
+            <p className="mb-1.5 text-[10px] uppercase tracking-wide text-hvdc-text-muted">
+              {UAE_OPS_LEGEND_COPY.rulesTitle}
+            </p>
+            <div className="space-y-1 text-[10px] text-hvdc-text-secondary">
+              {UAE_OPS_LEGEND_COPY.rules.map((rule) => (
+                <div key={rule}>{rule}</div>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {showTrips ? (
+        <div className="rounded-lg border border-white/10 p-2">
+          <p className="mb-1.5 text-[10px] uppercase tracking-wide text-hvdc-text-muted">{t.legend.activeVoyage}</p>
           <div className="space-y-1">
-            {TRIP_LEGEND.map(({ label, color }) => (
-              <div key={label} className="flex items-center gap-2">
+            {tripLegend.map(({ label, color, desc }) => (
+              <div key={label} className="flex items-start gap-2">
                 <span
-                  className="inline-block w-6 h-0.5 rounded flex-shrink-0"
+                  className="inline-block h-0.5 w-6 flex-shrink-0 rounded"
                   style={{ backgroundColor: color }}
                 />
-                <span>{label}</span>
+                <span className="leading-tight">
+                  <span className="block">{label}</span>
+                  <span className="block text-[10px] text-hvdc-text-secondary">{desc}</span>
+                </span>
               </div>
             ))}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

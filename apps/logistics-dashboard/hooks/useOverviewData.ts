@@ -7,11 +7,16 @@ import type { OverviewCockpitResponse, OverviewRuntimeState } from '@/types/over
 
 const POLL_INTERVAL_MS = 30_000
 
-export function useOverviewData(options?: { refreshKey?: number }): OverviewRuntimeState {
+type UseOverviewDataOptions = {
+  refreshKey?: number
+  primeWorklist?: boolean
+}
+
+export function useOverviewData(options?: UseOverviewDataOptions): OverviewRuntimeState {
   const actions = useOpsActions()
   const worklist = useOpsStore((state) => state.worklistRows)
-  const shouldPrimeWorklist = worklist.length === 0
-  const initialLoad = useInitialDataLoad({ enabled: shouldPrimeWorklist })
+  const shouldPrimeWorklist = options?.primeWorklist === true && worklist.length === 0
+  useInitialDataLoad({ enabled: shouldPrimeWorklist })
   const [data, setData] = useState<OverviewCockpitResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

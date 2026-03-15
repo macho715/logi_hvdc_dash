@@ -1,19 +1,16 @@
 import { TripsLayer } from "@deck.gl/geo-layers"
 import type { Layer } from "@deck.gl/core"
-import type { TripData } from "@/app/api/shipments/trips/route"
+import type { NetworkTrip } from "@/lib/map/networkGraph"
 
 /**
- * TripsLayer — animates in-transit shipments from POL → POD.
+ * TripsLayer — subdued voyage motion over the semantic network.
  *
- * Animation design:
- * - `currentTime` cycles through a TIME_WINDOW of recent voyages
- * - Each cycle takes CYCLE_SECS real seconds (default 12s)
- * - Vessels animate along their route proportional to their ATD/ETA window
- *
- * Color encoding:
- *   Flow 1–2 (Port→Site or Port→WH→Site, no MOSB): cyan
- *   Flow 3–4 (MOSB required, DAS/AGI bound):        orange
- *   Unknown:                                         white
+ * Color is semantic, not Flow Code:
+ * - global supply line
+ * - direct customs-to-site
+ * - via warehouse
+ * - via MOSB
+ * - via warehouse + MOSB
  */
 
 /** 60-day time window for animation (seconds) */
@@ -25,63 +22,131 @@ const TRAIL_SECS = 4 * 24 * 3600
 /** How many seconds the full animation cycle takes (real time) */
 export const CYCLE_SECS = 12
 
-function tripColor(flowCode: number | null): [number, number, number, number] {
-  if (flowCode === 3 || flowCode === 4) {
-    return [249, 115, 22, 220]   // orange — MOSB-bound (DAS/AGI)
+const GLOBAL_TRIP_PROFILE = {
+  alphaMultiplier: 1,
+  dimmedMultiplier: 0.4,
+  widthMinPixels: 3,
+  widthMaxPixels: 3,
+  trailSecs: TRAIL_SECS,
+} as const
+
+const UAE_OPS_TRIP_PROFILE = {
+  alphaMultiplier: 0.4,
+  dimmedMultiplier: 0.16,
+  widthMinPixels: 1.25,
+  widthMaxPixels: 1.25,
+  trailSecs: Math.floor(TRAIL_SECS * 0.35),
+} as const
+
+function getTripProfile(mode: "global" | "uae-ops") {
+  return mode === "uae-ops" ? UAE_OPS_TRIP_PROFILE : GLOBAL_TRIP_PROFILE
+}
+
+function tripColor(kind: NetworkTrip["kind"]): [number, number, number, number] {
+  switch (kind) {
+    case "global":
+      return [94, 140, 255, 120]
+    case "direct-site":
+      return [120, 170, 255, 132]
+    case "via-warehouse":
+      return [47, 107, 255, 138]
+    case "via-mosb":
+      return [46, 212, 122, 145]
+    case "via-warehouse-mosb":
+      return [139, 108, 255, 150]
+    default:
+      return [200, 200, 255, 110]
   }
-  if (flowCode === 1 || flowCode === 2) {
-    return [56, 189, 248, 200]   // sky blue — direct/warehouse land route
+}
+
+function getGlobalTripColor(
+  trip: NetworkTrip,
+  hasHighlight: boolean,
+  highlightId?: string | null,
+): [number, number, number, number] {
+  if (hasHighlight) {
+    if (trip.shipmentId === highlightId || trip.id === highlightId) {
+      return [255, 255, 255, 220]
+    }
+    const base = tripColor(trip.kind)
+    return [
+      base[0],
+      base[1],
+      base[2],
+      Math.floor(base[3] * GLOBAL_TRIP_PROFILE.dimmedMultiplier),
+    ] as [number, number, number, number]
   }
-  return [200, 200, 255, 160]    // light purple — unknown/mixed
+
+  const base = tripColor(trip.kind)
+  return [
+    base[0],
+    base[1],
+    base[2],
+    Math.floor(base[3] * GLOBAL_TRIP_PROFILE.alphaMultiplier),
+  ] as [number, number, number, number]
+}
+
+function getUaeOpsTripColor(
+  trip: NetworkTrip,
+  hasHighlight: boolean,
+  highlightId?: string | null,
+): [number, number, number, number] {
+  if (hasHighlight) {
+    if (trip.shipmentId === highlightId || trip.id === highlightId) {
+      return [255, 255, 255, 220]
+    }
+    const base = tripColor(trip.kind)
+    return [
+      base[0],
+      base[1],
+      base[2],
+      Math.floor(base[3] * UAE_OPS_TRIP_PROFILE.dimmedMultiplier),
+    ] as [number, number, number, number]
+  }
+
+  const base = tripColor(trip.kind)
+  return [
+    base[0],
+    base[1],
+    base[2],
+    Math.floor(base[3] * UAE_OPS_TRIP_PROFILE.alphaMultiplier),
+  ] as [number, number, number, number]
 }
 
 export function createTripsLayer(
-  trips: TripData[],
+  trips: NetworkTrip[],
   currentTime: number,
   visible: boolean,
   highlightId?: string | null,
+  mode: "global" | "uae-ops" = "global",
 ): Layer | null {
   if (!visible || trips.length === 0) return null
 
   const hasHighlight = highlightId != null
+  const profile = getTripProfile(mode)
 
-  return new TripsLayer<TripData>({
+  return new TripsLayer<NetworkTrip>({
     id: "active-voyages",
     data: trips,
     pickable: true,
     visible,
 
-    getPath: (d) =>
-      d.msobCoords
-        ? [d.polCoords, d.podCoords, d.msobCoords]
-        : [d.polCoords, d.podCoords],
-    getTimestamps: (d) => {
-      if (d.msobCoords) {
-        const msobTime = d.atdUnix + 0.8 * (d.etaUnix - d.atdUnix)
-        return [d.atdUnix, msobTime, d.etaUnix]
-      }
-      return [d.atdUnix, d.etaUnix]
-    },
-    getColor: (d) => {
-      if (hasHighlight) {
-        if (d.id === highlightId) {
-          return [255, 255, 255, 220]  // bright white for highlighted trip
-        }
-        const base = tripColor(d.flowCode)
-        return [base[0], base[1], base[2], Math.floor(base[3] * 0.3)] as [number, number, number, number]
-      }
-      return tripColor(d.flowCode)
-    },
+    getPath: (trip) => trip.path,
+    getTimestamps: (trip) => trip.timestamps,
+    getColor: (trip) =>
+      mode === "uae-ops"
+        ? getUaeOpsTripColor(trip, hasHighlight, highlightId)
+        : getGlobalTripColor(trip, hasHighlight, highlightId),
 
     currentTime,
-    trailLength: TRAIL_SECS,
-    widthMinPixels: 2,
-    widthMaxPixels: 4,
+    trailLength: profile.trailSecs,
+    widthMinPixels: profile.widthMinPixels,
+    widthMaxPixels: profile.widthMaxPixels,
     jointRounded: true,
     capRounded: true,
 
     updateTriggers: {
-      getColor: [highlightId],
+      getColor: [highlightId, mode],
     },
   })
 }

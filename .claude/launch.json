@@ -1,15 +1,15 @@
 {
   "version": "0.0.1",
-  "autoPort": true,
+  "autoPort": false,
   "configurations": [
     {
       "name": "logistics-dashboard",
       "runtimeExecutable": "cmd",
       "runtimeArgs": [
         "/c",
-        "cd /d C:\\Users\\jichu\\Downloads\\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ\\apps\\logistics-dashboard && pnpm dev"
+        "cd /d C:\\Users\\jichu\\Downloads\\LOGI-MASTER-DASH-claude-improve-dashboard-layout-lnNFJ\\apps\\logistics-dashboard && pnpm exec next dev --port 3004"
       ],
-      "port": 3000
+      "port": 3004
     }
   ]
 }

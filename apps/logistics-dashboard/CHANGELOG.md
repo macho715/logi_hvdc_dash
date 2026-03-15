@@ -7,6 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.8] — 2026-03-15
+
+### Overview Layout Restore
+
+#### Changed
+- `/overview` now resolves back through the shared dashboard shell instead of the public artboard route group
+- `components/overview/OverviewPageClient.tsx` restores the pre-artboard dashboard-style overview layout while keeping the latest overview API contract and worklist priming behavior
+
+#### Removed
+- `app/(artboard)/overview/page.tsx` no longer publishes the artboard as the public `/overview` route
+
+---
+
+## [1.3.7] — 2026-03-15
+
+### Overview Two-Track Map
+
+#### Added
+- `components/overview/MapTrackSwitch.tsx` — adds the local `Global / UAE Ops` map-mode switch and track-scoped layer chips without changing overview URL contracts
+
+#### Changed
+- `components/overview/OverviewMap.tsx` — now defaults to `UAE Ops`, keeps track/toggle state locally, filters layers per track, reuses the shared graph helper for customs-aware routes, and preserves existing deep-link behavior for site and chain navigation
+- `lib/map/networkGraph.ts` — extends the shared map graph with synthetic customs anchors, route-type metadata, and customs-aware edge derivation while keeping the existing footer summary contract
+- `components/map/MapLegend.tsx` — now renders track-aware legend content for `Global` versus `UAE Ops` without exposing Flow Code labels
+- `components/map/layers/createArcLayer.ts` and `components/map/layers/createNodeLayer.ts` — now support customs-specific colors and labels inside the existing deck.gl layer primitives
+- `lib/map/__tests__/networkGraph.test.ts` — now covers synthetic customs anchors, customs-aware highlighting, and the explicit absence of direct `customs -> site` edges in v1
+
+---
+
+## [1.3.6] — 2026-03-15
+
+### Overview Map Network Patch
+
+#### Added
+- `components/map/layers/createArcLayer.ts` — UAE internal network arc layer for port / warehouse / MOSB / site flows
+- `components/map/layers/createNodeLayer.ts` — control-tower node and label layer for site, port, warehouse, airport, and MOSB nodes
+- `components/map/layers/createNetworkStatusRingLayer.ts` — dedicated network risk-ring layer that avoids the existing POI status-ring naming collision
+- `lib/map/networkGraph.ts` — client-side SSOT for overview map nodes, edges, risk derivation, and footer summary chips
+- `lib/map/__tests__/networkGraph.test.ts` — regression coverage for footer counts, expected core edges, and site-highlight/risk derivation
+
+#### Changed
+- `components/overview/OverviewMap.tsx` — switched the default basemap to a dark network style, fetches trips and chain summary in parallel, renders internal network arcs/nodes/rings, owns the map footer overlay, and uses a unified glass tooltip/legend shell
+- `components/map/MapLegend.tsx` — moved to a left-side control-tower panel and replaced user-facing flow-code labels with plain-language route meaning
+- `components/map/HeatmapLegend.tsx` — now accepts layout class overrides so the heatmap legend can avoid overlapping the new footer and map legend
+- `components/overview/OverviewPageClient.tsx` — now passes the active site filter into `OverviewMap` and removes the duplicated parent-owned footer overlay
+
+---
+
 ## [1.3.5] — 2026-03-15
 
 ### Production Metadata Cleanup

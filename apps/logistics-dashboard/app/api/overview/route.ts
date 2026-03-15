@@ -5,11 +5,13 @@ import { buildCasesSummary, type CasesSummarySourceRow } from '@/lib/cases/summa
 import { buildMockLocationStatuses } from '@/lib/api'
 import { ontologyLocations } from '@/lib/data/ontology-locations'
 import { EVENTS_JOIN_SELECT, generateMockEvents, mapSupabaseEvents } from '@/lib/logistics/events'
+import { extractOriginCountry, normalizeSite } from '@/lib/logistics/normalizers'
 import { OVERVIEW_ROUTE_TYPES, aggregateCountsByRouteType } from '@/lib/overview/routeTypes'
+import { fetchAllPagesInParallel } from '@/lib/supabasePagination'
 import { shipmentToWorklistRow, calculateKpis, getDubaiTimestamp, getDubaiToday, type ShipmentRow } from '@/lib/worklist-utils'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 import type { CasesSummary } from '@/types/cases'
-import type { OverviewAlert, OverviewCockpitResponse, OverviewLiveFeedItem, OverviewPipelineItem, OverviewRouteSummaryItem, OverviewSiteReadinessItem, OverviewWarehousePressureItem } from '@/types/overview'
+import type { OverviewAlert, OverviewCockpitResponse, OverviewLiveFeedItem, OverviewMapVoyage, OverviewPipelineItem, OverviewRouteSummaryItem, OverviewSiteReadinessItem, OverviewWarehousePressureItem } from '@/types/overview'
 
 type ShipmentStagesResponse = {
   agi_das_no_mosb_alert: number
@@ -17,29 +19,51 @@ type ShipmentStagesResponse = {
   delivered: number
 }
 
+type OverviewShipmentRow = ShipmentRow & {
+  atd: string | null
+  ata: string | null
+  doc_shu: boolean | null
+  doc_das: boolean | null
+  doc_mir: boolean | null
+  doc_agi: boolean | null
+}
+
 const SCHEMA_VERSION = '2026-03-13'
 
-/** Paginate any Supabase table */
-async function fetchAllPages(table: string, cols: string): Promise<any[]> {
-  const PAGE = 1000
-  const all: any[] = []
-  let offset = 0
-  while (true) {
-    const { data, error } = await supabase
-      .from(table)
-      .select(cols)
-      .range(offset, offset + PAGE - 1)
-      .order('id')
-    if (error) {
-      console.warn(`[overview] fetchAllPages(${table}) error`, error)
-      break
+function buildOverviewMapVoyages(shipments: OverviewShipmentRow[]): OverviewMapVoyage[] {
+  return shipments.map((shipment) => {
+    const plannedSites = [
+      shipment.doc_shu ? 'SHU' : null,
+      shipment.doc_mir ? 'MIR' : null,
+      shipment.doc_das ? 'DAS' : null,
+      shipment.doc_agi ? 'AGI' : null,
+    ].filter((site): site is NonNullable<OverviewMapVoyage['actualSite']> => site != null)
+    const actualSite = normalizeSite(shipment.final_location ?? null)
+    const siteBasis = actualSite
+      ? 'actual'
+      : plannedSites.length > 0
+        ? 'planned'
+        : 'unknown'
+
+    return {
+      id: shipment.id,
+      shipmentId: shipment.sct_ship_no ?? shipment.id,
+      vendor: shipment.vendor?.trim() || null,
+      originCountry: extractOriginCountry(shipment.coe ?? shipment.port_of_loading ?? null),
+      pol: shipment.port_of_loading ?? null,
+      pod: shipment.port_of_discharge ?? null,
+      etd: shipment.etd ?? null,
+      atd: shipment.atd ?? null,
+      eta: shipment.eta ?? null,
+      ata: shipment.ata ?? null,
+      customsStart: shipment.customs_start_date ?? null,
+      customsClose: shipment.customs_close_date ?? null,
+      deliveryDate: shipment.delivery_date ?? null,
+      plannedSites,
+      actualSite,
+      siteBasis,
     }
-    if (!data || data.length === 0) break
-    all.push(...data)
-    if (data.length < PAGE) break
-    offset += PAGE
-  }
-  return all
+  })
 }
 
 function mapLocationType(type: string | null): Location['siteType'] {
@@ -284,12 +308,14 @@ export async function GET(_request: NextRequest) {
     const [casesResult, shipmentsResult, locationsResult, statusesResult, eventsResult] =
       await Promise.all([
         // v_cases: cases summary
-        fetchAllPages(
+        fetchAllPagesInParallel<CasesSummarySourceRow>(
+          supabase,
           'v_cases',
           'site, flow_code, status_current, status_location, sqm, source_vendor, storage_type',
         ),
         // shipments: combined worklist + stages (ONE scan, not two)
-        fetchAllPages(
+        fetchAllPagesInParallel<OverviewShipmentRow>(
+          supabase,
           'shipments',
           'id, sct_ship_no, mr_number, commercial_invoice_no, invoice_date, vendor, main_description, port_of_loading, port_of_discharge, vessel_name, bl_awb_no, ship_mode, coe, etd, eta, atd, ata, do_collection_date, customs_start_date, customs_close_date, delivery_date, duty_amount_aed, vat_amount_aed, incoterms, flow_code, flow_code_original, flow_override_reason, final_location, doc_shu, doc_das, doc_mir, doc_agi',
         ),
@@ -306,7 +332,7 @@ export async function GET(_request: NextRequest) {
     const summary = buildCasesSummary(casesData)
 
     // ── 3. Build worklist + stages from ONE shipments scan ──────────────────
-    const shipmentsData = shipmentsResult ?? []
+    const shipmentsData = (shipmentsResult ?? []) as OverviewShipmentRow[]
     const worklistRows = shipmentsData
       .map((s: any) => {
         try {
@@ -318,6 +344,7 @@ export async function GET(_request: NextRequest) {
       .filter((r: any): r is WorklistRow => r !== null)
     const kpis = calculateKpis(worklistRows, today)
     const worklist: DashboardPayload = { lastRefreshAt: getDubaiTimestamp(), kpis, rows: worklistRows }
+    const mapVoyages = buildOverviewMapVoyages(shipmentsData)
 
     // Shipment stages from same data
     const shipmentStages: ShipmentStagesResponse = {
@@ -381,6 +408,7 @@ export async function GET(_request: NextRequest) {
 
     const openAnomalyCount = Math.max(0, summary.total - (summary.byStatus.site ?? 0))
     const agiRiskPercent = agiReadiness?.readinessPercent ?? 0
+    const mandatoryMosbMissingCount = shipmentStages.agi_das_no_mosb_alert
 
     const payload: OverviewCockpitResponse = {
       schemaVersion: SCHEMA_VERSION,
@@ -425,6 +453,22 @@ export async function GET(_request: NextRequest) {
             tone: worklist.kpis.overdueCount > 0 ? 'critical' : 'neutral',
             navigationIntent: {
               destinationId: 'hero-overdue-eta',
+              page: 'cargo',
+              params: { tab: 'shipments' },
+            },
+          },
+          {
+            id: 'mosb-pending',
+            label: 'MOSB Pending',
+            value: mandatoryMosbMissingCount.toLocaleString(),
+            tone: mandatoryMosbMissingCount > 100
+              ? ('critical' as const)
+              : mandatoryMosbMissingCount > 0
+                ? ('warning' as const)
+                : ('neutral' as const),
+            sublabel: mandatoryMosbMissingCount > 0 ? 'Important' : undefined,
+            navigationIntent: {
+              destinationId: 'hero-mosb-pending',
               page: 'cargo',
               params: { tab: 'shipments' },
             },
@@ -503,6 +547,7 @@ export async function GET(_request: NextRequest) {
         locations,
         statuses,
         events,
+        voyages: mapVoyages,
       },
     }
 
@@ -535,7 +580,7 @@ export async function GET(_request: NextRequest) {
       warehousePressure: [],
       liveFeed: [],
       worklist: { total: 0, highlightedIds: [] },
-      map: { locations: ontologyLocations, statuses: buildMockLocationStatuses(ontologyLocations), events: [] },
+      map: { locations: ontologyLocations, statuses: buildMockLocationStatuses(ontologyLocations), events: [], voyages: [] },
     } satisfies OverviewCockpitResponse)
   }
 }

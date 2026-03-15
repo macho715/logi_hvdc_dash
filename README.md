@@ -19,6 +19,7 @@ This repository currently ships one active dashboard application:
 The active runtime combines:
 
 - a 7-row `/overview` cockpit
+- a shared dashboard shell on `/overview`, `/pipeline`, `/sites`, `/cargo`, and `/chain`
 - `/pipeline`, `/sites`, `/cargo`, and `/chain` drilldown pages
 - Supabase-backed operational APIs
 - shared URL restoration contracts
@@ -136,6 +137,7 @@ Rules:
 
 - `/overview`
   - 7-row cockpit
+  - dashboard shell with sidebar/header
   - KPI rail, map, mission control, site matrix, radar, ops snapshot
 - `/pipeline`
   - 5-stage pipeline analysis
@@ -163,12 +165,6 @@ Overview deep-link query vocabulary:
 ## Screen Gallery
 
 Captured from the local dashboard runtime on `http://localhost:3001`.
-
-### Overview
-
-![Overview cockpit top](apps/logistics-dashboard/public/readme/overview-top.png)
-
-![Overview cockpit bottom](apps/logistics-dashboard/public/readme/overview-bottom.png)
 
 ### Pipeline
 

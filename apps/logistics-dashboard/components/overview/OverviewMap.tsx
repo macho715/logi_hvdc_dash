@@ -1,51 +1,75 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import type { PickingInfo } from "@deck.gl/core"
+import { MapboxOverlay } from "@deck.gl/mapbox"
 import maplibregl from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
-import { MapboxOverlay } from "@deck.gl/mapbox"
-import type { PickingInfo } from "@deck.gl/core"
-import { useOpsStore } from "@repo/shared"
-import { useLogisticsStore } from "@/store/logisticsStore"
-import { useCasesStore } from "@/store/casesStore"
-import { createLocationLayer } from "@/components/map/layers/createLocationLayer"
-import { createHeatmapLayer } from "@/components/map/layers/createHeatmapLayer"
-import { createGeofenceLayer } from "@/components/map/layers/createGeofenceLayer"
-import { createEtaWedgeLayer } from "@/components/map/layers/createEtaWedgeLayer"
-import { createGeofenceGeojson, isPointInGeofence } from "@/components/map/layers/geofenceUtils"
+
 import { HeatmapLegend } from "@/components/map/HeatmapLegend"
 import { MapLegend } from "@/components/map/MapLegend"
-import { createPoiLayers, getPoiTooltip } from "@/components/map/PoiLocationsLayer"
-import { createStatusRingLayer } from "@/components/map/layers/createStatusRingLayer"
-import { createTripsLayer, computeAnimTime, TRIPS_TIME_WINDOW_SECS } from "@/components/map/layers/createTripsLayer"
-import { createOriginArcLayer } from "@/components/map/layers/createOriginArcLayer"
-import type { OriginEntry } from "@/components/map/layers/createOriginArcLayer"
-import { POI_LOCATIONS } from "@/lib/map/poiLocations"
-import { buildDashboardLink } from "@/lib/navigation/contracts"
-import { formatInDubaiTimezone } from "@/lib/time"
+import { createArcLayer } from "@/components/map/layers/createArcLayer"
+import { createEtaWedgeLayer } from "@/components/map/layers/createEtaWedgeLayer"
+import { createGeofenceLayer } from "@/components/map/layers/createGeofenceLayer"
+import { createGeofenceGeojson, isPointInGeofence } from "@/components/map/layers/geofenceUtils"
+import { createHeatmapLayer } from "@/components/map/layers/createHeatmapLayer"
+import { createNetworkStatusRingLayer } from "@/components/map/layers/createNetworkStatusRingLayer"
+import { createNodeLayer } from "@/components/map/layers/createNodeLayer"
+import { createOriginArcLayer, type OriginEntry } from "@/components/map/layers/createOriginArcLayer"
+import { computeAnimTime, createTripsLayer, TRIPS_TIME_WINDOW_SECS } from "@/components/map/layers/createTripsLayer"
+import { MapTrackSwitch, type MapLayerToggles, type MapTrack } from "@/components/overview/MapTrackSwitch"
 import { useT } from "@/hooks/useT"
-import type { Event, Location, LocationStatus } from "@repo/shared"
-import type { NavigationIntent } from "@/types/overview"
-import type { PoiLocation } from "@/lib/map/poiTypes"
-import type { TripData } from "@/app/api/shipments/trips/route"
+import { POI_LOCATIONS } from "@/lib/map/poiLocations"
+import {
+  buildMapFooterSummary,
+  buildOriginEntries,
+  buildOverviewNetworkGraph,
+  buildOverviewTrips,
+  type NetworkEdge,
+  type NetworkNode,
+  type NetworkTrip,
+  type SiteFilter,
+} from "@/lib/map/networkGraph"
+import { UAE_OPS_FOOTER_COPY, UAE_OPS_ROUTE_COPY, getWarehouseLabel, hasDsvEvidence } from "@/lib/map/uaeOpsCopy"
+import { formatInDubaiTimezone } from "@/lib/time"
+import { useCasesStore } from "@/store/casesStore"
+import { useLogisticsStore } from "@/store/logisticsStore"
+import type { NavigationIntent, OverviewMapSnapshot } from "@/types/overview"
 
-/** Convert ISO-3166-1 alpha-2 country code to flag emoji (e.g., "SE" → "🇸🇪") */
 function countryFlag(code: string): string {
   return [...code.toUpperCase()]
-    .map((c) => String.fromCodePoint(c.charCodeAt(0) + 127397))
+    .map((char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
     .join("")
 }
 
 type TooltipInfo =
-  | { kind: "location"; x: number; y: number; object: Location & { status?: LocationStatus } }
-  | { kind: "poi"; x: number; y: number; text: string }
-  | { kind: "arc"; x: number; y: number; country: string; count: number }
-  | { kind: "trip"; x: number; y: number; vendor: string | null; flowCode: number | null; etaUnix: number }
+  | { kind: "node"; x: number; y: number; object: NetworkNode }
+  | { kind: "networkArc"; x: number; y: number; object: NetworkEdge; sourceName: string; targetName: string }
+  | { kind: "originArc"; x: number; y: number; country: string; count: number }
+  | {
+      kind: "trip"
+      x: number
+      y: number
+      shipmentId: string
+      vendor: string | null
+      routeLabel: string
+      stageLabel: string
+      nextMilestone?: string
+      etaUnix: number
+    }
+
+const SSR_SAFE_TOGGLES: MapLayerToggles = {
+  showOriginArcs: true,
+  showTrips: true,
+  showCustoms: true,
+  showWarehouses: true,
+  showMosb: true,
+  showSites: true,
+}
 
 const MAP_STYLE =
-  process.env.NEXT_PUBLIC_MAP_STYLE || "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+  process.env.NEXT_PUBLIC_MAP_STYLE || "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
 
-// Abu Dhabi region center
 const INITIAL_VIEW = {
   longitude: 54.4,
   latitude: 24.5,
@@ -59,102 +83,194 @@ const POI_BOUNDS: maplibregl.LngLatBoundsLike = [
 
 const MAP_LAYER_ZOOM_THRESHOLDS = {
   heatmapMax: 9.5,
-  statusMin: 9.5,
-  poiMin: 7.5,
-  poiLabelMin: 7.5,
-  poiDetailMin: 10.5,
-  /** Show global origin arcs only when zoomed out to see supply-chain context */
+  networkLabelMin: 8.1,
+  networkLabelDetailMin: 10.4,
   originArcMax: 8.0,
 }
 
-/** Epoch start for animation (60 days ago in unix seconds) */
 const ANIM_EPOCH_START = Math.floor(Date.now() / 1000) - TRIPS_TIME_WINDOW_SECS
 
 interface OverviewMapProps {
+  snapshot?: OverviewMapSnapshot | null
   onNavigateIntent?: (intent: NavigationIntent) => void
+  siteFilter?: SiteFilter
+}
+
+function buildNetworkNodeIntent(node: NetworkNode): NavigationIntent {
+  if (node.type === "site" && node.siteCode) {
+    return {
+      destinationId: "map-site",
+      page: "sites",
+      params: { site: node.siteCode, tab: "summary" },
+    }
+  }
+
+  if (node.type === "port" || node.type === "airport" || node.type === "customs") {
+    return {
+      destinationId: node.type === "customs" ? "map-customs" : "map-port",
+      page: "chain",
+      params: { focus: "port" },
+    }
+  }
+
+  if (node.type === "mosb") {
+    return {
+      destinationId: "map-mosb",
+      page: "chain",
+      params: { focus: "mosb" },
+    }
+  }
+
+  return {
+    destinationId: "map-warehouse",
+    page: "chain",
+    params: { focus: "warehouse" },
+  }
+}
+
+function nodeKindLabel(node: NetworkNode): string {
+  switch (node.type) {
+    case "site":
+      return node.siteCode === "DAS" || node.siteCode === "AGI" ? "Offshore Site" : "Land Site"
+    case "port":
+      return "Entry Point"
+    case "airport":
+      return "Entry Point"
+    case "customs":
+      return "Customs Stage"
+    case "warehouse":
+      return "Optional Staging"
+    case "mosb":
+      return "MOSB Hub"
+    default:
+      return "Origin"
+  }
+}
+
+function displayNodeTitle(node: NetworkNode): string {
+  switch (node.id) {
+    case "khalifa-port-kpct":
+      return "Khalifa Port"
+    case "zayed-port":
+      return "Mina Zayed"
+    case "auh-airport":
+      return "AUH Airport"
+    case "jebel-ali-port":
+      return "Jebel Ali"
+    case "khalifa-customs":
+      return "Khalifa Customs Stage"
+    case "zayed-customs":
+      return "MZ Customs Stage"
+    case "auh-customs":
+      return "AUH Customs Stage"
+    case "jebel-ali-customs":
+      return "JAFZ Customs Stage"
+    case "dsv-inland-warehouse-m44":
+      return getWarehouseLabel(node.name)
+    case "mosb-yard":
+      return "MOSB Hub"
+    default:
+      return node.siteCode ?? node.name
+  }
+}
+
+function nextPathForNode(node: NetworkNode): string {
+  if (node.type === "port" || node.type === "airport") {
+    return node.id === "khalifa-port-kpct" || node.id === "auh-airport" || node.id === "jebel-ali-port"
+      ? "Warehouse / Site / MOSB"
+      : "Warehouse / Site"
+  }
+  if (node.type === "customs") {
+    return node.id === "khalifa-customs" || node.id === "auh-customs" || node.id === "jebel-ali-customs"
+      ? "Warehouse / Site / MOSB"
+      : "Warehouse / Site"
+  }
+  if (node.type === "warehouse") return "Site / MOSB"
+  if (node.type === "mosb") return "DAS / AGI"
+  if (node.siteCode === "DAS" || node.siteCode === "AGI") return "MOSB required"
+  if (node.type === "site") return "Direct or WH-mediated"
+  return "Voyage monitoring"
+}
+
+function riskLabel(risk: NetworkNode["risk"] | NetworkEdge["risk"]): string {
+  if (risk === "critical") return "CRITICAL"
+  if (risk === "warn") return "WARNING"
+  return "OK"
+}
+
+function riskClass(risk: NetworkNode["risk"] | NetworkEdge["risk"]): string {
+  if (risk === "critical") return "text-rose-300"
+  if (risk === "warn") return "text-amber-300"
+  return "text-emerald-300"
+}
+
+function routeLabel(edge: NetworkEdge): string {
+  switch (edge.routeType) {
+    case "port-customs":
+      return UAE_OPS_ROUTE_COPY["port-customs"]
+    case "customs-site":
+      return UAE_OPS_ROUTE_COPY["customs-site"]
+    case "customs-wh":
+      return UAE_OPS_ROUTE_COPY["customs-wh"]
+    case "customs-mosb":
+      return UAE_OPS_ROUTE_COPY["customs-mosb"]
+    case "wh-mosb":
+      return UAE_OPS_ROUTE_COPY["wh-mosb"]
+    case "wh-site":
+      return UAE_OPS_ROUTE_COPY["wh-site"]
+    case "mosb-site":
+      return UAE_OPS_ROUTE_COPY["mosb-site"]
+    default:
+      return "Route"
+  }
+}
+
+function nodeStatusText(node: NetworkNode): string {
+  if (node.type === "customs") return node.active ? "In progress" : "Clearance monitored"
+  if (node.type === "warehouse") return node.volume > 0 ? "Active" : "Standby"
+  if (node.type === "mosb") return node.volume > 0 ? "Pending Dispatch" : "Standby"
+  if (node.type === "site") return node.siteCode === "DAS" || node.siteCode === "AGI" ? "MOSB required" : "Direct or WH-mediated"
+  return "Voyage monitoring"
+}
+
+function nodePrimaryMetricLabel(node: NetworkNode): string {
+  if (node.type === "warehouse") return "Staged Shipments"
+  if (node.type === "site") return "Assigned"
+  return "Volume"
+}
+
+function formatVolume(value: number): string {
+  if (Number.isInteger(value)) return value.toLocaleString()
+  return value.toLocaleString(undefined, { maximumFractionDigits: 1 })
+}
+
+function TooltipCard({
+  x,
+  y,
+  children,
+}: {
+  x: number
+  y: number
+  children: React.ReactNode
+}) {
+  return (
+    <div
+      className="absolute z-50 max-w-[280px] min-w-[180px] pointer-events-none rounded-hvdc-lg border border-white/10 bg-hvdc-bg-overlay px-3 py-2 text-xs text-hvdc-text-primary shadow-hvdc-card backdrop-blur-md"
+      style={{
+        left: x + 12,
+        top: y + 12,
+      }}
+    >
+      {children}
+    </div>
+  )
 }
 
 export function OverviewMap(props: OverviewMapProps) {
   return <OverviewMapInner {...props} />
 }
 
-function inferSiteCode(value: string): 'SHU' | 'MIR' | 'DAS' | 'AGI' | undefined {
-  if (value.includes('SHU')) return 'SHU'
-  if (value.includes('MIR')) return 'MIR'
-  if (value.includes('DAS')) return 'DAS'
-  if (value.includes('AGI')) return 'AGI'
-  return undefined
-}
-
-function buildLocationIntent(location: Location): NavigationIntent {
-  const siteCode = inferSiteCode(`${location.location_id} ${location.name}`.toUpperCase())
-
-  if (location.siteType === 'SITE' && siteCode) {
-    return {
-      destinationId: 'map-site',
-      page: 'sites',
-      params: { site: siteCode, tab: 'summary' },
-    }
-  }
-
-  if (location.siteType === 'PORT' || location.siteType === 'BERTH') {
-    return {
-      destinationId: 'map-port',
-      page: 'chain',
-      params: { focus: 'port' },
-    }
-  }
-
-  if (location.siteType === 'MOSB_WH' && location.name.toUpperCase().includes('MOSB')) {
-    return {
-      destinationId: 'map-mosb',
-      page: 'chain',
-      params: { focus: 'mosb' },
-    }
-  }
-
-  return {
-    destinationId: 'map-warehouse',
-    page: 'chain',
-    params: { focus: 'warehouse' },
-  }
-}
-
-function buildPoiIntent(poi: PoiLocation): NavigationIntent {
-  const siteCode = inferSiteCode(`${poi.code} ${poi.name}`.toUpperCase())
-
-  if (poi.category === 'HVDC_SITE' && siteCode) {
-    return {
-      destinationId: 'map-site',
-      page: 'sites',
-      params: { site: siteCode, tab: 'summary' },
-    }
-  }
-
-  if (poi.category === 'PORT' || poi.category === 'AIRPORT') {
-    return {
-      destinationId: 'map-port',
-      page: 'chain',
-      params: { focus: 'port' },
-    }
-  }
-
-  if (poi.category === 'WAREHOUSE') {
-    return {
-      destinationId: 'map-warehouse',
-      page: 'chain',
-      params: { focus: 'warehouse' },
-    }
-  }
-
-  return {
-    destinationId: 'map-mosb',
-    page: 'chain',
-    params: { focus: 'mosb' },
-  }
-}
-
-function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
+function OverviewMapInner({ snapshot, onNavigateIntent, siteFilter }: OverviewMapProps) {
   const t = useT()
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
@@ -164,15 +280,32 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const animStartRef = useRef<number>(Date.now())
 
   const [tooltip, setTooltip] = useState<TooltipInfo | null>(null)
-  const [selectedPoiId, setSelectedPoiId] = useState<string | null>(null)
   const [zoom, setZoom] = useState(INITIAL_VIEW.zoom)
-  const [tripsData, setTripsData] = useState<TripData[]>([])
+  const [compactViewport, setCompactViewport] = useState(false)
+  const [mapTrack, setMapTrack] = useState<MapTrack>("uae-ops")
+  const [mapToggles, setMapToggles] = useState<MapLayerToggles>(SSR_SAFE_TOGGLES)
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [animTime, setAnimTime] = useState(ANIM_EPOCH_START)
-  const [originsData, setOriginsData] = useState<OriginEntry[]>([])
 
-  const locationsById = useOpsStore((state) => state.locationsById)
-  const statusByLocationId = useOpsStore((state) => state.locationStatusesById)
-  const eventsById = useOpsStore((state) => state.eventsById)
+  const locations = snapshot?.locations ?? []
+  const statuses = snapshot?.statuses ?? []
+  const events = snapshot?.events ?? []
+  const voyages = snapshot?.voyages ?? []
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const isCompact = window.innerWidth < 960
+    if (prefersReducedMotion || isCompact) {
+      setMapToggles((prev) => ({ ...prev, showTrips: false }))
+    }
+  }, [])
+
+  const statusByLocationId = useMemo(
+    () => Object.fromEntries(statuses.map((status) => [status.location_id, status])),
+    [statuses],
+  )
+  const geofenceGeojson = useMemo(() => createGeofenceGeojson(locations), [locations])
+
   const windowHours = useLogisticsStore((state) => state.windowHours)
   const showGeofence = useLogisticsStore((state) => state.showGeofence)
   const showHeatmap = useLogisticsStore((state) => state.showHeatmap)
@@ -181,22 +314,17 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   const layerTrips = useLogisticsStore((state) => state.layerTrips)
   const layerOriginArcs = useLogisticsStore((state) => state.layerOriginArcs)
   const highlightedShipmentId = useLogisticsStore((state) => state.highlightedShipmentId)
-
-  // Phase 2-B: pipeline stage → map highlight sync
   const activePipelineStage = useCasesStore((state) => state.activePipelineStage)
-
-  const locations = useMemo(() => Object.values(locationsById), [locationsById])
-  const geofenceGeojson = useMemo(() => createGeofenceGeojson(locations), [locations])
+  const isUaeOps = mapTrack === "uae-ops"
 
   const eventsInWindow = useMemo(() => {
-    const events = Object.values(eventsById)
     const windowMs = windowHours * 60 * 60 * 1000
     const now = Date.now()
-    return events.filter((evt) => now - new Date(evt.ts).getTime() <= windowMs)
-  }, [eventsById, windowHours])
+    return events.filter((event) => now - new Date(event.ts).getTime() <= windowMs)
+  }, [events, windowHours])
 
   const geofenceWeight = useCallback(
-    (event: Event) => {
+    (event: (typeof eventsInWindow)[number]) => {
       if (geofenceGeojson.features.length === 0) return 1
       return isPointInGeofence(event.lon, event.lat, geofenceGeojson) ? 2 : 1
     },
@@ -204,76 +332,225 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
   )
 
   const heatmapRadiusPixels = useMemo(() => {
-    if (zoom >= 12) {
-      return 40
-    }
-    if (zoom >= 9) {
-      return 60
-    }
-    return 80
+    if (zoom >= 12) return 36
+    if (zoom >= 9) return 56
+    return 78
   }, [zoom])
 
-  const showHeatmapLayer = showHeatmap && zoom < MAP_LAYER_ZOOM_THRESHOLDS.heatmapMax
-  const showStatusLayer = zoom >= MAP_LAYER_ZOOM_THRESHOLDS.statusMin
-  const showPoiLayer = zoom >= MAP_LAYER_ZOOM_THRESHOLDS.poiMin
-  const showOriginArcs = layerOriginArcs && zoom <= MAP_LAYER_ZOOM_THRESHOLDS.originArcMax
+  const showHeatmapLayer =
+    !isUaeOps &&
+    showHeatmap &&
+    zoom < MAP_LAYER_ZOOM_THRESHOLDS.heatmapMax
+  const showEtaWedgeLayer =
+    !isUaeOps &&
+    showEtaWedge
+  const showOriginArcs =
+    !isUaeOps &&
+    layerOriginArcs &&
+    mapToggles.showOriginArcs &&
+    zoom <= MAP_LAYER_ZOOM_THRESHOLDS.originArcMax
+  const showTripsLayer = layerTrips && mapToggles.showTrips
+  const showNodeLabels =
+    mapTrack === "uae-ops"
+      ? zoom >= MAP_LAYER_ZOOM_THRESHOLDS.networkLabelMin
+      : !compactViewport || zoom >= MAP_LAYER_ZOOM_THRESHOLDS.networkLabelDetailMin
+
+  const originsData = useMemo<OriginEntry[]>(
+    () => buildOriginEntries(voyages, siteFilter),
+    [voyages, siteFilter],
+  )
+
+  const graph = useMemo(
+    () =>
+      buildOverviewNetworkGraph({
+        pois: POI_LOCATIONS,
+        voyages,
+        locations,
+        statusByLocationId,
+        activePipelineStage,
+        siteFilter,
+      }),
+    [activePipelineStage, locations, siteFilter, statusByLocationId, voyages],
+  )
+
+  const tripsData = useMemo(
+    () =>
+      buildOverviewTrips({
+        voyages,
+        nodes: graph.nodes,
+        track: mapTrack,
+        siteFilter,
+      }),
+    [graph.nodes, mapTrack, siteFilter, voyages],
+  )
+
+  const footer = useMemo(
+    () => buildMapFooterSummary(voyages, siteFilter),
+    [siteFilter, voyages],
+  )
+
+  const filteredNodes = useMemo(() => {
+    if (mapTrack === "global") {
+      return graph.nodes.filter((node) => node.type !== "customs")
+    }
+
+    return graph.nodes.filter((node) => {
+      if (node.type === "customs") return mapToggles.showCustoms
+      if (node.type === "warehouse") return mapToggles.showWarehouses
+      if (node.type === "mosb") return mapToggles.showMosb
+      if (node.type === "site") return mapToggles.showSites
+      return true
+    })
+  }, [
+    graph.nodes,
+    mapToggles.showCustoms,
+    mapToggles.showMosb,
+    mapToggles.showSites,
+    mapToggles.showWarehouses,
+    mapTrack,
+  ])
+
+  const filteredNodeIds = useMemo(
+    () => new Set(filteredNodes.map((node) => node.id)),
+    [filteredNodes],
+  )
+
+  const filteredEdges = useMemo(() => {
+    if (mapTrack === "global") return [] as NetworkEdge[]
+
+    return graph.edges.filter((edge) => {
+      if (!filteredNodeIds.has(edge.sourceId) || !filteredNodeIds.has(edge.targetId)) return false
+
+      switch (edge.routeType) {
+        case "port-customs":
+          return mapToggles.showCustoms
+        case "customs-site":
+          return mapToggles.showCustoms && mapToggles.showSites
+        case "customs-wh":
+          return mapToggles.showCustoms && mapToggles.showWarehouses
+        case "customs-mosb":
+          return mapToggles.showCustoms && mapToggles.showMosb
+        case "wh-mosb":
+          return mapToggles.showWarehouses && mapToggles.showMosb
+        case "wh-site":
+          return mapToggles.showWarehouses && mapToggles.showSites
+        case "mosb-site":
+          return mapToggles.showMosb && mapToggles.showSites
+        default:
+          return true
+      }
+    })
+  }, [
+    filteredNodeIds,
+    graph.edges,
+    mapToggles.showCustoms,
+    mapToggles.showMosb,
+    mapToggles.showSites,
+    mapToggles.showWarehouses,
+    mapTrack,
+  ])
+
+  const nodeMap = useMemo(() => new Map(graph.nodes.map((node) => [node.id, node])), [graph.nodes])
+  const highlightedEdgeId = useMemo(
+    () => filteredEdges.find((edge) => edge.highlighted)?.id ?? null,
+    [filteredEdges],
+  )
+  const effectiveSelectedNodeId = useMemo(() => {
+    if (selectedNodeId && filteredNodes.some((node) => node.id === selectedNodeId)) {
+      return selectedNodeId
+    }
+    return filteredNodes.find((node) => node.highlighted)?.id ?? null
+  }, [filteredNodes, selectedNodeId])
 
   const navigate = useCallback(
     (intent: NavigationIntent) => {
       onNavigateIntent?.(intent)
       if (!onNavigateIntent) {
-        console.warn('[OverviewMap] onNavigateIntent not provided, navigation skipped', intent)
-        return
+        console.warn("[OverviewMap] onNavigateIntent not provided, navigation skipped", intent)
       }
     },
     [onNavigateIntent],
   )
 
-  const handleHover = useCallback((info: PickingInfo) => {
-    if (!info?.object) {
-      setTooltip(null)
-      return
-    }
+  const handleToggleChange = useCallback(
+    <K extends keyof MapLayerToggles>(key: K, value: MapLayerToggles[K]) => {
+      setMapToggles((prev) => ({ ...prev, [key]: value }))
+    },
+    [],
+  )
 
-    // Origin country arc hover
-    if (info.layer?.id === "origin-country-arcs") {
-      const obj = info.object as { country: string; count: number }
-      setTooltip({ kind: "arc", x: info.x, y: info.y, country: obj.country, count: obj.count })
-      return
-    }
-
-    // Active voyage trip hover
-    if (info.layer?.id === "active-voyages") {
-      const obj = info.object as { vendor: string | null; flowCode: number | null; etaUnix: number }
-      setTooltip({ kind: "trip", x: info.x, y: info.y, vendor: obj.vendor ?? null, flowCode: obj.flowCode ?? null, etaUnix: obj.etaUnix })
-      return
-    }
-
-    if (info.layer?.id === "poi-markers" || info.layer?.id === "poi-labels") {
-      const poi = getPoiTooltip(info)
-      if (!poi?.text) {
+  const handleHover = useCallback(
+    (info: PickingInfo) => {
+      if (!info?.object) {
         setTooltip(null)
         return
       }
-      setTooltip({ kind: "poi", x: info.x, y: info.y, text: poi.text })
-      return
+
+      if (info.layer?.id === "origin-country-arcs") {
+        const obj = info.object as { country: string; count: number }
+        setTooltip({ kind: "originArc", x: info.x, y: info.y, country: obj.country, count: obj.count })
+        return
+      }
+
+      if (info.layer?.id === "active-voyages") {
+        const trip = info.object as NetworkTrip
+        setTooltip({
+          kind: "trip",
+          x: info.x,
+          y: info.y,
+          shipmentId: trip.shipmentId,
+          vendor: trip.vendor,
+          routeLabel: trip.routeLabel,
+          stageLabel: trip.stageLabel,
+          nextMilestone: trip.nextMilestone,
+          etaUnix: trip.etaUnix,
+        })
+        return
+      }
+
+      if (info.layer?.id === "network-arcs") {
+        const edge = info.object as NetworkEdge
+        setTooltip({
+          kind: "networkArc",
+          x: info.x,
+          y: info.y,
+          object: edge,
+          sourceName: nodeMap.get(edge.sourceId)?.name ?? edge.sourceId,
+          targetName: nodeMap.get(edge.targetId)?.name ?? edge.targetId,
+        })
+        return
+      }
+
+      if (info.layer?.id === "network-nodes" || info.layer?.id === "network-node-labels") {
+        setTooltip({ kind: "node", x: info.x, y: info.y, object: info.object as NetworkNode })
+        return
+      }
+
+      setTooltip(null)
+    },
+    [nodeMap],
+  )
+
+  const handleNodeClick = useCallback(
+    (info: PickingInfo) => {
+      const node = info.object as NetworkNode | undefined
+      if (!node) return
+      setSelectedNodeId(node.id)
+      navigate(buildNetworkNodeIntent(node))
+    },
+    [navigate],
+  )
+
+  useEffect(() => {
+    const updateViewportMode = () => {
+      setCompactViewport(window.innerWidth < 960)
     }
 
-    setTooltip({
-      kind: "location",
-      x: info.x,
-      y: info.y,
-      object: info.object as Location & { status?: LocationStatus },
-    })
+    updateViewportMode()
+    window.addEventListener("resize", updateViewportMode)
+    return () => window.removeEventListener("resize", updateViewportMode)
   }, [])
 
-  const handleLocationClick = useCallback((info: PickingInfo) => {
-    const location = info.object as Location | undefined
-    if (!location) return
-    navigate(buildLocationIntent(location))
-  }, [navigate])
-
-  // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return
 
@@ -302,9 +579,8 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
       setZoom(map.getZoom())
     })
 
-    // Create deck.gl overlay
     const overlay = new MapboxOverlay({
-      interleaved: false, // TODO: Switch to interleaved mode if needed
+      interleaved: false,
       layers: [],
     })
 
@@ -322,25 +598,8 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
     }
   }, [])
 
-  // Phase 2-A: Fetch in-transit trips on mount
   useEffect(() => {
-    fetch('/api/shipments/trips')
-      .then((r) => r.json())
-      .then((j) => setTripsData(j.trips ?? []))
-      .catch(() => setTripsData([]))
-  }, [])
-
-  // Phase 3-A: Fetch origin country aggregates on mount
-  useEffect(() => {
-    fetch('/api/chain/summary')
-      .then((r) => r.json())
-      .then((j) => setOriginsData(j.origins ?? []))
-      .catch(() => setOriginsData([]))
-  }, [])
-
-  // Phase 2-A: Animation loop — cycles animTime at 30fps
-  useEffect(() => {
-    if (tripsData.length === 0) return  // no trips → skip animation loop
+    if (tripsData.length === 0) return
 
     animStartRef.current = Date.now()
 
@@ -360,181 +619,254 @@ function OverviewMapInner({ onNavigateIntent }: OverviewMapProps) {
     }
   }, [tripsData.length])
 
-  // Update layers
   useEffect(() => {
     if (!overlayRef.current) return
 
-    // Filter events by heat filter
     const filteredEvents =
       heatFilter === "all"
         ? eventsInWindow
-        : eventsInWindow.filter((evt) => {
-            const status = statusByLocationId[evt.location_id]
-            return status?.status_code === heatFilter
-          })
+        : eventsInWindow.filter((event) => statusByLocationId[event.location_id]?.status_code === heatFilter)
 
-    const poiLayers = createPoiLayers({
-      pois: POI_LOCATIONS,
-      selectedPoiId,
-      zoom,
-      visible: showPoiLayer,
-      labelZoomThreshold: MAP_LAYER_ZOOM_THRESHOLDS.poiLabelMin,
-      labelDetailZoomThreshold: MAP_LAYER_ZOOM_THRESHOLDS.poiDetailMin,
-      onSelectPoi: (poi) => {
-        setSelectedPoiId(poi.id)
-        navigate(buildPoiIntent(poi))
-      },
+    const rawLayers = [
+      showOriginArcs ? createOriginArcLayer(originsData, true) : null,
+      createGeofenceLayer(locations, showGeofence),
+      showHeatmapLayer
+        ? createHeatmapLayer(filteredEvents, {
+            getWeight: geofenceWeight,
+            radiusPixels: heatmapRadiusPixels,
+            visible: true,
+          })
+        : null,
+      showEtaWedgeLayer ? createEtaWedgeLayer(locations, true) : null,
+      createArcLayer(filteredEdges, filteredNodes, {
+        visible: filteredEdges.length > 0,
+        mode: mapTrack,
+        highlightedEdgeId,
+      }),
+      createTripsLayer(tripsData, animTime, showTripsLayer, highlightedShipmentId, mapTrack),
+      ...createNodeLayer(filteredNodes, {
+        visible: filteredNodes.length > 0,
+        mode: mapTrack,
+        showLabels: showNodeLabels && zoom >= MAP_LAYER_ZOOM_THRESHOLDS.networkLabelMin,
+        selectedNodeId: effectiveSelectedNodeId,
+        onClick: handleNodeClick,
+      }),
+      ...createNetworkStatusRingLayer(filteredNodes, {
+        visible: filteredNodes.length > 0,
+        selectedNodeId: effectiveSelectedNodeId,
+        mode: mapTrack,
+        emphasisTypes: mapTrack === "uae-ops" ? ["customs", "mosb"] : [],
+        pulse: mapTrack === "global" && zoom >= MAP_LAYER_ZOOM_THRESHOLDS.networkLabelMin,
+      }),
+    ]
+
+    const layers = rawLayers.filter(
+      (layer): layer is NonNullable<(typeof rawLayers)[number]> => layer != null,
+    )
+
+    overlayRef.current.setProps({
+      layers,
       onHover: handleHover,
     })
-
-    // Phase 2-B: pass activePipelineStage to status rings for highlight
-    const stageKey = activePipelineStage as string | null
-
-    const layers = [
-      // Phase 3-A: global origin-country arcs (visible only when zoomed out ≤ 8)
-      createOriginArcLayer(originsData, showOriginArcs),
-      createGeofenceLayer(locations, showGeofence),
-      createHeatmapLayer(filteredEvents, {
-        getWeight: geofenceWeight,
-        radiusPixels: heatmapRadiusPixels,
-        visible: showHeatmapLayer,
-      }),
-      createEtaWedgeLayer(locations, showEtaWedge),
-      createLocationLayer(locations, statusByLocationId, handleHover, handleLocationClick, {
-        visible: showStatusLayer,
-      }),
-      // Phase 2-A: animated shipment routes
-      createTripsLayer(tripsData, animTime, layerTrips, highlightedShipmentId),
-      // Status rings with optional stage highlight (Phase 2-B)
-      createStatusRingLayer(POI_LOCATIONS, showPoiLayer, stageKey),
-      ...poiLayers,
-    ]
-      .filter((layer): layer is NonNullable<typeof layer> => layer != null)
-
-    overlayRef.current.setProps({ layers, onHover: handleHover })
   }, [
-    locations,
-    statusByLocationId,
-    eventsInWindow,
-    showGeofence,
-    showHeatmap,
-    showEtaWedge,
-    heatFilter,
-    handleHover,
-    handleLocationClick,
-    geofenceWeight,
-    heatmapRadiusPixels,
-    selectedPoiId,
-    zoom,
-    showHeatmapLayer,
-    showPoiLayer,
-    showStatusLayer,
-    tripsData,
     animTime,
-    activePipelineStage,
-    originsData,
-    showOriginArcs,
-    layerTrips,
-    layerOriginArcs,
+    effectiveSelectedNodeId,
+    eventsInWindow,
+    filteredEdges,
+    filteredNodes,
+    geofenceWeight,
+    handleHover,
+    handleNodeClick,
+    heatFilter,
+    heatmapRadiusPixels,
+    highlightedEdgeId,
     highlightedShipmentId,
+    locations,
+    mapTrack,
+    originsData,
+    showEtaWedgeLayer,
+    showGeofence,
+    showHeatmapLayer,
+    showNodeLabels,
+    showOriginArcs,
+    showTripsLayer,
+    statusByLocationId,
+    tripsData,
+    zoom,
   ])
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative h-full w-full overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(47,107,255,0.18),_transparent_42%),linear-gradient(180deg,_rgba(7,11,22,0.4),_rgba(7,11,22,0.86))]">
       <div
         ref={mapContainerRef}
-        className="w-full h-full"
+        className="h-full w-full"
         aria-label="Overview map"
         tabIndex={-1}
       />
 
-      {showHeatmapLayer ? <HeatmapLegend /> : null}
-      <MapLegend showArcs={showOriginArcs} showTrips={tripsData.length > 0} />
+      <MapTrackSwitch
+        track={mapTrack}
+        toggles={mapToggles}
+        onTrackChange={setMapTrack}
+        onToggleChange={handleToggleChange}
+      />
 
-      {/* Tooltip */}
-      {tooltip && tooltip.kind === "location" && (
-        <div
-          className="absolute z-50 pointer-events-none bg-card/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-xl text-sm"
-          style={{
-            left: tooltip.x + 10,
-            top: tooltip.y + 10,
-            maxWidth: 250,
-          }}
-        >
-          <div className="font-semibold text-foreground mb-1">{tooltip.object.name}</div>
-          <div className="space-y-1 text-muted-foreground">
-            <div className="flex justify-between gap-4">
-              <span>Occupancy:</span>
-              <span className="font-medium text-foreground">
-                {((tooltip.object.status?.occupancy_rate ?? 0) * 100).toFixed(1)}%
-              </span>
+      <MapLegend
+        className="left-3 top-[136px] sm:top-[116px]"
+        track={mapTrack}
+        showArcs={showOriginArcs}
+        showTrips={showTripsLayer && tripsData.length > 0}
+      />
+
+      {showHeatmapLayer ? <HeatmapLegend className="bottom-20 right-3" /> : null}
+
+      <div className="pointer-events-none absolute inset-x-3 bottom-3 z-30">
+        {mapTrack === "uae-ops" ? (
+          <div className="grid grid-cols-2 gap-2 rounded-hvdc-lg border border-white/10 bg-hvdc-bg-overlay p-2 backdrop-blur-md sm:grid-cols-4">
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              {UAE_OPS_FOOTER_COPY.compact[0]} {footer.customsHold.toLocaleString()}
             </div>
-            <div className="flex justify-between gap-4">
-              <span>Status:</span>
-              <span
-                className={`font-medium ${
-                  tooltip.object.status?.status_code === "OK"
-                    ? "text-green-500"
-                    : tooltip.object.status?.status_code === "WARNING"
-                      ? "text-amber-500"
-                      : "text-red-500"
-                }`}
-              >
-                {tooltip.object.status?.status_code ?? "N/A"}
-              </span>
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              {UAE_OPS_FOOTER_COPY.compact[1]} {footer.warehouseStaging.toLocaleString()}
             </div>
-            <div className="flex justify-between gap-4">
-              <span>Updated:</span>
-              <span className="font-medium text-foreground text-xs">
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              {UAE_OPS_FOOTER_COPY.compact[2]} {footer.mosbPending.toLocaleString()}
+            </div>
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              {UAE_OPS_FOOTER_COPY.compact[3]} {footer.siteReady.toLocaleString()}
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2 rounded-hvdc-lg border border-white/10 bg-hvdc-bg-overlay p-2 backdrop-blur-md sm:grid-cols-5">
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              Origin {footer.origin.toLocaleString()}
+            </div>
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              In Transit {footer.inTransit.toLocaleString()}
+            </div>
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              Customs Hold {footer.customsHold.toLocaleString()}
+            </div>
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              Site Ready {footer.siteReady.toLocaleString()}
+            </div>
+            <div className="rounded-xl bg-white/[0.04] px-2 py-2 text-center text-[11px] text-hvdc-text-secondary">
+              Delivered {footer.delivered.toLocaleString()}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {tooltip && tooltip.kind === "node" ? (
+        <TooltipCard x={tooltip.x} y={tooltip.y}>
+          <div className="font-semibold text-hvdc-text-primary">{displayNodeTitle(tooltip.object)}</div>
+          <div className="mt-2 space-y-1.5 text-[11px] text-hvdc-text-secondary">
+            <div className="flex items-center justify-between gap-4">
+              <span>Type</span>
+              <span className="font-medium text-hvdc-text-primary">{nodeKindLabel(tooltip.object)}</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span>{nodePrimaryMetricLabel(tooltip.object)}</span>
+              <span className="font-medium text-hvdc-text-primary">{formatVolume(tooltip.object.volume)}</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span>{tooltip.object.type === "port" || tooltip.object.type === "airport" ? "Stage" : "Status"}</span>
+              <span className="font-medium text-hvdc-text-primary">{nodeStatusText(tooltip.object)}</span>
+            </div>
+            {tooltip.object.type !== "site" ? (
+              <div className="flex items-center justify-between gap-4">
+                <span>{tooltip.object.type === "customs" ? "Next Action" : "Next Path"}</span>
+                <span className="font-medium text-hvdc-text-primary">{nextPathForNode(tooltip.object)}</span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-4">
+                <span>Route</span>
+                <span className="font-medium text-hvdc-text-primary">{nextPathForNode(tooltip.object)}</span>
+              </div>
+            )}
+            {tooltip.object.type === "customs" ? (
+              <div className="flex items-center justify-between gap-4">
+                <span>Related Entry</span>
+                <span className="font-medium text-hvdc-text-primary">
+                  {tooltip.object.id === "khalifa-customs"
+                    ? "Khalifa Port"
+                    : tooltip.object.id === "zayed-customs"
+                      ? "Mina Zayed"
+                      : tooltip.object.id === "auh-customs"
+                        ? "AUH Airport"
+                        : "Jebel Ali"}
+                </span>
+              </div>
+            ) : null}
+            {tooltip.object.type === "warehouse" && hasDsvEvidence(tooltip.object.name) ? (
+              <div className="flex items-center justify-between gap-4">
+                <span>Owner</span>
+                <span className="font-medium text-hvdc-text-primary">DSV</span>
+              </div>
+            ) : null}
+            <div className="flex items-center justify-between gap-4">
+              <span>Updated</span>
+              <span className="font-medium text-hvdc-text-primary">
                 {tooltip.object.status?.last_updated
                   ? formatInDubaiTimezone(tooltip.object.status.last_updated)
                   : "N/A"}
               </span>
             </div>
           </div>
-        </div>
-      )}
-      {tooltip && tooltip.kind === "poi" && (
-        <div
-          className="absolute z-50 pointer-events-none bg-card/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-xl text-sm whitespace-pre-line"
-          style={{
-            left: tooltip.x + 10,
-            top: tooltip.y + 10,
-            maxWidth: 260,
-          }}
-        >
-          <div className="font-semibold text-foreground">{tooltip.text}</div>
-        </div>
-      )}
-      {tooltip && tooltip.kind === "arc" && (
-        <div
-          className="absolute z-50 pointer-events-none bg-card/95 backdrop-blur-sm border border-border rounded-lg px-3 py-2 shadow-xl text-sm"
-          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
-        >
-          <span className="font-semibold text-foreground">
+        </TooltipCard>
+      ) : null}
+
+      {tooltip && tooltip.kind === "networkArc" ? (
+        <TooltipCard x={tooltip.x} y={tooltip.y}>
+          <div className="font-semibold text-hvdc-text-primary">
+            {tooltip.sourceName} → {tooltip.targetName}
+          </div>
+          <div className="mt-2 space-y-1.5 text-[11px] text-hvdc-text-secondary">
+            <div className="flex items-center justify-between gap-4">
+              <span>Route</span>
+              <span className="font-medium text-hvdc-text-primary">{routeLabel(tooltip.object)}</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span>Volume</span>
+              <span className="font-medium text-hvdc-text-primary">{formatVolume(tooltip.object.volume)}</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span>Risk</span>
+              <span className={`font-medium ${riskClass(tooltip.object.risk)}`}>{riskLabel(tooltip.object.risk)}</span>
+            </div>
+          </div>
+        </TooltipCard>
+      ) : null}
+
+      {tooltip && tooltip.kind === "originArc" ? (
+        <TooltipCard x={tooltip.x} y={tooltip.y}>
+          <div className="font-semibold text-hvdc-text-primary">
             {countryFlag(tooltip.country)} {tooltip.country}
-          </span>
-          <span className="text-muted-foreground ml-2">{tooltip.count.toLocaleString()}{t.overviewMap.countSuffix}</span>
-        </div>
-      )}
-      {tooltip && tooltip.kind === "trip" && (
-        <div
-          className="absolute z-50 pointer-events-none bg-card/95 backdrop-blur-sm border border-border rounded-lg px-3 py-2 shadow-xl text-sm space-y-0.5"
-          style={{ left: tooltip.x + 12, top: tooltip.y + 12, minWidth: 160 }}
-        >
-          {tooltip.vendor && (
-            <div className="font-semibold text-foreground">{tooltip.vendor}</div>
-          )}
-          <div className="text-muted-foreground text-xs">
-            {tooltip.flowCode !== null
-              ? `Flow ${tooltip.flowCode} · ${tooltip.flowCode >= 3 ? t.overviewMap.mosbRoute : t.overviewMap.directRoute}`
-              : "In transit"}
           </div>
-          <div className="text-muted-foreground text-xs">
-            ETA {new Date(tooltip.etaUnix * 1000).toLocaleDateString("en-AE", { month: "short", day: "numeric" })}
+          <div className="mt-1 text-[11px] text-hvdc-text-secondary">
+            {tooltip.count.toLocaleString()}
+            {t.overviewMap.countSuffix}
           </div>
-        </div>
-      )}
+        </TooltipCard>
+      ) : null}
+
+      {tooltip && tooltip.kind === "trip" ? (
+        <TooltipCard x={tooltip.x} y={tooltip.y}>
+          <div className="font-semibold text-hvdc-text-primary">Voyage: {tooltip.shipmentId}</div>
+          <div className="mt-1 space-y-1 text-[11px] text-hvdc-text-secondary">
+            {tooltip.vendor ? <div>Vendor: {tooltip.vendor}</div> : null}
+            <div>Current Stage: {tooltip.stageLabel}</div>
+            {tooltip.nextMilestone ? <div>Next: {tooltip.nextMilestone}</div> : null}
+            <div>
+              ETA{" "}
+              {new Date(tooltip.etaUnix * 1000).toLocaleDateString("en-AE", {
+                month: "short",
+                day: "numeric",
+              })}
+            </div>
+          </div>
+        </TooltipCard>
+      ) : null}
     </div>
   )
 }

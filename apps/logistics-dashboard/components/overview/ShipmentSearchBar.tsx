@@ -108,7 +108,7 @@ export function ShipmentSearchBar({ onSelect }: Props) {
           value={query}
           onChange={handleChange}
           placeholder={t.search.placeholder}
-          className={`${ui.input} py-1.5 pl-9 pr-8`}
+          className={`${ui.input} py-1.5 pl-9 pr-8 !border-[#1E2A48]`}
         />
         {query && (
           <button

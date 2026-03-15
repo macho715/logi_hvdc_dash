@@ -7,6 +7,7 @@ import {
   normalizePortName,
   normalizeSite,
 } from "@/lib/logistics/normalizers"
+import { fetchAllPagesInParallel } from "@/lib/supabasePagination"
 import { supabaseAdmin as supabase } from "@/lib/supabase"
 import type { ChainSummary } from "@/types/chain"
 
@@ -35,30 +36,12 @@ function sortCounts(record: Record<string, number>) {
 
 /** Fetch all v_cases rows using pagination (PostgREST db-max-rows=1000 per page). */
 async function fetchAllCasesForChain() {
-  const PAGE = 1000
-  const allRows: Array<{
+  return fetchAllPagesInParallel<{
     site: string | null
     flow_code: number | null
     status_current: string | null
     status_location: string | null
-  }> = []
-  let offset = 0
-
-  while (true) {
-    const { data, error } = await supabase
-      .from("v_cases")
-      .select("site, flow_code, status_current, status_location")
-      .range(offset, offset + PAGE - 1)
-      .order("id")
-
-    if (error) throw error
-    if (!data || data.length === 0) break
-    allRows.push(...data)
-    if (data.length < PAGE) break
-    offset += PAGE
-  }
-
-  return allRows
+  }>(supabase, "v_cases", "site, flow_code, status_current, status_location")
 }
 
 export async function GET(request: NextRequest) {

@@ -21,7 +21,7 @@
 
 Current implementation highlights:
 
-- `/overview` is a 7-row, map-first cockpit backed by `GET /api/overview`
+- `/overview` is a Map First + Bottom Collapse cockpit inside the shared dashboard shell, backed by `GET /api/overview` — the map occupies 55–65% of viewport height with a floating Mission Control card overlay
 - `/pipeline`, `/sites`, `/cargo`, and `/chain` restore state from URL query params
 - public UI uses plain-language `route_type` labels instead of exposing raw Flow Code labels
 - styling SSOT is `app/globals.css` plus `lib/overview/ui.ts`
@@ -34,8 +34,12 @@ Current implementation highlights:
 Active dashboard routes:
 
 - `/overview`
-  - 7-row cockpit
-  - KPI rail, map, mission control, site matrix, radar, ops snapshot
+  - Map First + Bottom Collapse cockpit (Overview 3.0)
+  - sidebar + header shell
+  - slim KPI strip + slim stage chain (Origin / Port-Air / Customs / Warehouse / MOSB / Site)
+  - full-width dominant map (520–680px) with floating Mission Control overlay
+  - collapsible bottom panel — Site Matrix and Voyage Radar (closed by default)
+  - bottom nav: Logistics Chain / Pipeline / Sites / Cargo
 - `/pipeline`
   - 5-stage pipeline analysis
 - `/sites`
@@ -78,12 +82,6 @@ Plain-language route labels:
 ## Screen Gallery
 
 Captured from the local dashboard runtime on `http://localhost:3001`.
-
-### Overview
-
-![Overview cockpit top](public/readme/overview-top.png)
-
-![Overview cockpit bottom](public/readme/overview-bottom.png)
 
 ### Pipeline
 

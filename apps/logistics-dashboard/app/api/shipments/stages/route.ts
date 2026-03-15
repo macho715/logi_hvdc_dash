@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { fetchAllPagesInParallel } from '@/lib/supabasePagination'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export interface ShipmentStages {
@@ -36,8 +37,7 @@ export async function GET() {
     // Query public.shipments view (joins status.shipments_status with flow/case rollup).
     // Note: view uses 'delivery_date' (not 'final_delivery_date') and customs_close_date is always NULL.
     // Voyage stage classification: pre-departure → in-transit → port-customs → delivered
-    const PAGE = 1000
-    const allRows: Array<{
+    const allRows = await fetchAllPagesInParallel<{
       atd: string | null
       ata: string | null
       delivery_date: string | null
@@ -46,22 +46,11 @@ export async function GET() {
       doc_mir: boolean | null
       doc_agi: boolean | null
       flow_code: number | null
-    }> = []
-
-    let offset = 0
-    while (true) {
-      const { data, error } = await supabase
-        .from('shipments')
-        .select('atd, ata, delivery_date, doc_shu, doc_das, doc_mir, doc_agi, flow_code')
-        .range(offset, offset + PAGE - 1)
-        .order('id')
-
-      if (error) throw error
-      if (!data || data.length === 0) break
-      allRows.push(...data)
-      if (data.length < PAGE) break
-      offset += PAGE
-    }
+    }>(
+      supabase,
+      'shipments',
+      'atd, ata, delivery_date, doc_shu, doc_das, doc_mir, doc_agi, flow_code',
+    )
 
     const stages: ShipmentStages = {
       pre_departure:  allRows.filter(r => !r.atd).length,
