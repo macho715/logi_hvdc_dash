@@ -1,5 +1,5 @@
 {
-  "installCommand": "npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile",
+  "installCommand": "corepack disable && npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm build",
   "outputDirectory": ".next",
   "framework": "nextjs"
