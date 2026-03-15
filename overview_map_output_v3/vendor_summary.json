@@ -1,0 +1,794 @@
+{
+  "Hitachi": {
+    "shipment_count": 570,
+    "stages": {
+      "delivered": 569,
+      "customs_cleared": 1
+    },
+    "pods": {
+      "Khalifa Port": 421,
+      "AUH Airport": 123,
+      "Mina Zayed": 11,
+      "Muharraq": 3,
+      "DSV": 1,
+      "MOSB": 6,
+      "SHU": 2,
+      "MIR": 3
+    },
+    "sites": {
+      "DAS": 168,
+      "MIR": 158,
+      "SHU": 203,
+      "AGI": 130
+    },
+    "route_families": {
+      "via_wh_mosb": 156,
+      "direct": 248,
+      "via_mosb": 72,
+      "via_wh": 69,
+      "mixed": 25
+    }
+  },
+  "Siemens": {
+    "shipment_count": 66,
+    "stages": {
+      "delivered": 66
+    },
+    "pods": {
+      "Khalifa Port": 61,
+      "AUH Airport": 5
+    },
+    "sites": {
+      "SHU": 26,
+      "MIR": 24,
+      "DAS": 11,
+      "AGI": 13
+    },
+    "route_families": {
+      "direct": 41,
+      "via_wh_mosb": 16,
+      "via_wh": 4,
+      "mixed": 2,
+      "via_mosb": 3
+    }
+  },
+  "LS Cable": {
+    "shipment_count": 28,
+    "stages": {
+      "delivered": 28
+    },
+    "pods": {
+      "Khalifa Port": 25,
+      "AUH Airport": 3
+    },
+    "sites": {
+      "MIR": 23,
+      "SHU": 23,
+      "DAS": 12,
+      "AGI": 10
+    },
+    "route_families": {
+      "direct": 11,
+      "via_mosb": 2,
+      "mixed": 11,
+      "via_wh": 4
+    }
+  },
+  "Sumitomo": {
+    "shipment_count": 24,
+    "stages": {
+      "delivered": 24
+    },
+    "pods": {
+      "Mina Zayed": 6,
+      "Khalifa Port": 11,
+      "AUH Airport": 7
+    },
+    "sites": {
+      "SHU": 16,
+      "DAS": 2,
+      "MIR": 1,
+      "UNASSIGNED": 7
+    },
+    "route_families": {
+      "mixed": 2,
+      "via_wh": 21,
+      "direct": 1
+    }
+  },
+  "Bansuk": {
+    "shipment_count": 22,
+    "stages": {
+      "delivered": 21,
+      "in_transit": 1
+    },
+    "pods": {
+      "AUH Airport": 11,
+      "Khalifa Port": 11
+    },
+    "sites": {
+      "MIR": 17,
+      "DAS": 15,
+      "SHU": 18,
+      "AGI": 12
+    },
+    "route_families": {
+      "mixed": 15,
+      "direct": 6,
+      "via_mosb": 1
+    }
+  },
+  "Prysmian": {
+    "shipment_count": 22,
+    "stages": {
+      "delivered": 22
+    },
+    "pods": {
+      "Mina Zayed": 7,
+      "Khalifa Port": 4,
+      "UAE": 1,
+      "AUH Airport": 10
+    },
+    "sites": {
+      "MIR": 18,
+      "AGI": 1,
+      "UNASSIGNED": 4
+    },
+    "route_families": {
+      "via_wh": 19,
+      "mixed": 1,
+      "direct": 2
+    }
+  },
+  "Sangdong": {
+    "shipment_count": 22,
+    "stages": {
+      "delivered": 22
+    },
+    "pods": {
+      "Khalifa Port": 17,
+      "AUH Airport": 5
+    },
+    "sites": {
+      "SHU": 18,
+      "MIR": 15,
+      "DAS": 20,
+      "AGI": 21
+    },
+    "route_families": {
+      "mixed": 18,
+      "via_mosb": 4
+    }
+  },
+  "TaeHwa": {
+    "shipment_count": 20,
+    "stages": {
+      "delivered": 20
+    },
+    "pods": {
+      "Khalifa Port": 17,
+      "AUH Airport": 3
+    },
+    "sites": {
+      "DAS": 12,
+      "AGI": 12,
+      "SHU": 14,
+      "MIR": 14
+    },
+    "route_families": {
+      "via_mosb": 3,
+      "direct": 3,
+      "mixed": 14
+    }
+  },
+  "Roxtec": {
+    "shipment_count": 15,
+    "stages": {
+      "delivered": 15
+    },
+    "pods": {
+      "AUH Airport": 8,
+      "Khalifa Port": 7
+    },
+    "sites": {
+      "SHU": 13,
+      "DAS": 11,
+      "MIR": 9,
+      "AGI": 8
+    },
+    "route_families": {
+      "mixed": 11,
+      "direct": 2,
+      "via_mosb": 2
+    }
+  },
+  "STATRON": {
+    "shipment_count": 11,
+    "stages": {
+      "delivered": 11
+    },
+    "pods": {
+      "Khalifa Port": 7,
+      "AUH Airport": 4
+    },
+    "sites": {
+      "SHU": 4,
+      "MIR": 4,
+      "DAS": 2,
+      "AGI": 2
+    },
+    "route_families": {
+      "direct": 7,
+      "via_wh_mosb": 3,
+      "via_mosb": 1
+    }
+  },
+  "Excellift": {
+    "shipment_count": 8,
+    "stages": {
+      "delivered": 8
+    },
+    "pods": {
+      "Khalifa Port": 6,
+      "AUH Airport": 2
+    },
+    "sites": {
+      "SHU": 4,
+      "DAS": 3,
+      "AGI": 7,
+      "MIR": 4
+    },
+    "route_families": {
+      "mixed": 7,
+      "via_mosb": 1
+    }
+  },
+  "BMT Co., Ltd": {
+    "shipment_count": 6,
+    "stages": {
+      "delivered": 5,
+      "in_transit": 1
+    },
+    "pods": {
+      "AUH Airport": 3,
+      "Khalifa Port": 3
+    },
+    "sites": {
+      "MIR": 5,
+      "DAS": 5,
+      "SHU": 4,
+      "AGI": 3
+    },
+    "route_families": {
+      "mixed": 5,
+      "via_mosb": 1
+    }
+  },
+  "Dong Yang": {
+    "shipment_count": 6,
+    "stages": {
+      "delivered": 6
+    },
+    "pods": {
+      "Khalifa Port": 5,
+      "AUH Airport": 1
+    },
+    "sites": {
+      "SHU": 5,
+      "MIR": 5,
+      "DAS": 4,
+      "AGI": 4
+    },
+    "route_families": {
+      "direct": 1,
+      "mixed": 4,
+      "via_mosb": 1
+    }
+  },
+  "Dong-A Bestech": {
+    "shipment_count": 6,
+    "stages": {
+      "delivered": 6
+    },
+    "pods": {
+      "Khalifa Port": 4,
+      "AUH Airport": 2
+    },
+    "sites": {
+      "SHU": 4,
+      "MIR": 4,
+      "DAS": 5,
+      "AGI": 5
+    },
+    "route_families": {
+      "mixed": 4,
+      "direct": 1,
+      "via_mosb": 1
+    }
+  },
+  "EUPEN": {
+    "shipment_count": 6,
+    "stages": {
+      "delivered": 6
+    },
+    "pods": {
+      "Khalifa Port": 3,
+      "AUH Airport": 3
+    },
+    "sites": {
+      "SHU": 3,
+      "MIR": 4,
+      "DAS": 1,
+      "AGI": 5
+    },
+    "route_families": {
+      "mixed": 4,
+      "direct": 1,
+      "via_mosb": 1
+    }
+  },
+  "Fluid Pumps": {
+    "shipment_count": 6,
+    "stages": {
+      "delivered": 6
+    },
+    "pods": {
+      "Khalifa Port": 6
+    },
+    "sites": {
+      "UNASSIGNED": 6
+    },
+    "route_families": {
+      "via_wh": 6
+    }
+  },
+  "SHIN AHN": {
+    "shipment_count": 6,
+    "stages": {
+      "delivered": 6
+    },
+    "pods": {
+      "Khalifa Port": 5,
+      "AUH Airport": 1
+    },
+    "sites": {
+      "SHU": 6,
+      "MIR": 6,
+      "DAS": 5,
+      "AGI": 4
+    },
+    "route_families": {
+      "mixed": 5,
+      "direct": 1
+    }
+  },
+  "Arab Steel": {
+    "shipment_count": 5,
+    "stages": {
+      "delivered": 5
+    },
+    "pods": {
+      "AUH Airport": 3,
+      "Khalifa Port": 2
+    },
+    "sites": {
+      "SHU": 4,
+      "MIR": 3,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "direct": 4,
+      "mixed": 1
+    }
+  },
+  "SCHRACK SECONET": {
+    "shipment_count": 5,
+    "stages": {
+      "delivered": 5
+    },
+    "pods": {
+      "AUH Airport": 5
+    },
+    "sites": {
+      "UNASSIGNED": 5
+    },
+    "route_families": {
+      "via_wh": 5
+    }
+  },
+  "EMERSON": {
+    "shipment_count": 4,
+    "stages": {
+      "delivered": 3,
+      "arrived_port": 1
+    },
+    "pods": {
+      "Khalifa Port": 2,
+      "AUH Airport": 2
+    },
+    "sites": {
+      "SHU": 3,
+      "MIR": 3,
+      "DAS": 4,
+      "AGI": 4
+    },
+    "route_families": {
+      "mixed": 3,
+      "via_mosb": 1
+    }
+  },
+  "Gastron": {
+    "shipment_count": 4,
+    "stages": {
+      "delivered": 3,
+      "in_transit": 1
+    },
+    "pods": {
+      "Khalifa Port": 2,
+      "AUH Airport": 2
+    },
+    "sites": {
+      "SHU": 2,
+      "MIR": 2,
+      "DAS": 3,
+      "AGI": 3
+    },
+    "route_families": {
+      "mixed": 2,
+      "via_mosb": 2
+    }
+  },
+  "FIRE EATER": {
+    "shipment_count": 3,
+    "stages": {
+      "delivered": 3
+    },
+    "pods": {
+      "Khalifa Port": 3
+    },
+    "sites": {
+      "UNASSIGNED": 3
+    },
+    "route_families": {
+      "via_wh": 3
+    }
+  },
+  "Tyco Electronics": {
+    "shipment_count": 3,
+    "stages": {
+      "delivered": 3
+    },
+    "pods": {
+      "Khalifa Port": 2,
+      "AUH Airport": 1
+    },
+    "sites": {
+      "SHU": 2,
+      "MIR": 2,
+      "DAS": 3,
+      "AGI": 2
+    },
+    "route_families": {
+      "mixed": 2,
+      "via_mosb": 1
+    }
+  },
+  "WILO Pump Korea": {
+    "shipment_count": 3,
+    "stages": {
+      "delivered": 2,
+      "in_transit": 1
+    },
+    "pods": {
+      "Khalifa Port": 3
+    },
+    "sites": {
+      "MIR": 2,
+      "DAS": 2,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 2,
+      "via_mosb": 1
+    }
+  },
+  "ESAK CO., Ltd": {
+    "shipment_count": 2,
+    "stages": {
+      "delivered": 2
+    },
+    "pods": {
+      "Khalifa Port": 2
+    },
+    "sites": {
+      "SHU": 2,
+      "MIR": 2,
+      "DAS": 2,
+      "AGI": 2
+    },
+    "route_families": {
+      "mixed": 2
+    }
+  },
+  "Lorunser": {
+    "shipment_count": 2,
+    "stages": {
+      "delivered": 2
+    },
+    "pods": {
+      "AUH Airport": 2
+    },
+    "sites": {
+      "SHU": 2,
+      "MIR": 2,
+      "DAS": 2,
+      "AGI": 2
+    },
+    "route_families": {
+      "mixed": 2
+    }
+  },
+  "Qualitrol": {
+    "shipment_count": 2,
+    "stages": {
+      "delivered": 2
+    },
+    "pods": {
+      "AUH Airport": 2
+    },
+    "sites": {
+      "SHU": 2,
+      "MIR": 2
+    },
+    "route_families": {
+      "direct": 2
+    }
+  },
+  "SPP PUMPS": {
+    "shipment_count": 2,
+    "stages": {
+      "delivered": 2
+    },
+    "pods": {
+      "Khalifa Port": 2
+    },
+    "sites": {
+      "UNASSIGNED": 2
+    },
+    "route_families": {
+      "via_wh": 2
+    }
+  },
+  "APRECO": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "UNASSIGNED": 1
+    },
+    "route_families": {
+      "via_wh": 1
+    }
+  },
+  "BEE Corporation": {
+    "shipment_count": 1,
+    "stages": {
+      "customs_cleared": 1
+    },
+    "pods": {
+      "AUH Airport": 1
+    },
+    "sites": {
+      "UNASSIGNED": 1
+    },
+    "route_families": {
+      "direct": 1
+    }
+  },
+  "DILO": {
+    "shipment_count": 1,
+    "stages": {
+      "in_transit": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "EMEK": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "AUH Airport": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "El Seswdy": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "AUH Airport": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1
+    },
+    "route_families": {
+      "direct": 1
+    }
+  },
+  "ILSUNG ACE": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "JEONO ELECTRIC": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "AUH Airport": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "JINDAL": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "UNASSIGNED": 1
+    },
+    "route_families": {
+      "via_wh": 1
+    }
+  },
+  "MASTICO": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "UNASSIGNED": 1
+    },
+    "route_families": {
+      "via_wh": 1
+    }
+  },
+  "SCT Trade": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Jebel Ali": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "UNICON": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "Whasung System Co., Ltd": {
+    "shipment_count": 1,
+    "stages": {
+      "in_transit": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "SHU": 1,
+      "MIR": 1,
+      "DAS": 1,
+      "AGI": 1
+    },
+    "route_families": {
+      "mixed": 1
+    }
+  },
+  "Xinxiang": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "AGI": 1
+    },
+    "route_families": {
+      "via_mosb": 1
+    }
+  },
+  "YANGZHOU": {
+    "shipment_count": 1,
+    "stages": {
+      "delivered": 1
+    },
+    "pods": {
+      "Khalifa Port": 1
+    },
+    "sites": {
+      "UNASSIGNED": 1
+    },
+    "route_families": {
+      "via_wh": 1
+    }
+  }
+}

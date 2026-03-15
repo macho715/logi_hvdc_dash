@@ -1,0 +1,200 @@
+[
+  {
+    "FLOW_CODE": "0",
+    "Final_Location": "Pre Arrival",
+    "Source_Vendor": "HITACHI",
+    "case_count": 573
+  },
+  {
+    "FLOW_CODE": "0",
+    "Final_Location": "Pre Arrival",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 368
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "SHU",
+    "Source_Vendor": "HITACHI",
+    "case_count": 1358
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "MIR",
+    "Source_Vendor": "HITACHI",
+    "case_count": 1224
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "SHU",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 668
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "MIR",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 605
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "AGI",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 525
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "DAS",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 361
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "DAS",
+    "Source_Vendor": "HITACHI",
+    "case_count": 14
+  },
+  {
+    "FLOW_CODE": "1",
+    "Final_Location": "AGI",
+    "Source_Vendor": "HITACHI",
+    "case_count": 6
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "MIR",
+    "Source_Vendor": "HITACHI",
+    "case_count": 633
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "DAS",
+    "Source_Vendor": "HITACHI",
+    "case_count": 608
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "SHU",
+    "Source_Vendor": "HITACHI",
+    "case_count": 371
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "AGI",
+    "Source_Vendor": "HITACHI",
+    "case_count": 297
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "DSV Indoor",
+    "Source_Vendor": "HITACHI",
+    "case_count": 180
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "Hauler Indoor",
+    "Source_Vendor": "HITACHI",
+    "case_count": 95
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "DSV Outdoor",
+    "Source_Vendor": "HITACHI",
+    "case_count": 39
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "DSV MZP",
+    "Source_Vendor": "HITACHI",
+    "case_count": 3
+  },
+  {
+    "FLOW_CODE": "2",
+    "Final_Location": "DSV Indoor",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 1
+  },
+  {
+    "FLOW_CODE": "3",
+    "Final_Location": "DAS",
+    "Source_Vendor": "HITACHI",
+    "case_count": 547
+  },
+  {
+    "FLOW_CODE": "3",
+    "Final_Location": "AGI",
+    "Source_Vendor": "HITACHI",
+    "case_count": 228
+  },
+  {
+    "FLOW_CODE": "3",
+    "Final_Location": "MIR",
+    "Source_Vendor": "HITACHI",
+    "case_count": 21
+  },
+  {
+    "FLOW_CODE": "3",
+    "Final_Location": "SHU",
+    "Source_Vendor": "HITACHI",
+    "case_count": 9
+  },
+  {
+    "FLOW_CODE": "4",
+    "Final_Location": "AGI",
+    "Source_Vendor": "HITACHI",
+    "case_count": 879
+  },
+  {
+    "FLOW_CODE": "4",
+    "Final_Location": "DAS",
+    "Source_Vendor": "HITACHI",
+    "case_count": 659
+  },
+  {
+    "FLOW_CODE": "4",
+    "Final_Location": "SHU",
+    "Source_Vendor": "HITACHI",
+    "case_count": 1
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "SHU",
+    "Source_Vendor": "HITACHI",
+    "case_count": 184
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "DSV Indoor",
+    "Source_Vendor": "HITACHI",
+    "case_count": 117
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "AGI",
+    "Source_Vendor": "HITACHI",
+    "case_count": 93
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "MOSB",
+    "Source_Vendor": "HITACHI",
+    "case_count": 15
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "MIR",
+    "Source_Vendor": "HITACHI",
+    "case_count": 8
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "DSV Outdoor",
+    "Source_Vendor": "HITACHI",
+    "case_count": 3
+  },
+  {
+    "FLOW_CODE": "5",
+    "Final_Location": "MOSB",
+    "Source_Vendor": "SIEMENS",
+    "case_count": 1
+  }
+]

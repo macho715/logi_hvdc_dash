@@ -1,0 +1,6274 @@
+[
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0001",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0002",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0002",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0003",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 49
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0003",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0004",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 36
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0005",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 48
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0005",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 34
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0007",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 30
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0008",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0009",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0010",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 27
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0011",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0012",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0013",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0014",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0015",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0016",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0017",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0018",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0019",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0020",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0021",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0022",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0023",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0024",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0025",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0026",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0027",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 39
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0027",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0028",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0029",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0030",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0031",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0031",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0032",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0033",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0034",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0035",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0036",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0037",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0038",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0039",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0040",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0041",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0042",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0043",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0044",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0045",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0046",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0047",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0048",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0049",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0050",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0051",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0052",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0053",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0054",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 26
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0054",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0055",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 36
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0056",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 92
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0056",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0057",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0058",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0059",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0060",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0061",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0062",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0063",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0064",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0064",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0065",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0066",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0066",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0067",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0068-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0068-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 21
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0069",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 23
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0070",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0070",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0071",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0072",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0073",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0074",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0075",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0076",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0077",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0078",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0079",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0080-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 37
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0080-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0081",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 30
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0082",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0082",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0083",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0084-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 51
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0084-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0085",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 45
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0085",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0087",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0088",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 47
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0088",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0089",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0089",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0090",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0091",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0092",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0093",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0093",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0093",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0094",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0094",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0094",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0094",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0095",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0096",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0097",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0098",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0099",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0100",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0101",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0101",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0102",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0102",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0102",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0102",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0102",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0103",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0104",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0105",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0106",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0107",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0108",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0108",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0108",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0108",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0108",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0108",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0109",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0109",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0109",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0109",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0109",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0109",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0110",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 44
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0110",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0110",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0111",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 84
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0112",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 56
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0113",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 48
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0114",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0114",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0115",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0116",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 87
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0116",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0116",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0116",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0117",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0118",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0118",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0119",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0119",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0119",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0120",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0121",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0122",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0123",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0124",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0125",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 38
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0126",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0127-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 25
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0127-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0127-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0127-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0128",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0129",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 88
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0129",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0129",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0129",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0130",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0131",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0132",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0132",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0133",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0133",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0134",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0135",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0136",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0137",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0138",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0138",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0139",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0139",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0140",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 48
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0141",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 32
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0141",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0142",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 30
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0143",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 60
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0144",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0144",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0145",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 78
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0146",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 67
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0146",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0146",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0147",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0147",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0148",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0148",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0148",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0148",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0149",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0150",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0151",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0152",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0153-1",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0153-2",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 33
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0154-1",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 43
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0154-2",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0155",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 61
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0155",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0156",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 28
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0157",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0158",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0158",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0159",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0159",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0160",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 39
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0161",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 71
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0161",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0161",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0162",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 51
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0163",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 44
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0163",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0164",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0165",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0166",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0167",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0168",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0169",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0170",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0171",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0172",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0173",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 51
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0174",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 35
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0174",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 21
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0175",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 38
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0175",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0175",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0176",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 27
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0176",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0177",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 50
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0177",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 35
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0177",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0178",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 66
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0178",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 47
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0178",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0179-1",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 29
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0179-1",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 23
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0179-1",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0179-1",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0179-2",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0179-2",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0180",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0180",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0181",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0182",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 26
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0182",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0182",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0182",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0183",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0183",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0183",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0184",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0184",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0184",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0184",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0185",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0186",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0187",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0187",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0188",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0189",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0190",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0191",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0192",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 48
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0192",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0192",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0192",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0192",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0193",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 26
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0193",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0193",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0193",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0193",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0194",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 40
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0195",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0196",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 17
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0197",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0198",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0199",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0200",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0201",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0202",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0202",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0203",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0204",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0204",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0205",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 36
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0205",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 27
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0205",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0205",
+    "Final_Location": "DSV MZP",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0205",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0206",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0206",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0207",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0208",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0209",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0210",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0211",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0212",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0213",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0214",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 74
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0215",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0215",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0215",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0215",
+    "Final_Location": "DSV MZP",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0216",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0217",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0218",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0219",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0220",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0221",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0222",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0222",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0223",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0224",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0225",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0226",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0227",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0228",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0229",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0230",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 20
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0231",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0232",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0233",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0233",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0234",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0236",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0236",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0236",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0236",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0236",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0236",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0237",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0238",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0238",
+    "Final_Location": "Pre Arrival",
+    "FLOW_CODE": "0",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "Pre Arrival",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0238",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0238",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0239",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0239",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0240",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0240",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0241",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0242",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0243",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0244",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0245",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0246",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0247",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0248",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0249",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0250",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0251",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0252",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 28
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0253",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0254",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0254",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0255",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0256",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0256",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0257",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0258",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0259",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0260",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0261",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0262",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0262",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0262",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0263",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0263",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0264",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0265",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0266",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0267",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0268",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0268",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0269",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0269",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0270",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0271",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0272",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0273",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0274",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0275",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0276",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0276",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0277",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0277",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0278",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0278",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0279",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0279",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0280",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0281",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0282",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0283",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0284",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0285",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0286",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0287",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0288",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0288",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0289",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0289",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0290",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0291",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0292",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0293",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0294",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0295",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0295",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0296",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0297",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0298",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0299",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0300",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0301-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0301-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0302",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0303",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0304",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0305",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0306",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0307",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0308",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0309-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 19
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0309-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0310-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 26
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0310-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0311-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 51
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0311-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0312",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0312",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0313",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0313",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0314",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0315",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0315",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0316",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0316",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0317-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0317-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0317-3",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0318-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0318-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0318-3",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0318-4",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0319-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0319-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0319-3",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0320",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 44
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0321",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 28
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0322",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 57
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0322",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0323",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 53
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0324",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 22
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0325-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0325-1",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0325-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0325-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0326",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0327",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 98
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0327",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 98
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0328",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 19
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0329",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 23
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0330",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0330",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0331",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0331",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0332",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0333",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0334",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0335",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0336",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0337",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0338",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0338",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0339",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0340",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 99
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0340",
+    "Final_Location": "Hauler Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 95
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0340",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0341",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0341",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0341",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0341",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0342",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0343",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0344",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 25
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0345",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0346",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 30
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0347",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0348",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0348",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0349",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0349",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0350",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0350",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0351",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0352",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0352",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0353",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0353",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0354",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 19
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0355",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0356",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0357",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0357",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0357",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0358",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 19
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0359",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0360",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0361",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0362",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0362",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0362",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0362",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0363",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0364",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0364",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0365",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0365",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0366",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0366",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 13
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-3",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-4",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-5",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-6",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0368-7",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0369",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0370",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0371",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0371",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0372",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0373",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0374",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0375",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0376",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0377",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0378",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0379",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0380",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0381",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0382",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 80
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0382",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 52
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0382",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 36
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0382",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0382",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0383",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 22
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0384",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0385-1",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0385-2",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0386",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0387-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0387-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0388",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0389",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0390",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0391",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 32
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0392",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0393",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 13
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0393",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0394",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0395",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0396",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0397",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0398",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 20
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0399",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0400",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0400",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0400",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0400",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0401",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0402",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0403",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0404",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0405",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0406",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0407",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0408",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0409",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0410",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0411",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0412",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0413",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0414",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0415",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0417",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0418",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0419",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0420",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0420",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0420",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0421",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 18
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0422",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0423",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0423",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0424",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0425",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0426",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0427",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0428",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0429",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0430",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0430",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0430",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0430",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0431",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0433",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 26
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0434",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 30
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0435",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 44
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0436",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0437",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0438",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0438",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0438-2",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0439",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0439-2",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0440",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 20
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0440-2",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0441",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0441-2",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0442",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 29
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0443",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0444",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0445",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0446",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0447",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0448",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0449",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 37
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0450",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0451",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0452",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0453",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 34
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0454",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0454",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0455",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0456",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0457",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0458",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 11
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0458",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0459",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 37
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0460",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0461",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0462",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0463",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0464",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 15
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0465",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 29
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0466",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0467",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0467",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0468",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0469",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0470",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 70
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0470",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0471",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0472",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0473",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0475",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0475",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0476",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 39
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0477-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0477-2",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0480",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0482",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0482",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0483",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0484",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0485",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0486",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0486",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0487",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0488",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0493",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0493",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0493",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0493",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0495",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0496",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0497",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 61
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0498",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 23
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 8
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-1",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-10",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-11",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-12",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-13",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-2",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-5",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-6",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-6",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-8",
+    "Final_Location": "DSV Outdoor",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0499-8",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0500",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0500",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0501",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0502",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0504",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0505",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0506",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 20
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0506",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0507",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0508",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 76
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0509",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 24
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0509",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 20
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0510",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0511",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0512",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0513",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0513",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0514",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0515",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0516",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0517",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 29
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0518",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0519",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0520",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 16
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0520",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0520",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0521",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0522",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0523",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0524",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 7
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0525",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0525",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0527",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 69
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0528",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 25
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0529",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0530",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 5
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0531",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0532",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0533",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0534",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0535",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 111
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0536",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0537",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0538",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 9
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0540",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 6
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0545",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 14
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0546",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-0556",
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0001",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 20
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0004",
+    "Final_Location": "DAS",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0004",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 4
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0007",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 23
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0007",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0007",
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 3
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0008",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "4",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-ADOPT-HE-LOC-0008",
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": "HVDC-DSV-HE-MOSB-165",
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 12
+  },
+  {
+    "SCT SHIP NO.": "HVDC-DSV-HE-MOSB-168",
+    "Final_Location": "AGI",
+    "FLOW_CODE": "3",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 23
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "SHU",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "site",
+    "case_count": 668
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "MIR",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "site",
+    "case_count": 605
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "Pre Arrival",
+    "FLOW_CODE": "0",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "Pre Arrival",
+    "case_count": 569
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "AGI",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "site",
+    "case_count": 525
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "Pre Arrival",
+    "FLOW_CODE": "0",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "Pre Arrival",
+    "case_count": 368
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "DAS",
+    "FLOW_CODE": "1",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "site",
+    "case_count": 361
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 10
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "DAS",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "site",
+    "case_count": 2
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "DSV Indoor",
+    "FLOW_CODE": "2",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "HITACHI",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  },
+  {
+    "SCT SHIP NO.": NaN,
+    "Final_Location": "MOSB",
+    "FLOW_CODE": "5",
+    "Source_Vendor": "SIEMENS",
+    "Status_Current": "warehouse",
+    "case_count": 1
+  }
+]

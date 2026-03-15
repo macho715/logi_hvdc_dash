@@ -2,7 +2,7 @@
   "name": "logi-master-dash",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@10.28.0",
   "workspaces": [
     "apps/*",
     "packages/*"

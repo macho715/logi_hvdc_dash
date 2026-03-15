@@ -1,0 +1,279 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: HVDC
+        - button "Collapse sidebar" [ref=e6]:
+          - img [ref=e7]
+      - navigation [ref=e9]:
+        - link "Overview" [ref=e10] [cursor=pointer]:
+          - /url: /overview
+          - img [ref=e11]
+          - generic [ref=e13]: Overview
+        - link "물류 체인" [ref=e14] [cursor=pointer]:
+          - /url: /chain
+          - img [ref=e15]
+          - generic [ref=e20]: 물류 체인
+        - link "Pipeline" [ref=e21] [cursor=pointer]:
+          - /url: /pipeline
+          - img [ref=e22]
+          - generic [ref=e25]: Pipeline
+        - link "Sites" [ref=e26] [cursor=pointer]:
+          - /url: /sites
+          - img [ref=e27]
+          - generic [ref=e31]: Sites
+        - link "Cargo" [ref=e32] [cursor=pointer]:
+          - /url: /cargo
+          - img [ref=e33]
+          - generic [ref=e37]: Cargo
+    - generic [ref=e38]:
+      - banner [ref=e39]:
+        - heading "Overview" [level=1] [ref=e40]
+        - generic [ref=e41]: "Updated: 01:52:00"
+      - main [ref=e42]:
+        - generic [ref=e43]:
+          - region "Overview KPI rail" [ref=e65]:
+            - button "총 케이스 10,694 전체 진행 기준" [ref=e66]:
+              - generic [ref=e67]: 총 케이스
+              - generic [ref=e68]: 10,694
+              - generic [ref=e69]: 전체 진행 기준
+            - button "현장 도착률 87.0% 9,299건 도착" [ref=e70]:
+              - generic [ref=e71]: 현장 도착률
+              - generic [ref=e72]: 87.0%
+              - generic [ref=e73]: 9,299건 도착
+            - button "창고 압력 438 2,375.49 ㎡" [ref=e74]:
+              - generic [ref=e75]: 창고 압력
+              - generic [ref=e76]: "438"
+              - generic [ref=e77]: 2,375.49 ㎡
+            - button "필수 MOSB 경유 누락 224 DAS/AGI 대상" [ref=e78]:
+              - generic [ref=e79]: 필수 MOSB 경유 누락
+              - generic [ref=e80]: "224"
+              - generic [ref=e81]: DAS/AGI 대상
+            - button "데이터 최신성 정상 2026-03-14 01:53" [ref=e82]:
+              - generic [ref=e83]: 데이터 최신성
+              - generic [ref=e84]: 정상
+              - generic [ref=e85]: 2026-03-14 01:53
+          - generic:
+            - generic "Overview map" [ref=e53]:
+              - region "Map" [ref=e54]
+              - generic:
+                - group [ref=e86]:
+                  - generic "Toggle attribution" [ref=e87] [cursor=pointer]
+                  - generic [ref=e88]:
+                    - text: ©
+                    - link "CARTO" [ref=e89] [cursor=pointer]:
+                      - /url: https://carto.com/about-carto/
+                    - text: ", ©"
+                    - link "OpenStreetMap" [ref=e90] [cursor=pointer]:
+                      - /url: http://www.openstreetmap.org/about/
+                    - text: contributors
+                - generic [ref=e55]:
+                  - button "Zoom in" [ref=e56] [cursor=pointer]
+                  - button "Zoom out" [ref=e58] [cursor=pointer]
+                  - button "Reset bearing to north" [ref=e60]
+            - complementary [ref=e91]:
+              - generic:
+                - generic [ref=e92]:
+                  - generic [ref=e93]:
+                    - heading "예외 보드" [level=2] [ref=e94]
+                    - paragraph [ref=e95]: 운영 우선순위가 높은 항목만 위쪽에 고정합니다.
+                  - generic [ref=e96]:
+                    - button "필수 MOSB 경유 누락 DAS/AGI 대상 운송 중 MOSB 경유가 필요한 건이 확인되었습니다. 224" [ref=e97]:
+                      - generic [ref=e98]:
+                        - generic [ref=e99]:
+                          - generic [ref=e100]: 필수 MOSB 경유 누락
+                          - generic [ref=e101]: DAS/AGI 대상 운송 중 MOSB 경유가 필요한 건이 확인되었습니다.
+                        - generic [ref=e102]: "224"
+                    - button "AGI 납품률 저조 AGI 현장 도착률이 목표 수준보다 낮습니다. 2,043" [ref=e103]:
+                      - generic [ref=e104]:
+                        - generic [ref=e105]:
+                          - generic [ref=e106]: AGI 납품률 저조
+                          - generic [ref=e107]: AGI 현장 도착률이 목표 수준보다 낮습니다.
+                        - generic [ref=e108]: 2,043
+                    - button "창고 적체 상위 구역 DSV Indoor 구역에 창고 재고가 집중되어 있습니다. 0" [ref=e109]:
+                      - generic [ref=e110]:
+                        - generic [ref=e111]:
+                          - generic [ref=e112]: 창고 적체 상위 구역
+                          - generic [ref=e113]: DSV Indoor 구역에 창고 재고가 집중되어 있습니다.
+                        - generic [ref=e114]: "0"
+                - generic [ref=e115]:
+                  - generic [ref=e116]:
+                    - heading "운송 경로 요약" [level=2] [ref=e117]
+                    - paragraph [ref=e118]: 숫자 코드를 숨기고 경로 의미만 남겼습니다.
+                  - generic [ref=e119]:
+                    - button "출발 준비 중 941 8.8%" [ref=e120]:
+                      - generic [ref=e121]:
+                        - generic [ref=e122]: 출발 준비 중
+                        - generic [ref=e123]: "941"
+                      - generic [ref=e126]: 8.8%
+                    - button "항만 → 현장 직송 4,761 44.5%" [ref=e127]:
+                      - generic [ref=e128]:
+                        - generic [ref=e129]: 항만 → 현장 직송
+                        - generic [ref=e130]: 4,761
+                      - generic [ref=e133]: 44.5%
+                    - button "항만 → 창고 → 현장 2,227 20.8%" [ref=e134]:
+                      - generic [ref=e135]:
+                        - generic [ref=e136]: 항만 → 창고 → 현장
+                        - generic [ref=e137]: 2,227
+                      - generic [ref=e140]: 20.8%
+                    - button "항만 → MOSB → 현장 805 7.5%" [ref=e141]:
+                      - generic [ref=e142]:
+                        - generic [ref=e143]: 항만 → MOSB → 현장
+                        - generic [ref=e144]: "805"
+                      - generic [ref=e147]: 7.5%
+                    - button "항만 → 창고 → MOSB → 현장 1,539 14.4%" [ref=e148]:
+                      - generic [ref=e149]:
+                        - generic [ref=e150]: 항만 → 창고 → MOSB → 현장
+                        - generic [ref=e151]: 1,539
+                      - generic [ref=e154]: 14.4%
+                    - button "경로 확인 필요 421 3.9%" [ref=e155]:
+                      - generic [ref=e156]:
+                        - generic [ref=e157]: 경로 확인 필요
+                        - generic [ref=e158]: "421"
+                      - generic [ref=e161]: 3.9%
+                - generic [ref=e162]:
+                  - generic [ref=e163]:
+                    - heading "현장 준비도" [level=2] [ref=e164]
+                    - paragraph [ref=e165]: 현장 단위 도착률과 대기 잔량을 같이 보여줍니다.
+                  - generic [ref=e166]:
+                    - button "SHU 90.2% 도착 2577 창고 0 MOSB 0 대기 280" [ref=e167]:
+                      - generic [ref=e168]:
+                        - generic [ref=e169]: SHU
+                        - generic [ref=e170]: 90.2%
+                      - generic [ref=e171]:
+                        - generic [ref=e172]: 도착 2577
+                        - generic [ref=e173]: 창고 0
+                        - generic [ref=e174]: MOSB 0
+                        - generic [ref=e175]: 대기 280
+                    - button "MIR 90.6% 도착 2494 창고 0 MOSB 0 대기 259" [ref=e176]:
+                      - generic [ref=e177]:
+                        - generic [ref=e178]: MIR
+                        - generic [ref=e179]: 90.6%
+                      - generic [ref=e180]:
+                        - generic [ref=e181]: 도착 2494
+                        - generic [ref=e182]: 창고 0
+                        - generic [ref=e183]: MOSB 0
+                        - generic [ref=e184]: 대기 259
+                    - button "DAS 92.0% 도착 2174 창고 0 MOSB 0 대기 190" [ref=e185]:
+                      - generic [ref=e186]:
+                        - generic [ref=e187]: DAS
+                        - generic [ref=e188]: 92.0%
+                      - generic [ref=e189]:
+                        - generic [ref=e190]: 도착 2174
+                        - generic [ref=e191]: 창고 0
+                        - generic [ref=e192]: MOSB 0
+                        - generic [ref=e193]: 대기 190
+                    - button "AGI 77.6% 도착 2043 창고 0 MOSB 0 대기 591" [ref=e194]:
+                      - generic [ref=e195]:
+                        - generic [ref=e196]: AGI
+                        - generic [ref=e197]: 77.6%
+                      - generic [ref=e198]:
+                        - generic [ref=e199]: 도착 2043
+                        - generic [ref=e200]: 창고 0
+                        - generic [ref=e201]: MOSB 0
+                        - generic [ref=e202]: 대기 591
+                - generic [ref=e203]:
+                  - generic [ref=e204]:
+                    - heading "최근 활동" [level=2] [ref=e205]
+                    - paragraph [ref=e206]: 이벤트 기반 최근 변화를 Cargo로 바로 넘깁니다.
+                  - generic [ref=e207]:
+                    - button "HOLD LOC-KPP · SHPT-1033 17초 전" [ref=e208]:
+                      - generic [ref=e210]:
+                        - generic [ref=e211]: HOLD
+                        - generic [ref=e212]: LOC-KPP · SHPT-1033
+                      - generic [ref=e213]: 17초 전
+                    - button "HOLD LOC-DSV-M19 · SHPT-1036 55분 전" [ref=e214]:
+                      - generic [ref=e216]:
+                        - generic [ref=e217]: HOLD
+                        - generic [ref=e218]: LOC-DSV-M19 · SHPT-1036
+                      - generic [ref=e219]: 55분 전
+                    - button "HOLD LOC-MIR · SHPT-1009 57분 전" [ref=e220]:
+                      - generic [ref=e222]:
+                        - generic [ref=e223]: HOLD
+                        - generic [ref=e224]: LOC-MIR · SHPT-1009
+                      - generic [ref=e225]: 57분 전
+                    - button "IN_TRANSIT LOC-MIR · SHPT-1010 4시간 전" [ref=e226]:
+                      - generic [ref=e228]:
+                        - generic [ref=e229]: IN_TRANSIT
+                        - generic [ref=e230]: LOC-MIR · SHPT-1010
+                      - generic [ref=e231]: 4시간 전
+                    - button "DELIVERED LOC-MOSB-SCT-YARD · SHPT-1042 4시간 전" [ref=e232]:
+                      - generic [ref=e234]:
+                        - generic [ref=e235]: DELIVERED
+                        - generic [ref=e236]: LOC-MOSB-SCT-YARD · SHPT-1042
+                      - generic [ref=e237]: 4시간 전
+                    - button "HOLD LOC-DAS · SHPT-1016 4시간 전" [ref=e238]:
+                      - generic [ref=e240]:
+                        - generic [ref=e241]: HOLD
+                        - generic [ref=e242]: LOC-DAS · SHPT-1016
+                      - generic [ref=e243]: 4시간 전
+          - generic [ref=e245]:
+            - generic [ref=e246]:
+              - generic [ref=e247]:
+                - heading "단계 파이프라인" [level=2] [ref=e248]
+                - paragraph [ref=e249]: overview의 각 단계는 Pipeline 페이지와 같은 URL 계약을 사용합니다.
+              - generic [ref=e250]:
+                - button "선적 전 941 8.8%" [ref=e251]:
+                  - generic [ref=e252]: 선적 전
+                  - generic [ref=e253]: "941"
+                  - generic [ref=e254]: 8.8%
+                - button "항구/통관 0 0.0%" [ref=e255]:
+                  - generic [ref=e256]: 항구/통관
+                  - generic [ref=e257]: "0"
+                  - generic [ref=e258]: 0.0%
+                - button "창고 438 4.1%" [ref=e259]:
+                  - generic [ref=e260]: 창고
+                  - generic [ref=e261]: "438"
+                  - generic [ref=e262]: 4.1%
+                - button "MOSB 16 0.1%" [ref=e263]:
+                  - generic [ref=e264]: MOSB
+                  - generic [ref=e265]: "16"
+                  - generic [ref=e266]: 0.1%
+                - button "현장 도착 9,299 87.0%" [ref=e267]:
+                  - generic [ref=e268]: 현장 도착
+                  - generic [ref=e269]: 9,299
+                  - generic [ref=e270]: 87.0%
+            - generic [ref=e271]:
+              - generic [ref=e272]:
+                - heading "우선순위 worklist" [level=2] [ref=e273]
+                - paragraph [ref=e274]: 공유 store의 HVDC worklist를 그대로 재사용합니다.
+              - generic [ref=e275]:
+                - button "HVDC-ADOPT-HE-0344 Hitachi · C · Shanghai · →Khalifa port RED SHU 항만 → 창고 → 현장 예정 2005-08-19" [ref=e276]:
+                  - generic [ref=e277]:
+                    - generic [ref=e278]:
+                      - generic [ref=e279]: HVDC-ADOPT-HE-0344
+                      - generic [ref=e280]: Hitachi · C · Shanghai · →Khalifa port
+                    - generic [ref=e281]: RED
+                  - generic [ref=e282]:
+                    - generic [ref=e283]: SHU
+                    - generic [ref=e284]: 항만 → 창고 → 현장
+                    - generic [ref=e285]: 예정 2005-08-19
+                - button "HVDC-ADOPT-PPL-0001 Prysmian · B · Le Havre · →Mina Zayed RED 예정 2023-12-05" [ref=e286]:
+                  - generic [ref=e287]:
+                    - generic [ref=e288]:
+                      - generic [ref=e289]: HVDC-ADOPT-PPL-0001
+                      - generic [ref=e290]: Prysmian · B · Le Havre · →Mina Zayed
+                    - generic [ref=e291]: RED
+                  - generic [ref=e293]: 예정 2023-12-05
+                - button "HVDC-ADOPT-PPL-0002 Prysmian · B · Le Havre · →Mina Zayed RED 예정 2023-12-06" [ref=e294]:
+                  - generic [ref=e295]:
+                    - generic [ref=e296]:
+                      - generic [ref=e297]: HVDC-ADOPT-PPL-0002
+                      - generic [ref=e298]: Prysmian · B · Le Havre · →Mina Zayed
+                    - generic [ref=e299]: RED
+                  - generic [ref=e301]: 예정 2023-12-06
+                - button "HVDC-ADOPT-PPL-0005 Prysmian · B · Port of Pozzuoli · →Mina Zayed RED 예정 2024-01-07" [ref=e302]:
+                  - generic [ref=e303]:
+                    - generic [ref=e304]:
+                      - generic [ref=e305]: HVDC-ADOPT-PPL-0005
+                      - generic [ref=e306]: Prysmian · B · Port of Pozzuoli · →Mina Zayed
+                    - generic [ref=e307]: RED
+                  - generic [ref=e309]: 예정 2024-01-07
+                - button "HVDC-ADOPT-PPL-0006 Prysmian · B · Port of Pozzuoli · →Mina Zayed RED 예정 2024-01-07" [ref=e310]:
+                  - generic [ref=e311]:
+                    - generic [ref=e312]:
+                      - generic [ref=e313]: HVDC-ADOPT-PPL-0006
+                      - generic [ref=e314]: Prysmian · B · Port of Pozzuoli · →Mina Zayed
+                    - generic [ref=e315]: RED
+                  - generic [ref=e317]: 예정 2024-01-07
+  - alert [ref=e64]

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "hvdc-knowledge": {
+      "type": "stdio",
+      "command": "cmd.exe",
+      "args": [
+        "/d",
+        "/c",
+        "C:\\Users\\jichu\\Downloads\\hvdc-knowledge-gpt-mcp\\scripts\\cursor_mcp.cmd"
+      ]
+    }
+  }
+}

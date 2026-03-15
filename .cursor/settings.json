@@ -1,0 +1,35 @@
+{
+  "plugins": {
+    "superpowers": {
+      "enabled": true
+    }
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true,
+    "**/node_modules/**": true,
+    "**/archive/**": true,
+    "**/hvdc_output/**": true,
+    "**/overview_map_output_v3/**": true,
+    "**/output/**": true,
+    "**/reports/**": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.next": true,
+    "**/.turbo": true,
+    "**/node_modules": true,
+    "**/archive": true,
+    "**/hvdc_output": true,
+    "**/overview_map_output_v3": true,
+    "**/output": true,
+    "**/reports": true
+  },
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEventsOnParentDirectory",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriority"
+  }
+}

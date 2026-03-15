@@ -1,0 +1,40 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: HVDC
+        - button "Collapse sidebar" [ref=e6]:
+          - img [ref=e7]
+      - navigation [ref=e9]:
+        - link "Overview" [ref=e10] [cursor=pointer]:
+          - /url: /overview
+          - img [ref=e11]
+          - generic [ref=e13]: Overview
+        - link "물류 체인" [ref=e14] [cursor=pointer]:
+          - /url: /chain
+          - img [ref=e15]
+          - generic [ref=e20]: 물류 체인
+        - link "Pipeline" [ref=e21] [cursor=pointer]:
+          - /url: /pipeline
+          - img [ref=e22]
+          - generic [ref=e25]: Pipeline
+        - link "Sites" [ref=e26] [cursor=pointer]:
+          - /url: /sites
+          - img [ref=e27]
+          - generic [ref=e31]: Sites
+        - link "Cargo" [ref=e32] [cursor=pointer]:
+          - /url: /cargo
+          - img [ref=e33]
+          - generic [ref=e37]: Cargo
+    - generic [ref=e38]:
+      - banner [ref=e39]:
+        - heading "Overview" [level=1] [ref=e40]
+        - generic [ref=e41]: "Updated: 01:52:00"
+      - main [ref=e42]:
+        - generic "Overview map" [ref=e53]:
+          - region "Map" [ref=e54]
+          - generic [ref=e55]:
+            - button "Zoom in" [ref=e56] [cursor=pointer]
+            - button "Zoom out" [ref=e58] [cursor=pointer]
+            - button "Reset bearing to north" [ref=e60]
+  - alert [ref=e64]
