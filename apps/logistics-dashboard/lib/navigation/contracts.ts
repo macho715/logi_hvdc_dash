@@ -49,7 +49,6 @@ const destinationMap = new Map(
 )
 
 const SITE_VALUES = ['SHU', 'MIR', 'DAS', 'AGI'] as const
-const CASE_VENDOR_VALUES = ['Hitachi', 'Siemens', 'Other'] as const
 const CASE_CATEGORY_VALUES = ['Elec', 'Mech', 'Inst.'] as const
 const CARGO_TAB_VALUES = ['wh', 'shipments', 'stock'] as const
 const SITE_TAB_VALUES = ['summary', 'pending', 'vendor', 'monthly', 'route'] as const
@@ -121,7 +120,7 @@ export function parsePipelineQuery(input: QueryInput): PipelinePageQuery {
   return {
     ...(stage && PIPELINE_STAGES.some((entry) => entry.key === stage) ? { stage: stage as PipelineStage } : {}),
     ...(isEnumValue(site, SITE_VALUES) ? { site } : {}),
-    ...(isEnumValue(vendor, CASE_VENDOR_VALUES) ? { vendor } : {}),
+    ...(vendor ? { vendor } : {}),
     ...(isEnumValue(category, CASE_CATEGORY_VALUES) ? { category } : {}),
     ...(routeType ? { route_type: routeType } : {}),
   }

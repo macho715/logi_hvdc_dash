@@ -42,11 +42,7 @@ export async function GET(request: NextRequest) {
       }
     }
     if (vendor && vendor !== 'all') {
-      if (vendor === 'Other') {
-        query = query.not('source_vendor', 'in', '(Hitachi,Siemens)')
-      } else {
-        query = query.eq('source_vendor', vendor)
-      }
+      query = query.eq('source_vendor', vendor)
     }
     if (category && category !== 'all') query = query.eq('category', category)
     if (location && location !== 'all') query = query.eq('status_location', location)

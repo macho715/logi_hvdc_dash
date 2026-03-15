@@ -17,7 +17,7 @@ const SAMPLE_ROWS = [
     status_current: 'In Transit',
     status_location: 'MOSB',
     sqm: 5,
-    source_vendor: 'Other Vendor',
+    source_vendor: 'Prysmian',
     storage_type: 'Outdoor',
   },
 ] as const
@@ -55,6 +55,36 @@ describe('cases summary builder', () => {
     expect(first.byRouteType['direct-to-site']).toBe(1)
     expect(first.byRouteType['via-mosb']).toBe(1)
     expect(first.byVendor.Hitachi).toBe(1)
-    expect(first.byVendor.Other).toBe(1)
+    expect(first.byVendor['Prysmian']).toBe(1)
+  })
+
+  it('keys non-Hitachi/Siemens vendors directly without bucketing', () => {
+    const summary = buildCasesSummary([
+      {
+        site: 'SHU',
+        flow_code: 1,
+        status_current: 'Delivered',
+        status_location: 'SHU',
+        sqm: 10,
+        source_vendor: 'Prysmian',
+        storage_type: 'Indoor',
+      },
+    ])
+    expect(summary.byVendor['Prysmian']).toBe(1)
+  })
+
+  it('uses "Unknown" key for null source_vendor', () => {
+    const summary = buildCasesSummary([
+      {
+        site: 'SHU',
+        flow_code: 1,
+        status_current: 'Delivered',
+        status_location: 'SHU',
+        sqm: 10,
+        source_vendor: null,
+        storage_type: 'Indoor',
+      },
+    ])
+    expect(summary.byVendor['Unknown']).toBe(1)
   })
 })

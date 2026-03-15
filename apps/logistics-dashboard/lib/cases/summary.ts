@@ -68,10 +68,7 @@ export function buildCasesSummary(rows: CasesSummarySourceRow[]): CasesSummary {
     const routeTypeId = getRouteTypeIdFromFlowCode(typeof row.flow_code === 'number' ? row.flow_code : null)
     summary.byRouteType[routeTypeId] = (summary.byRouteType[routeTypeId] ?? 0) + 1
 
-    const vendorKey =
-      row.source_vendor === 'Hitachi' || row.source_vendor === 'Siemens'
-        ? row.source_vendor
-        : 'Other'
+    const vendorKey = row.source_vendor ?? 'Unknown'
     summary.byVendor[vendorKey] = (summary.byVendor[vendorKey] ?? 0) + 1
 
     const sqm = typeof row.sqm === 'number' ? row.sqm : 0

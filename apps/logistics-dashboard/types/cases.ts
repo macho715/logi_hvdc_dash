@@ -115,7 +115,7 @@ export interface CasesFilter {
   site: 'SHU' | 'MIR' | 'DAS' | 'AGI' | 'all'
   route_type?: OverviewRouteTypeId | 'all'
   status_current: CaseRow['status_current'] | CaseRow['status_current'][] | 'all'
-  vendor: 'Hitachi' | 'Siemens' | 'Other' | 'all'
+  vendor: string
   category: 'Elec' | 'Mech' | 'Inst.' | 'all'
   location: string | 'all'
 }

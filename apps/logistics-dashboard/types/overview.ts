@@ -45,7 +45,7 @@ export interface OverviewDestinationConfig {
 export interface PipelinePageQuery {
   stage?: PipelineStage
   site?: 'SHU' | 'MIR' | 'DAS' | 'AGI'
-  vendor?: 'Hitachi' | 'Siemens' | 'Other'
+  vendor?: string
   category?: 'Elec' | 'Mech' | 'Inst.'
   route_type?: OverviewRouteTypeId
 }
@@ -144,10 +144,33 @@ export interface OverviewLiveFeedItem {
   navigationIntent: NavigationIntent
 }
 
+export type OverviewMapSiteCode = 'SHU' | 'MIR' | 'DAS' | 'AGI'
+export type OverviewMapSiteBasis = 'actual' | 'planned' | 'unknown'
+
+export interface OverviewMapVoyage {
+  id: string
+  shipmentId: string
+  vendor: string | null
+  originCountry: string | null
+  pol: string | null
+  pod: string | null
+  etd: string | null
+  atd: string | null
+  eta: string | null
+  ata: string | null
+  customsStart: string | null
+  customsClose: string | null
+  deliveryDate: string | null
+  plannedSites: OverviewMapSiteCode[]
+  actualSite: OverviewMapSiteCode | null
+  siteBasis: OverviewMapSiteBasis
+}
+
 export interface OverviewMapSnapshot {
   locations: Location[]
   statuses: LocationStatus[]
   events: Event[]
+  voyages: OverviewMapVoyage[]
 }
 
 export interface OverviewCockpitResponse {

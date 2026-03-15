@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import type { CasesFilter } from '@/types/cases'
 import type { PipelineTableFilters } from '@/components/pipeline/PipelineCasesTable'
 import { useT } from '@/hooks/useT'
@@ -37,6 +38,29 @@ interface Props {
 
 export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
   const t = useT()
+
+  const [vendorOptions, setVendorOptions] = useState<{ value: string; label: string }[]>([
+    { value: 'all', label: t.pipeline.all },
+  ])
+
+  useEffect(() => {
+    fetch('/api/shipments/vendors')
+      .then((r) => r.json())
+      .then(({ vendors }: { vendors: string[] }) => {
+        setVendorOptions([
+          { value: 'all', label: t.pipeline.all },
+          ...vendors.map((v) => ({ value: v, label: v })),
+        ])
+      })
+      .catch(() => {
+        setVendorOptions([
+          { value: 'all', label: t.pipeline.all },
+          { value: 'Hitachi', label: 'Hitachi' },
+          { value: 'Siemens', label: 'Siemens' },
+        ])
+      })
+  }, [t.pipeline.all])
+
   return (
     <div className={`flex flex-wrap items-center gap-4 border-b border-hvdc-border-soft px-4 py-2 ${ui.panelInner}`}>
       <FilterSelect
@@ -55,12 +79,7 @@ export function PipelineFilterBar({ filters, setFilter, resetFilters }: Props) {
         label={t.pipeline.vendorFilter}
         value={String(filters.vendor)}
         onChange={v => setFilter('vendor', v as CasesFilter['vendor'])}
-        options={[
-          { value: 'all', label: t.pipeline.all },
-          { value: 'Hitachi', label: 'Hitachi' },
-          { value: 'Siemens', label: 'Siemens' },
-          { value: 'Other', label: 'Other' },
-        ]}
+        options={vendorOptions}
       />
       <FilterSelect
         label={t.pipeline.categoryFilter}

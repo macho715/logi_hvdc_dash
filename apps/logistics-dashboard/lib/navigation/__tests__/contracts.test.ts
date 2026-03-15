@@ -70,4 +70,17 @@ describe('navigation contracts', () => {
     expect(getOverviewDestinationConfig('pipeline-stage')).not.toBeNull()
     expect(getOverviewDestinationConfig('map-site')?.page).toBe('sites')
   })
+
+  it('passes arbitrary vendor values through without enum filtering', () => {
+    const query = parsePipelineQuery({ vendor: 'Prysmian' })
+    expect(query.vendor).toBe('Prysmian')
+  })
+
+  it('builds pipeline URL containing vendor=Prysmian for arbitrary vendors', () => {
+    const href = buildDashboardLink({
+      page: 'pipeline',
+      params: { vendor: 'Prysmian' },
+    })
+    expect(href).toContain('vendor=Prysmian')
+  })
 })

@@ -19,7 +19,7 @@ export function WhStatusTable() {
   useEffect(() => {
     const query = parseCargoQuery(searchParams)
     setFilter('site', query.site ?? 'all')
-    setFilter('vendor', (query.vendor ?? 'all') as 'Hitachi' | 'Siemens' | 'Other' | 'all')
+    setFilter('vendor', (query.vendor ?? 'all') as string)
     setFilter('route_type', query.route_type ?? 'all')
   }, [searchParams, setFilter])
 
