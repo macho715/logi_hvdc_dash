@@ -8,10 +8,11 @@ import { NewVoyageModal } from './NewVoyageModal'
 import { OverviewToolbar } from './OverviewToolbar'
 import { ProgramFilterBar } from '@/components/overview/ProgramFilterBar'
 import { ChainRibbonStrip } from '@/components/overview/ChainRibbonStrip'
-import { MissionControl } from '@/components/overview/MissionControl'
 import { SiteDeliveryMatrix } from '@/components/overview/SiteDeliveryMatrix'
-import { OpenRadarTable } from '@/components/overview/OpenRadarTable'
-import { OpsSnapshot } from '@/components/overview/OpsSnapshot'
+import { MissionControlFloat } from '@/components/overview/MissionControlFloat'
+import { VoyageExceptionRadar } from '@/components/overview/VoyageExceptionRadar'
+import { BottomCollapsePanel } from '@/components/overview/BottomCollapsePanel'
+import Link from 'next/link'
 import { useOverviewData } from '@/hooks/useOverviewData'
 import { buildDashboardLink } from '@/lib/navigation/contracts'
 import { useLogisticsStore } from '@/store/logisticsStore'
@@ -32,7 +33,7 @@ export function OverviewPageClient() {
   const highlightedShipmentId = useLogisticsStore((s) => s.highlightedShipmentId)
   const setHighlightedShipmentId = useLogisticsStore((s) => s.setHighlightedShipmentId)
   const setActivePipelineStage = useCasesStore((s) => s.setActivePipelineStage)
-  const { data, loading, error, worklist } = useOverviewData({ refreshKey })
+  const { data, loading, error, worklist } = useOverviewData({ refreshKey, primeWorklist: true })
 
   const handleNavigate = (intent: NavigationIntent) => {
     router.push(buildDashboardLink(intent))
@@ -40,13 +41,14 @@ export function OverviewPageClient() {
 
   return (
     <div className={`flex h-full flex-col overflow-auto ${ui.pageShell}`}>
-      {/* Row 1: Existing toolbar */}
       <OverviewToolbar
-        onShipmentSelect={(sctShipNo) => setSelectedShipmentId(sctShipNo)}
+        onShipmentSelect={(sctShipNo) => {
+          setSelectedShipmentId(sctShipNo)
+          setHighlightedShipmentId(sctShipNo)
+        }}
         onNewVoyageClick={() => setShowNewVoyageModal(true)}
       />
 
-      {/* Row 2: Program filter bar */}
       <ProgramFilterBar
         mode={dashMode}
         onModeChange={setDashMode}
@@ -55,23 +57,24 @@ export function OverviewPageClient() {
         updatedAt={data?.generatedAt ?? ''}
       />
 
-      {/* Row 3: 8 KPI cards */}
       <KpiStripCards
         metrics={data?.hero.metrics ?? []}
         loading={loading}
         onNavigate={handleNavigate}
       />
 
-      {/* Row 4: Chain ribbon */}
       <ChainRibbonStrip
         site={filterSite ?? undefined}
         onStageClick={(stage: PipelineStage) => setActivePipelineStage(stage)}
       />
 
-      {/* Row 5: Map + Mission Control */}
-      <div className="grid min-h-[480px] xl:grid-cols-[2fr_1fr]">
-        <OverviewMap onNavigateIntent={handleNavigate} />
-        <MissionControl
+      <div className="relative min-h-[520px] xl:min-h-[600px]">
+        <OverviewMap
+          snapshot={data?.map ?? null}
+          onNavigateIntent={handleNavigate}
+          siteFilter={filterSite ?? undefined}
+        />
+        <MissionControlFloat
           data={data}
           loading={loading}
           worklist={worklist}
@@ -84,37 +87,51 @@ export function OverviewPageClient() {
         />
       </div>
 
-      {/* Row 6: Site delivery matrix */}
-      <SiteDeliveryMatrix
+      <BottomCollapsePanel
         siteReadiness={data?.siteReadiness ?? []}
+        alerts={data?.alerts ?? []}
         loading={loading}
         onNavigate={handleNavigate}
+        renderSiteMatrix={() => (
+          <SiteDeliveryMatrix
+            siteReadiness={data?.siteReadiness ?? []}
+            loading={loading}
+            onNavigate={handleNavigate}
+          />
+        )}
+        renderVoyageRadar={() => (
+          <VoyageExceptionRadar
+            alerts={data?.alerts ?? []}
+            loading={loading}
+            onNavigate={handleNavigate}
+          />
+        )}
       />
 
-      {/* Row 7: Open radar + Ops snapshot */}
-      <div className="grid gap-5 xl:grid-cols-[1.45fr_.95fr]">
-        <OpenRadarTable
-          worklist={worklist}
-          data={data}
-          loading={loading}
-          onNavigate={handleNavigate}
-        />
-        <OpsSnapshot
-          data={data}
-          worklist={worklist}
-          loading={loading}
-          onNavigate={handleNavigate}
-        />
-      </div>
+      {/* Row 5 — Bottom Nav */}
+      <nav className="flex flex-wrap items-center gap-2 border-t border-hvdc-border-soft px-4 py-3">
+        {[
+          { href: '/chain',    label: 'Logistics Chain' },
+          { href: '/pipeline', label: 'Pipeline' },
+          { href: '/sites',    label: 'Sites' },
+          { href: '/cargo',    label: 'Cargo' },
+        ].map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className="rounded-lg border border-hvdc-border-soft bg-white/[0.03] px-3 py-1.5 text-[12px] font-medium text-hvdc-text-secondary transition-colors hover:bg-white/[0.06] hover:text-hvdc-text-primary"
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
 
-      {/* Error bar */}
       {error ? (
         <div className="border-t border-red-500/20 bg-red-50 px-4 py-2 text-xs text-red-600" aria-live="polite">
           {t.overviewMap.refreshError} {error}
         </div>
       ) : null}
 
-      {/* New voyage modal */}
       <NewVoyageModal
         open={showNewVoyageModal}
         onClose={() => setShowNewVoyageModal(false)}
