@@ -42,9 +42,10 @@ export function useOverviewData(options?: { refreshKey?: number }): OverviewRunt
     }
   })
 
+  // useEffectEvent functions are stable references — must NOT go in dependency arrays
   useEffect(() => {
     void loadOverview()
-  }, [loadOverview])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (typeof document === 'undefined') return
@@ -87,12 +88,12 @@ export function useOverviewData(options?: { refreshKey?: number }): OverviewRunt
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       window.removeEventListener('focus', handleFocus)
     }
-  }, [loadOverview])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!options?.refreshKey) return
     void loadOverview()
-  }, [options?.refreshKey, loadOverview])
+  }, [options?.refreshKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     data,

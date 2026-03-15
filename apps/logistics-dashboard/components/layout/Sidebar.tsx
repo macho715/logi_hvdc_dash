@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation'
 import { Map, ArrowRightLeft, Building2, Package, Network, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useT } from '@/hooks/useT'
-import { ui } from '@/lib/overview/ui'
 import type { Translations } from '@/lib/i18n/translations'
 
 const NAV_ITEMS: { href: string; icon: React.ElementType; labelKey: keyof Translations['nav'] }[] = [
@@ -17,16 +16,21 @@ const NAV_ITEMS: { href: string; icon: React.ElementType; labelKey: keyof Transl
   { href: '/cargo',     icon: Package,       labelKey: 'cargo' },
 ]
 
-export function Sidebar() {
+export function Sidebar({ defaultCollapsed = false }: { defaultCollapsed?: boolean }) {
   const pathname = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(defaultCollapsed)
   const t = useT()
 
   return (
-    <aside className={cn(
-      `flex flex-col border-r border-hvdc-border-soft transition-all duration-200 ${ui.pageShell}`,
-      collapsed ? 'w-14' : 'w-48'
-    )}>
+    <aside
+      className={cn(
+        'relative flex flex-col transition-all duration-200 text-hvdc-text-primary',
+        collapsed ? 'w-14' : 'w-48',
+      )}
+      style={{ background: 'linear-gradient(180deg, rgba(9,15,30,.95), rgba(5,10,24,.98))' }}
+    >
+      {/* Right gradient line (spec-color.md §4) */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-px bg-[linear-gradient(180deg,rgba(59,86,165,.14),rgba(59,86,165,0))]" />
       {/* Logo area */}
       <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-hvdc-border-soft">
         {!collapsed && (

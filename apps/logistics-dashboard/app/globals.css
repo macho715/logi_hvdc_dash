@@ -75,7 +75,7 @@
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
+  --font-sans: var(--font-inter), "Inter", "Segoe UI", system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -113,36 +113,186 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-hvdc-bg-page: #071225;
-  --color-hvdc-bg-topbar: #09162b;
-  --color-hvdc-bg-panel: #0b1730;
-  --color-hvdc-bg-soft: #0d1a35;
-  --color-hvdc-bg-inner: #0a1428;
-  --color-hvdc-surface-subtle: rgb(255 255 255 / 0.02);
-  --color-hvdc-surface-hover: rgb(255 255 255 / 0.04);
-  --color-hvdc-surface-selected: rgb(59 130 246 / 0.1);
-  --color-hvdc-text-primary: #f8fafc;
-  --color-hvdc-text-secondary: #94a3b8;
-  --color-hvdc-text-muted: #64748b;
-  --color-hvdc-border-soft: rgb(255 255 255 / 0.08);
-  --color-hvdc-border-strong: rgb(255 255 255 / 0.12);
-  --color-hvdc-brand: #2563eb;
-  --color-hvdc-brand-hi: #3b82f6;
-  --color-hvdc-brand-low: rgb(59 130 246 / 0.14);
-  --color-hvdc-site-shu: #10b981;
-  --color-hvdc-site-mir: #8b5cf6;
-  --color-hvdc-site-das: #f59e0b;
-  --color-hvdc-site-agi: #f43f5e;
-  --color-hvdc-status-ok: #22c55e;
-  --color-hvdc-status-warn: #f59e0b;
-  --color-hvdc-status-risk: #ef4444;
-  --color-hvdc-status-info: #38bdf8;
-  --color-hvdc-status-danger: #f87171;
-  --radius-hvdc-panel: 24px;
-  --radius-hvdc-card: 18px;
-  --shadow-hvdc-panel: 0 1px 0 rgb(255 255 255 / 0.03), 0 16px 40px rgb(0 0 0 / 0.28);
-  --shadow-hvdc-card: 0 1px 0 rgb(255 255 255 / 0.02), 0 10px 30px rgb(0 0 0 / 0.22);
-  --shadow-hvdc-active: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 6px 18px rgb(37 99 235 / 0.28);
+  /* ── Background ─────────────────────────────────────────────── */
+  /* Replica: hud.bg=#050A18, hud.panel=#0E1427, hud.panelAlt=#10192E */
+  --color-hvdc-bg-page:    #060B19;   /* shell page bg */
+  --color-hvdc-bg-topbar:  #0A1020;   /* topbar strip */
+  --color-hvdc-bg-panel:   #0E1427;   /* panel surface (hud.panel) */
+  --color-hvdc-bg-soft:    #10192E;   /* elevated panel (hud.panelAlt) */
+  --color-hvdc-bg-inner:   #0B1630;   /* inner card bg */
+  --color-hvdc-bg-base:    #050A18;   /* deepest base (hud.bg) */
+  --color-hvdc-bg-shell:   #060B19;   /* artboard shell */
+  --color-hvdc-bg-panel2:  #0E1427;   /* alias for panel */
+  --color-hvdc-bg-elevated:#10192E;   /* elevated surface */
+  --color-hvdc-bg-overlay: rgba(0,0,0,0.45);
+  /* Warm/hot panel variants (replica: panelWarm, panelHot) */
+  --color-hvdc-bg-warm:    #221623;
+  --color-hvdc-bg-hot:     #2B1721;
+
+  /* ── Text ────────────────────────────────────────────────────── */
+  /* Replica: hud.text=#F2F5FF, hud.textSoft=#C7D0E8, hud.textMuted=#7C89A8 */
+  --color-hvdc-text-primary:   #F2F5FF;   /* hud.text */
+  --color-hvdc-text-soft:      #C7D0E8;   /* hud.textSoft (new) */
+  --color-hvdc-text-secondary: #C7D0E8;   /* same as soft */
+  --color-hvdc-text-muted:     #7C89A8;   /* hud.textMuted */
+
+  /* ── Surface states ──────────────────────────────────────────── */
+  --color-hvdc-surface-subtle:   rgb(255 255 255 / 0.02);
+  --color-hvdc-surface-hover:    rgb(255 255 255 / 0.04);
+  --color-hvdc-surface-selected: rgb(47 118 255 / 0.12);
+
+  /* ── Borders ─────────────────────────────────────────────────── */
+  /* Replica: hud.line=#1D2744, hud.lineStrong=#243256 */
+  --color-hvdc-border-soft:   rgba(29,39,68,0.85);   /* hud.line */
+  --color-hvdc-border-strong: rgba(36,50,86,0.90);   /* hud.lineStrong */
+  --color-hvdc-border-brand:  rgba(47,118,255,0.28);
+
+  /* ── Brand blue ──────────────────────────────────────────────── */
+  /* Replica: hud.blue=#2F76FF, hud.blueSoft=#4F8EFF */
+  --color-hvdc-brand:      #2F76FF;   /* hud.blue — brighter electric blue */
+  --color-hvdc-brand-hi:   #4F8EFF;   /* hud.blueSoft */
+  --color-hvdc-brand-low:  rgba(47,118,255,0.14);
+
+  /* ── Site accent colors ──────────────────────────────────────── */
+  /* Replica: SHU=teal #58E1C9, MIR=blue #5C87FF, DAS=violet #8A58FF, AGI=gold #F5D36F */
+  --color-hvdc-site-shu: #58E1C9;   /* teal  (replica SHU accent) */
+  --color-hvdc-site-mir: #5C87FF;   /* blue  (replica MIR accent) */
+  --color-hvdc-site-das: #8A58FF;   /* violet (replica DAS accent) */
+  --color-hvdc-site-agi: #F5D36F;   /* gold   (replica AGI accent) */
+
+  /* ── Status colors ───────────────────────────────────────────── */
+  --color-hvdc-status-ok:     #58E1C9;   /* teal OK */
+  --color-hvdc-status-warn:   #F5C366;   /* amber warn */
+  --color-hvdc-status-risk:   #FF6E63;   /* red risk */
+  --color-hvdc-status-info:   #4F8EFF;   /* blue info */
+  --color-hvdc-status-danger: #FF6E63;   /* red danger */
+
+  /* ── Brand accent palette ────────────────────────────────────── */
+  /* Replica: teal=#58E1C9, amber=#F5C366, violet=#8A58FF, orange=#FF9157, red=#FF6E63 */
+  --color-hvdc-brand-green:  #2ED47A;   /* green flow indicator */
+  --color-hvdc-brand-teal:   #58E1C9;   /* hud.teal — site SHU */
+  --color-hvdc-brand-amber:  #F5C366;   /* hud.amber */
+  --color-hvdc-brand-cyan:   #35D6FF;   /* bright cyan */
+  --color-hvdc-brand-violet: #8A58FF;   /* hud.violet */
+  --color-hvdc-brand-orange: #FF9157;   /* hud.orange */
+  --color-hvdc-brand-red:    #FF6E63;   /* hud.red */
+
+  /* ── Radius ──────────────────────────────────────────────────── */
+  --radius-hvdc-panel: 22px;   /* hud rounded-[22px] */
+  --radius-hvdc-card:  18px;
+  --radius-hvdc-xl:    28px;   /* map panel */
+  --radius-hvdc-lg:    20px;
+
+  /* ── Shadows ─────────────────────────────────────────────────── */
+  /* Replica: shadow-panel, shadow-glow-blue/teal/amber */
+  --shadow-hvdc-panel: 0 10px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-hvdc-card:  0 6px 22px rgba(0,0,0,0.28),  inset 0 1px 0 rgba(255,255,255,0.03);
+  --shadow-hvdc-active: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 18px rgba(47,118,255,0.30);
+  --shadow-hvdc-blue:  0 0 0 1px rgba(47,118,255,0.25), 0 0 26px rgba(47,118,255,0.22);
+  --shadow-hvdc-teal:  0 0 0 1px rgba(88,225,201,0.22), 0 0 26px rgba(88,225,201,0.18);
+  --shadow-hvdc-amber: 0 0 0 1px rgba(245,195,102,0.24), 0 0 26px rgba(245,195,102,0.18);
+  --shadow-hvdc-cyan:  0 0 20px rgba(53,214,255,0.14);
+  --shadow-hvdc-red:   0 0 24px rgba(255,110,99,0.14);
+
+  /* ── Letter spacing ──────────────────────────────────────────── */
+  --tracking-hvdc-label: 0.14em;
+
+  /* ── hud-* aliases (artboard compat) ────────────────────────── */
+  --color-hud-text:      #F2F5FF;
+  --color-hud-textSoft:  #C7D0E8;
+  --color-hud-textMuted: #7C89A8;
+  --color-hud-shell:     #060B19;
+  --color-hud-red:       #FF6E63;
+  --color-hud-orange:    #FF9157;
+  --color-hud-amber:     #F5C366;
+  --color-hud-blue:      #2F76FF;
+
+  /* Font-size scale for artboard */
+  --font-size-hud-xl:  48px;
+  --font-size-hud-md:  14px;
+  --font-size-hud-sm:  13px;
+  --font-size-hud-xs:  12px;
+  --font-size-hud-2xs: 10px;
+
+  /* Shadow aliases */
+  --shadow-panel:      var(--shadow-hvdc-panel);
+  --shadow-glow-blue:  var(--shadow-hvdc-blue);
+  --shadow-glow-amber: var(--shadow-hvdc-amber);
+
+  /* Blur */
+  --blur-hud: 18px;
+}
+
+@layer utilities {
+  /* KPI number: 28px semibold */
+  .text-hvdc-kpi {
+    font-size: 28px;
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  /* Section / page title */
+  .text-hvdc-title {
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Card gradient backgrounds (replica design) ───────────────── */
+  /* Cool card — blue tint (default KPI) */
+  .bg-hvdc-panel,
+  .bg-hvdc-card {
+    background-image:
+      radial-gradient(120% 150% at 0% 0%, rgba(66,107,241,0.18), transparent 55%),
+      linear-gradient(180deg, rgba(17,24,46,0.94) 0%, rgba(11,17,31,0.96) 100%);
+  }
+  /* Hot card — red tint (critical/overdue KPI) */
+  .bg-hvdc-kpi-risk,
+  .bg-hvdc-card-hot {
+    background-image:
+      radial-gradient(120% 170% at 50% 0%, rgba(165,72,60,0.32), transparent 58%),
+      linear-gradient(180deg, rgba(39,24,32,0.94) 0%, rgba(23,15,24,0.96) 100%);
+  }
+  /* Warm card — amber tint (MOSB/warning KPI) */
+  .bg-hvdc-kpi-brand,
+  .bg-hvdc-card-warm {
+    background-image:
+      radial-gradient(120% 170% at 50% 0%, rgba(168,113,58,0.22), transparent 58%),
+      linear-gradient(180deg, rgba(34,25,34,0.94) 0%, rgba(19,14,22,0.96) 100%);
+  }
+  /* Panel surface */
+  .bg-hvdc-surface {
+    background-image:
+      radial-gradient(120% 150% at 12% 0%, rgba(40,82,210,0.14), transparent 55%),
+      linear-gradient(180deg, rgba(14,20,39,0.92) 0%, rgba(10,15,28,0.95) 100%);
+  }
+
+  /* ── Glow shadow utilities ────────────────────────────────────── */
+  .shadow-hvdc-glow-blue  { box-shadow: var(--shadow-hvdc-blue); }
+  .shadow-hvdc-glow-teal  { box-shadow: var(--shadow-hvdc-teal); }
+  .shadow-hvdc-glow-amber { box-shadow: var(--shadow-hvdc-amber); }
+
+  /* ── hud-* utility aliases (artboard compat) ────────────────── */
+  .bg-hud-card {
+    background-image:
+      radial-gradient(120% 150% at 0% 0%, rgba(66,107,241,0.18), transparent 55%),
+      linear-gradient(180deg, rgba(17,24,46,0.94) 0%, rgba(11,17,31,0.96) 100%);
+  }
+  .bg-hud-card-hot {
+    background-image:
+      radial-gradient(120% 170% at 50% 0%, rgba(165,72,60,0.32), transparent 58%),
+      linear-gradient(180deg, rgba(39,24,32,0.94) 0%, rgba(23,15,24,0.96) 100%);
+  }
+  .bg-hud-card-warm {
+    background-image:
+      radial-gradient(120% 170% at 50% 0%, rgba(168,113,58,0.22), transparent 58%),
+      linear-gradient(180deg, rgba(34,25,34,0.94) 0%, rgba(19,14,22,0.96) 100%);
+  }
+  .backdrop-blur-hud { backdrop-filter: blur(18px); }
+  .shadow-glow-amber { box-shadow: var(--shadow-hvdc-amber); }
+  .shadow-glow-blue  { box-shadow: var(--shadow-hvdc-blue); }
+  .shadow-panel      { box-shadow: var(--shadow-hvdc-panel); }
 }
 
 @layer base {
@@ -151,9 +301,16 @@
   }
   html {
     font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply bg-background text-foreground;
+    /* Replica hud-shell gradient */
+    background-image: radial-gradient(1000px 500px at 35% -10%, rgba(39,81,203,0.18), transparent 55%),
+                      radial-gradient(700px 360px at 82% 18%, rgba(167,73,125,0.12), transparent 60%),
+                      linear-gradient(180deg, #060B19 0%, #040915 100%);
+    background-color: #050A18;
+    color: #F2F5FF;
   }
 }
 
